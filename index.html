@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="da" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ========================================== -->
+    <!-- 1. PRIMÆRE META-TAGS (Søgemaskiner)        -->
+    <!-- ========================================== -->
+    <title>RecoveryExpressen | Lej mHBOT Trykkammer Hjemme (30 dage)</title>
+    <meta name="description" content="Lej et professionelt mHBOT trykkammer (op til 1,5 ATA) i 30 dage i eget hjem på Sjælland. Inkl. certificeret levering, opsætning og 3 opfølgninger. Fra 6.500 kr./md.">
+    <link rel="canonical" href="https://recoveryexpressen.dk/">
+
+    <!-- ========================================== -->
+    <!-- 2. OPEN GRAPH META-TAGS (Sociale medier)   -->
+    <!-- ========================================== -->
+    <meta property="og:title" content="RecoveryExpressen | Lej mHBOT Trykkammer i Eget Hjem">
+    <meta property="og:description" content="Få maksimal fleksibilitet med daglig mHBOT i rolige rammer hjemme. Leveret, opsat og sikkerhedsgodkendt af IBUM-certificeret tekniker fra RechargeLife.">
+    <meta property="og:url" content="https://recoveryexpressen.dk/">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://recoveryexpressen.dk/pictures/mhbot-hero.jpg">
+
+    <!-- ========================================== -->
+    <!-- 3. JSON-LD SCHEMA MARKUP (Service + FAQ)   -->
+    <!-- ========================================== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "RecoveryExpressen by RechargeLife",
+          "legalName": "Re Charge Life ApS",
+          "url": "https://recoveryexpressen.dk",
+          "logo": "https://b2b.rechargelife.dk/pictures/Recharge Life_Large_Transparent_Variant 1.png",
+          "taxID": "45890589",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Baldersvej 9",
+            "addressLocality": "Hillerød",
+            "postalCode": "3400",
+            "addressCountry": "DK"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+4531443772",
+            "email": "kontakt@rechargelife.dk",
+            "contactType": "Kundeservice"
+          }
+        },
+        {
+          "@type": "Service",
+          "name": "30-dages hjemmeleje af mHBOT trykkammer (RecoveryExpressen)",
+          "serviceType": "Udlejning af blødt mHBOT wellness-trykkammer og PEM-hydrogengenerator",
+          "provider": {
+            "@type": "Organization",
+            "name": "Re Charge Life ApS"
+          },
+          "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Sjælland, Danmark"
+          },
+          "description": "30 dages leje af blødt mHBOT wellness-kammer (op til 1,5 ATA) i eget hjem inkl. iltkoncentrator, kompressor, certificeret opsætning og 3 månedlige opfølgninger."
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Hvad er forskellen på mHBOT hjemmeleje og behandlingen i klinikken i Hillerød?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "I klinikken i Hillerød arbejder vi ved op til 2,0 ATA i fuldt PED-godkendte trykkamre med fast tilknyttet læge. Hjemmeleje af bløde kamre (mHBOT ved maks. 1,5 ATA) er en wellness- og biohacking-løsning til hyppig restitution i eget hjem uden transporttid."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Skal jeg undersøges af en læge, før jeg kan leje et kammer?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Nej. Da mHBOT ved maks. 1,5 ATA er en mild wellness-rutine, er lægeundersøgelse ikke et krav. Du kan dog altid tilkøbe en valgfri konsultation med vores tilknyttede læge inden opstart."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Hvorfor må jeg ikke overnatte i kammeret?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "For at holde en sikker fysiologisk balance må du ikke overskride den anbefalede grænse på 360 iltenheder pr. dag, hvilket ved 1,5 ATA svarer til maks. 4 timer i døgnet. Brug altid den indbyggede timer."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Hvad kræver det af plads og strøm derhjemme?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Opsætningen kræver et frit, plant gulvareal på min. 2,5 x 2 meter (samlet vægt ca. 120 kg), 230V stikkontakt med jordforbindelse (3 udtag på en 10A eller 13A sikringsgruppe, forbrug knap 1200W) samt god udluftning ved 10-28 grader."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter & Belleza -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Belleza&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- RechargeLife Tailwind Konfiguration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rl-darkblue': '#013F58',
+                        'rl-lightblue': '#B6CCD7',
+                        'rl-taupe': '#94857B',
+                        'rl-lightbg': '#E0DFD8',
+                        'rl-black': '#151F28',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'serif': ['Belleza', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hover-underline-animation { position: relative; }
+        .hover-underline-animation::after {
+            content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 1px;
+            bottom: -4px; left: 0; background-color: #ffffff; transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        .hover-underline-animation:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+
+        .process-step-content {
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin 0.4s ease-in-out;
+            max-height: 0; opacity: 0; overflow: hidden; margin-top: 0;
+        }
+        .process-step-active .process-step-content { max-height: 260px; opacity: 1; margin-top: 1rem; }
+        .process-step-indicator { transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+        .process-step-active .process-step-indicator { background-color: #013F58; color: #ffffff; border-color: #013F58; }
+    </style>
+
+    <link rel="icon" href="favicon.png" type="image/png">
+
+    <!-- Google Tag Manager (opdatér evt. container-ID til RecoveryExpressen) -->
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-N9W74J6F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    </script>
+</head>
+<body class="bg-[#FAF9F6] text-rl-black font-sans antialiased">
+
+    <!-- ======= HEADER / NAVIGATION ======= -->
+    <header class="bg-rl-darkblue shadow-md sticky top-0 z-50 border-b border-white/10 h-20 flex items-center">
+        <nav class="container mx-auto px-6 flex items-center justify-between w-full">
+            <!-- Brand / Logo -->
+            <a href="#top" class="flex items-center gap-3 group py-2">
+                <!-- Udskift evt. med eget RecoveryExpressen-logo -->
+                <img src="pictures/Recharge Life_Large_Transparent_Variant 1.png" alt="RechargeLife" class="h-14 md:h-16 object-contain transition-transform duration-300 group-hover:scale-105">
+                <div class="border-l border-white/25 pl-3">
+                    <span class="font-serif text-xl md:text-2xl text-white tracking-wide block leading-none">RecoveryExpressen</span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] text-rl-lightblue block mt-1">by RechargeLife</span>
+                </div>
+            </a>
+
+            <!-- Desktop anker-navigation -->
+            <div class="hidden lg:flex items-center gap-7 font-medium text-sm text-white">
+                <a href="#maalgrupper" class="hover-underline-animation">Hvem er det til</a>
+                <a href="#saadan-virker-det" class="hover-underline-animation">Sådan virker det</a>
+                <a href="#forloeb" class="hover-underline-animation">Lejeforløb</a>
+                <a href="#priser" class="hover-underline-animation">Priser</a>
+                <a href="#krav-sikkerhed" class="hover-underline-animation">Krav & sikkerhed</a>
+                <a href="#faq" class="hover-underline-animation">FAQ</a>
+            </div>
+
+            <!-- CTA + Mobil menu knap -->
+            <div class="flex items-center gap-4">
+                <button type="button"
+                        data-emne="Bookingforespørgsel: mHBOT hjemmekammer (Header)"
+                        class="js-open-contact hidden sm:inline-block bg-white text-rl-darkblue font-semibold text-xs uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-rl-lightblue transition cursor-pointer">
+                    Book til hjemmet
+                </button>
+                <button id="mobile-menu-btn" class="lg:hidden text-white focus:outline-none" aria-label="Åbn menu">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobil Menu Skuffe -->
+        <div id="mobile-menu" class="hidden absolute top-20 left-0 w-full bg-rl-darkblue border-t border-white/10 lg:hidden shadow-xl">
+            <div class="flex flex-col px-6 py-4 space-y-2 text-white text-base">
+                <a href="#maalgrupper" class="mobile-nav-link block py-3 border-b border-white/10">Hvem er det til</a>
+                <a href="#saadan-virker-det" class="mobile-nav-link block py-3 border-b border-white/10">Sådan virker det</a>
+                <a href="#forloeb" class="mobile-nav-link block py-3 border-b border-white/10">Lejeforløb</a>
+                <a href="#priser" class="mobile-nav-link block py-3 border-b border-white/10">Priser</a>
+                <a href="#krav-sikkerhed" class="mobile-nav-link block py-3 border-b border-white/10">Krav & sikkerhed</a>
+                <a href="#faq" class="mobile-nav-link block py-3 border-b border-white/10">FAQ</a>
+                <button type="button" data-emne="Bookingforespørgsel: mHBOT hjemmekammer (Mobilmenu)"
+                        class="js-open-contact mt-2 bg-white text-rl-darkblue font-semibold py-3 rounded-full text-center">
+                    Book til hjemmet
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="top">
+        <!-- ======= HERO SECTION ======= -->
+        <section class="relative flex items-center min-h-[82vh] py-20 overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <!-- Erstat med lokalt billede af jeres mHBOT-udlejningskammer -->
+                <img src="pictures/mHBOTForumStand1_small.png" alt="mHBOT wellness-trykkammer til hjemmeleje" class="h-full w-full object-cover object-center">
+                <div class="absolute inset-0 bg-rl-darkblue/80 mix-blend-multiply"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-rl-darkblue/95 via-rl-darkblue/80 to-rl-darkblue/30"></div>
+            </div>
+
+            <div class="container relative z-10 mx-auto px-6">
+                <div class="max-w-3xl space-y-6">
+                    <span class="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-rl-darkblue bg-white px-4 py-1.5 rounded-full shadow-md">
+                        RecoveryExpressen &middot; Levering på hele Sjælland
+                    </span>
+                    <h1 class="font-serif text-4xl md:text-6xl lg:text-7xl leading-[1.08] text-white">
+                        Trykkammer hjemme – i dine egne trygge rammer
+                    </h1>
+                    <p class="text-white/90 text-lg md:text-xl font-light leading-relaxed max-w-2xl">
+                        Få friheden til daglige mHBOT-sessioner uden transporttid. Vi leverer, installerer og sikkerhedsgodkender et professionelt mHBOT wellness-kammer (op til 1,5 ATA) direkte i din stue.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <button type="button"
+                                data-emne="Bookingforespørgsel: 30-dages mHBOT hjemmekammer (Hero)"
+                                class="js-open-contact bg-white text-rl-darkblue font-semibold px-8 py-4 rounded-full hover:bg-rl-lightblue transition duration-300 shadow-xl cursor-pointer">
+                            Book dit hjemmekammer
+                        </button>
+                        <a href="#priser" class="border border-white/50 text-white font-medium px-8 py-4 rounded-full hover:bg-white/10 transition duration-300">
+                            Se priser & vilkår
+                        </a>
+                    </div>
+
+                    <!-- Hurtige nøglepunkter -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-8 border-t border-white/20 max-w-2xl text-white/90 text-sm">
+                        <div>
+                            <span class="font-serif text-2xl text-rl-lightblue block">6.500 kr.</span>
+                            <span class="text-xs text-white/75">Pr. 30 dage (op til 4 t./dag)</span>
+                        </div>
+                        <div>
+                            <span class="font-serif text-2xl text-rl-lightblue block">3 opfølgninger</span>
+                            <span class="text-xs text-white/75">Inkluderet hver måned</span>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <span class="font-serif text-2xl text-rl-lightblue block">IBUM-certificeret</span>
+                            <span class="text-xs text-white/75">Levering, opsætning & onboarding</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= MÅLGRUPPER (4 KORT) ======= -->
+        <section id="maalgrupper" class="py-20 bg-white border-t border-rl-lightbg scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">30-dages hjemmeprotokol</span>
+                    <h2 class="font-serif text-3xl md:text-5xl text-rl-darkblue mt-2">Hvem har gavn af et hjemmekammer?</h2>
+                    <p class="text-rl-black/70 mt-4 text-lg">
+                        Frekvens og ro er ofte nøglen til de bedste resultater. Et månedligt lejemål er skabt til dig, der ønsker daglige sessioner uden at bruge energi på transport.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Kort 1 -->
+                    <div class="bg-rl-lightbg/30 p-8 rounded-3xl border border-rl-lightbg">
+                        <h3 class="font-serif text-2xl text-rl-darkblue mb-3">Heling efter kirurgi, hud & velvære</h3>
+                        <p class="text-rl-black/80 text-sm leading-relaxed mb-4">
+                            Ideel til intensive forløb i hjemmet, når vævet har størst behov for ekstra ilt og ro:
+                        </p>
+                        <ul class="space-y-2.5 text-sm text-rl-black/80">
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Efter (plastik)kirurgi:</strong> Understøtter reduktion af hævelse/inflammation og pænere sårheling.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Hudkvalitet & anti-aging:</strong> Stimulerer kollagen og elastin for mere spændstig hud og glød.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Generel restitution:</strong> Understøtter søvn, energi og kroppens genopbygning.</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Kort 2 -->
+                    <div class="bg-rl-lightbg/30 p-8 rounded-3xl border border-rl-lightbg">
+                        <h3 class="font-serif text-2xl text-rl-darkblue mb-3">ME, POTS & dyb energi-restitution (PEM)</h3>
+                        <p class="text-rl-black/80 text-sm leading-relaxed mb-4">
+                            Når selve turen til en klinik risikerer at dræne den energi, som behandlingen skulle give:
+                        </p>
+                        <ul class="space-y-2.5 text-sm text-rl-black/80">
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Nul transporttid:</strong> Tag dine sessioner præcis, når din krop og dagsform tillader det.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Skånsom iltning:</strong> Understøtter cellernes energiproduktion og kan lette mental træthed ("brain fog").</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Ro til nervesystemet:</strong> Hjælper med at undgå aktivitetsudløst udmattelse (PEM).</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Kort 3 -->
+                    <div class="bg-rl-lightbg/30 p-8 rounded-3xl border border-rl-lightbg">
+                        <h3 class="font-serif text-2xl text-rl-darkblue mb-3">Performance, elitesport & restitution</h3>
+                        <p class="text-rl-black/80 text-sm leading-relaxed mb-4">
+                            Under hårde træningsblokke eller op til konkurrencer, hvor timerne mellem pas tæller:
+                        </p>
+                        <ul class="space-y-2.5 text-sm text-rl-black/80">
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Mindre ømhed:</strong> Understøtter hurtigere clearance efter hård belastning.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Vævsgenopbygning:</strong> Støtter restitution af mikrotraumer efter aften- eller morgentræning.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Bedre søvnkvalitet:</strong> Fundamentet for både fysisk og mental ydeevne.</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Kort 4 -->
+                    <div class="bg-rl-lightbg/30 p-8 rounded-3xl border border-rl-lightbg">
+                        <h3 class="font-serif text-2xl text-rl-darkblue mb-3">Longevity, biohacking & daglig energi</h3>
+                        <p class="text-rl-black/80 text-sm leading-relaxed mb-4">
+                            Til dig, der vil køre en struktureret, daglig wellness-protokol med høj frekvens:
+                        </p>
+                        <ul class="space-y-2.5 text-sm text-rl-black/80">
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Mental klarhed:</strong> Mange oplever skarpere fokus og mere overskud i arbejdsdagen.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Stressreduktion:</strong> 60–90 minutters uforstyrret ro virker som dyb restitution for nervesystemet.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Kredsløb & mitokondrier:</strong> Daglig brug af let overtryk understøtter kroppens cellefornyelse.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= SÅDAN VIRKER mHBOT + KLINIK VS. HJEMME ======= -->
+        <section id="saadan-virker-det" class="py-20 bg-rl-darkblue text-white scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="grid lg:grid-cols-2 gap-14 items-start">
+                    <div class="space-y-6">
+                        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-lightblue">Fysiologi & oplevelse</span>
+                        <h2 class="font-serif text-3xl md:text-5xl">Sådan virker mHBOT i kroppen</h2>
+                        <p class="text-white/85 leading-relaxed">
+                            Normalt transporteres ilt næsten udelukkende via de røde blodlegemer. Når du trækker vejret under let forhøjet tryk (op til <strong>1,5 ATA</strong>), opløses ilten direkte i kroppens væsker – herunder blodplasma, lymfe og hjernevæske.
+                        </p>
+                        <p class="text-white/80 leading-relaxed">
+                            Det gør det muligt for ilten at nå ud i områder og væv med nedsat mikrocirkulation, dæmpe inflammation og understøtte kroppens egne helingsprocesser.
+                        </p>
+                        <div class="bg-white/10 p-6 rounded-2xl border border-white/15">
+                            <h3 class="font-serif text-xl text-rl-lightblue mb-2">Hvordan føles en session?</h3>
+                            <p class="text-sm text-white/80 leading-relaxed">
+                                Mens trykket langsomt stiger, mærker du det i ørerne – præcis som når et fly letter. Du udligner nemt ved at synke eller gabe. Efter få minutter forsvinder fornemmelsen, og du kan hvile, sove, lytte til podcast eller læse en bog i fuldstændig ro.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Sammenligning: Hjemmeleje vs. Klinik i Hillerød -->
+                    <div class="bg-white text-rl-black p-8 md:p-10 rounded-3xl shadow-2xl space-y-6">
+                        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Hvad passer bedst til dig?</span>
+                        <h3 class="font-serif text-2xl md:text-3xl text-rl-darkblue">Hjemmekammer vs. Klinik i Hillerød</h3>
+
+                        <div class="space-y-4 text-sm">
+                            <div class="p-4 rounded-2xl bg-rl-lightbg/35 border border-rl-lightbg">
+                                <p class="font-bold text-rl-darkblue mb-1">RecoveryExpressen (Hjemme · op til 1,5 ATA)</p>
+                                <p class="text-rl-black/80">Blødt mHBOT wellness-kammer til høj frekvens, mængdetræning og nul transporttid. Kræver ikke forudgående lægeundersøgelse.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-[#FAF9F6] border border-rl-lightbg">
+                                <p class="font-bold text-rl-darkblue mb-1">RechargeLife Klinik (Hillerød · op til 2,0 ATA)</p>
+                                <p class="text-rl-black/80">Avanceret iltterapi i PED-godkendt hard-shell kammer med fast tilknyttet læge til intensive kliniske protokoller.</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-rl-lightbg flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+                            <p class="text-xs text-rl-taupe">
+                                Ønsker du individuel lægefaglig sparring inden hjemmeleje?
+                            </p>
+                            <a href="https://rechargelife.dk/bestiltid-hbot" target="_blank" class="shrink-0 text-xs font-semibold uppercase tracking-wider bg-rl-darkblue text-white px-5 py-3 rounded-full hover:bg-rl-black transition">
+                                Book valgfri lægesamtale
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= SYNERGI: PEM-HYDROGENTERAPI ======= -->
+        <section class="py-16 bg-[#FAF9F6] border-b border-rl-lightbg">
+            <div class="container mx-auto px-6 max-w-5xl">
+                <div class="bg-white rounded-3xl border border-rl-lightbg p-8 md:p-12 shadow-sm flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="space-y-3 max-w-2xl">
+                        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Populært tilvalg</span>
+                        <h2 class="font-serif text-3xl text-rl-darkblue">Perfekt synergi med PEM-hydrogenterapi</h2>
+                        <p class="text-rl-black/80 leading-relaxed">
+                            Vil du løfte din hjemmeprotokol yderligere? Kobl en klinisk testet, portabel <strong>PEM-hydrogengenerator</strong> på dit lejemål for kun <strong>1.500 kr./md.</strong> Molekylært brint fungerer som en selektiv antioxidant, der modvirker oxidativ stress og supplerer den daglige iltterapi.
+                        </p>
+                    </div>
+                    <button type="button"
+                            data-emne="Forespørgsel: mHBOT + PEM-hydrogengenerator tilvalg"
+                            class="js-open-contact shrink-0 bg-rl-darkblue text-white font-semibold px-7 py-4 rounded-full hover:bg-rl-lightblue hover:text-rl-darkblue transition cursor-pointer">
+                        Tilføj til forespørgsel
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= INTERAKTIV 5-TRINS PROCES (LEJEFORLØB) ======= -->
+        <section id="forloeb" class="py-24 bg-rl-lightbg/20 scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-5xl">
+                <div class="text-center mb-14">
+                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Trygt fra start til slut</span>
+                    <h2 class="font-serif text-3xl md:text-5xl text-rl-darkblue mt-2">Sådan fungerer lejeforløbet</h2>
+                    <p class="text-rl-black/70 mt-4 text-lg">Klik på de enkelte trin – hos os er du aldrig overladt til dig selv.</p>
+                </div>
+
+                <div class="relative">
+                    <div class="hidden md:block absolute top-10 left-0 w-full h-1 bg-rl-lightbg/60 rounded z-0"></div>
+                    <div class="grid md:grid-cols-5 gap-4 relative z-10" id="process-accordion">
+                        <!-- Trin 1 -->
+                        <div class="process-step group cursor-pointer bg-white rounded-2xl shadow-sm border border-rl-lightbg overflow-hidden hover:shadow-md transition">
+                            <div class="p-6 text-center">
+                                <div class="process-step-indicator w-10 h-10 mx-auto rounded-full flex items-center justify-center font-bold text-rl-darkblue border-2 border-rl-lightblue mb-3">1</div>
+                                <h4 class="font-semibold text-rl-black text-sm">Booking & periode</h4>
+                            </div>
+                            <div class="process-step-content px-5 pb-6 text-xs text-rl-taupe text-center leading-relaxed">
+                                Du vælger ønsket startdato og fast lejeperiode (f.eks. 1, 2 eller 3 måneder), så et nyserviceret kammer er reserveret til dig.
+                            </div>
+                        </div>
+                        <!-- Trin 2 -->
+                        <div class="process-step group cursor-pointer bg-white rounded-2xl shadow-sm border border-rl-lightbg overflow-hidden hover:shadow-md transition">
+                            <div class="p-6 text-center">
+                                <div class="process-step-indicator w-10 h-10 mx-auto rounded-full flex items-center justify-center font-bold text-rl-darkblue border-2 border-rl-lightblue mb-3">2</div>
+                                <h4 class="font-semibold text-rl-black text-sm">Video & sikkerhedsquiz</h4>
+                            </div>
+                            <div class="process-step-content px-5 pb-6 text-xs text-rl-taupe text-center leading-relaxed">
+                                Inden opsætning ser alle brugere i husstanden en kort introduktionsvideo og besvarer et par enkle sikkerhedsspørgsmål.
+                            </div>
+                        </div>
+                        <!-- Trin 3 -->
+                        <div class="process-step group cursor-pointer bg-white rounded-2xl shadow-sm border border-rl-lightbg overflow-hidden hover:shadow-md transition">
+                            <div class="p-6 text-center">
+                                <div class="process-step-indicator w-10 h-10 mx-auto rounded-full flex items-center justify-center font-bold text-rl-darkblue border-2 border-rl-lightblue mb-3">3</div>
+                                <h4 class="font-semibold text-rl-black text-sm">Levering & opsætning</h4>
+                            </div>
+                            <div class="process-step-content px-5 pb-6 text-xs text-rl-taupe text-center leading-relaxed">
+                                En certificeret tekniker leverer, samler og tryktester kammeret i dit hjem samt gennemfører første overvågede opstart med dig.
+                            </div>
+                        </div>
+                        <!-- Trin 4 -->
+                        <div class="process-step group cursor-pointer bg-white rounded-2xl shadow-sm border border-rl-lightbg overflow-hidden hover:shadow-md transition">
+                            <div class="p-6 text-center">
+                                <div class="process-step-indicator w-10 h-10 mx-auto rounded-full flex items-center justify-center font-bold text-rl-darkblue border-2 border-rl-lightblue mb-3">4</div>
+                                <h4 class="font-semibold text-rl-black text-sm">30 dage + 3 opfølgninger</h4>
+                            </div>
+                            <div class="process-step-content px-5 pb-6 text-xs text-rl-taupe text-center leading-relaxed">
+                                Brug kammeret op til 4 timer dagligt. Vi tjekker ind 3 gange om måneden pr. mail eller telefon og sparrer om din protokol.
+                            </div>
+                        </div>
+                        <!-- Trin 5 -->
+                        <div class="process-step group cursor-pointer bg-white rounded-2xl shadow-sm border border-rl-lightbg overflow-hidden hover:shadow-md transition">
+                            <div class="p-6 text-center">
+                                <div class="process-step-indicator w-10 h-10 mx-auto rounded-full flex items-center justify-center font-bold text-rl-darkblue border-2 border-rl-lightblue mb-3">5</div>
+                                <h4 class="font-semibold text-rl-black text-sm">Forlængelse el. retur</h4>
+                            </div>
+                            <div class="process-step-content px-5 pb-6 text-xs text-rl-taupe text-center leading-relaxed">
+                                14 dage før udløb afklarer vi, om du vil forlænge (hvis kammeret er ledigt), eller hvornår vi afhenter og refunderer dit depositum.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= PRISER ======= -->
+        <section id="priser" class="py-20 bg-white border-t border-rl-lightbg scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="text-center mb-12">
+                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Gennemsigtige vilkår</span>
+                    <h2 class="font-serif text-3xl md:text-5xl text-rl-darkblue mt-2">Priser for hjemmeleje</h2>
+                    <p class="text-rl-black/70 mt-3 text-lg">Alt inkluderet – rummeligt kvalitetskammer, kraftig iltkoncentrator, kompressor og løbende sparring.</p>
+                </div>
+
+                <div class="bg-[#FAF9F6] rounded-3xl border border-rl-lightbg overflow-hidden shadow-sm">
+                    <div class="bg-rl-darkblue text-white px-6 py-4 grid grid-cols-12 text-xs font-semibold uppercase tracking-widest">
+                        <div class="col-span-4 md:col-span-3">Ydelse</div>
+                        <div class="col-span-5 md:col-span-6">Beskrivelse</div>
+                        <div class="col-span-3 text-right">Pris</div>
+                    </div>
+
+                    <div class="divide-y divide-rl-lightbg/70 text-sm">
+                        <!-- Række 1 -->
+                        <div class="px-6 py-6 grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-12 md:col-span-3 font-bold text-rl-darkblue">Månedlig leje</div>
+                            <div class="col-span-8 md:col-span-6 text-rl-black/80">30 dages fri brug af blødt wellness-kammer (mHBOT) i eget hjem.</div>
+                            <div class="col-span-4 md:col-span-3 text-right">
+                                <span class="font-serif text-2xl text-rl-darkblue block">6.500 kr.</span>
+                                <span class="text-xs text-rl-taupe">pr. 30 dage</span>
+                            </div>
+                        </div>
+
+                        <!-- Række 2 -->
+                        <div class="px-6 py-6 grid grid-cols-12 gap-4 items-center bg-white/60">
+                            <div class="col-span-12 md:col-span-3 font-bold text-rl-darkblue">Inkluderet brug & merforbrug</div>
+                            <div class="col-span-8 md:col-span-6 text-rl-black/80 space-y-1">
+                                <p>Inkluderer op til <strong>4 timers daglig brug</strong> (maks. 120 timer pr. 30 dage) af hensyn til fysiologisk sikkerhed og slitage.</p>
+                                <p class="text-xs text-rl-taupe">Flere brugere i husstanden? Spørg efter særaftale. Alle brugere skal gennemføre introvideo + sikkerhedsquiz. Underudlejning er ikke tilladt.</p>
+                            </div>
+                            <div class="col-span-4 md:col-span-3 text-right">
+                                <span class="font-serif text-xl text-rl-darkblue block">100 kr.</span>
+                                <span class="text-xs text-rl-taupe">pr. ekstra time</span>
+                            </div>
+                        </div>
+
+                        <!-- Række 3 -->
+                        <div class="px-6 py-6 grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-12 md:col-span-3 font-bold text-rl-darkblue">Certificeret opsætning</div>
+                            <div class="col-span-8 md:col-span-6 text-rl-black/80 space-y-1">
+                                <p>Levering, installation, nedtagning og personlig onboarding i dit hjem.</p>
+                                <p class="text-xs text-rl-taupe">Inkl. kørsel op til 60 km fra Hillerød (derefter 2,5 kr./km). Levering p.t. udelukkende på Sjælland.</p>
+                            </div>
+                            <div class="col-span-4 md:col-span-3 text-right">
+                                <span class="font-serif text-2xl text-rl-darkblue block">2.500 kr.</span>
+                                <span class="text-xs text-rl-taupe">engangsbeløb</span>
+                            </div>
+                        </div>
+
+                        <!-- Række 4 -->
+                        <div class="px-6 py-6 grid grid-cols-12 gap-4 items-center bg-white/60">
+                            <div class="col-span-12 md:col-span-3 font-bold text-rl-darkblue">Løbende opfølgning</div>
+                            <div class="col-span-8 md:col-span-6 text-rl-black/80">3 faste månedlige opfølgninger pr. mail eller telefon om din protokol og dine resultater.</div>
+                            <div class="col-span-4 md:col-span-3 text-right">
+                                <span class="font-serif text-xl text-rl-darkblue block">Inkluderet</span>
+                            </div>
+                        </div>
+
+                        <!-- Række 5 -->
+                        <div class="px-6 py-6 grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-12 md:col-span-3 font-bold text-rl-darkblue">Depositum</div>
+                            <div class="col-span-8 md:col-span-6 text-rl-black/80">Sikkerhedsstillelse for udstyret – refunderes fuldt ud efter godkendt returnering.</div>
+                            <div class="col-span-4 md:col-span-3 text-right">
+                                <span class="font-serif text-2xl text-rl-darkblue block">10.000 kr.</span>
+                                <span class="text-xs text-rl-taupe">refunderes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tip-boks -->
+                <div class="mt-6 bg-rl-lightblue/25 border border-rl-lightblue rounded-2xl p-5 text-sm text-rl-darkblue">
+                    <strong>Tilvalg:</strong> Tilføj en portabel PEM-hydrogengenerator for <strong>1.500 kr./md.</strong> Ekstra non-rebreathing masker kan altid tilkøbes direkte hos os.
+                </div>
+
+                <div class="text-center mt-10">
+                    <button type="button"
+                            data-emne="Bookingforespørgsel: 30-dages mHBOT hjemmekammer (Priser)"
+                            class="js-open-contact bg-rl-darkblue text-white font-semibold px-10 py-4 rounded-full hover:bg-rl-lightblue hover:text-rl-darkblue transition duration-300 shadow-lg cursor-pointer">
+                        Tjek ledighed & book periode
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= PRAKTISKE KRAV & SIKKERHEDSRAMMER ======= -->
+        <section id="krav-sikkerhed" class="py-20 bg-[#FAF9F6] border-t border-rl-lightbg scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- Praktiske krav -->
+                    <div class="bg-white p-8 md:p-10 rounded-3xl border border-rl-lightbg shadow-sm">
+                        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Teknisk tjekliste</span>
+                        <h2 class="font-serif text-3xl text-rl-darkblue mt-2 mb-6">Praktiske krav i hjemmet</h2>
+                        <ul class="space-y-4 text-sm text-rl-black/80 leading-relaxed">
+                            <li><strong class="text-rl-darkblue">Gulvplads & vægt:</strong> Min. 2,5 × 2,0 meter frit gulvareal (kammeret måler ca. 2,35 × 1,20 m). Samlet vægt ca. 120 kg på et solidt, plant underlag.</li>
+                            <li><strong class="text-rl-darkblue">Strøm & jordforbindelse:</strong> 220–230V stikkontakt med <em>jordforbindelse</em> (strengt sikkerhedskrav) og 3 ledige udtag. Kontinuerligt forbrug knap 1.200W – anbefales på en 10A eller 13A sikringsgruppe uden tunge hvidevarer samtidig.</li>
+                            <li><strong class="text-rl-darkblue">Temperatur:</strong> Rumtemperatur mellem 10 °C og 28 °C sikrer optimal drift af kompressor og iltkoncentrator.</li>
+                            <li><strong class="text-rl-darkblue">Udluftning:</strong> Mulighed for at åbne vindue eller aktiv ventilation/AC. Bør ikke stå i rum med kraftig madlugt.</li>
+                            <li><strong class="text-rl-darkblue">Teknisk service:</strong> RechargeLife klarer al filterskift, rengøring og vedligehold mellem udlejninger og ved længere leje.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Sikkerhedsrammer -->
+                    <div class="bg-white p-8 md:p-10 rounded-3xl border border-rl-lightbg shadow-sm">
+                        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Kompromisløs sikkerhed</span>
+                        <h2 class="font-serif text-3xl text-rl-darkblue mt-2 mb-6">6 faste sikkerhedsrammer</h2>
+                        <ul class="space-y-4 text-sm text-rl-black/80 leading-relaxed">
+                            <li><strong class="text-rl-darkblue">1. Introvideo & sikkerhedsquiz:</strong> Kort online modul om korrekt brug og trykudligning gennemføres af alle brugere inden start.</li>
+                            <li><strong class="text-rl-darkblue">2. Certificeret opsætning:</strong> Vores tekniker samler, tester og gennemgår lynlåse, ventiler og timer fysisk med dig.</li>
+                            <li><strong class="text-rl-darkblue">3. Overvåget opstart:</strong> Første praktiske test gennemføres sammen med dig – hjemme i stuen eller i klinikken.</li>
+                            <li><strong class="text-rl-darkblue">4. Ingen overnatning:</strong> Maks. 360 iltenheder/dag (svarende til maks. 4 timer ved 1,5 ATA). Brug altid den indbyggede timer.</li>
+                            <li><strong class="text-rl-darkblue">5. Korrekt maske:</strong> Vi anbefaler non-rebreathing maske med envejsventiler (alm. iltmaske/næsekanyle kan også bruges). Tjek altid masken inden brug.</li>
+                            <li><strong class="text-rl-darkblue">6. Antistatisk påklædning:</strong> Brug 100 % bomuld, hør eller silke i kammeret – undgå syntetiske materialer som nylon og polyester.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= E-E-A-T & FAQ ======= -->
+        <section id="faq" class="py-20 bg-white border-t border-rl-lightbg scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="text-center mb-12">
+                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Dansk Ekspertise & FAQ</span>
+                    <h2 class="font-serif text-3xl md:text-5xl text-rl-darkblue mt-2">Ofte stillede spørgsmål</h2>
+                    <p class="text-rl-black/70 mt-4 text-base">
+                        RecoveryExpressen drives af <strong>RechargeLife</strong> i Hillerød – med civilingeniørbaggrund (DTU), IBUM-certificering som <em>Advanced Hyperbaric Technician & Safety Director</em> samt medlemskab af EBAss.
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <details class="group bg-[#FAF9F6] p-6 rounded-2xl border border-rl-lightbg" open>
+                        <summary class="font-semibold text-lg text-rl-darkblue cursor-pointer list-none flex justify-between items-center">
+                            Hvad er forskellen på hjemmeleje og klinikken i Hillerød?
+                            <span class="text-rl-taupe transition-transform group-open:rotate-45 text-2xl">+</span>
+                        </summary>
+                        <p class="text-sm text-rl-black/80 mt-4 leading-relaxed">
+                            I klinikken i Hillerød arbejder vi ved op til 2,0 ATA i PED-godkendte hard-shell kamre med fast tilknyttet læge til intensive protokoller. Hjemmeleje af bløde kamre (maks. 1,5 ATA) er en fleksibel wellness- og restitutionsløsning til hyppige, daglige sessioner uden transporttid.
+                        </p>
+                    </details>
+
+                    <details class="group bg-[#FAF9F6] p-6 rounded-2xl border border-rl-lightbg">
+                        <summary class="font-semibold text-lg text-rl-darkblue cursor-pointer list-none flex justify-between items-center">
+                            Skal jeg undersøges af en læge, før jeg kan leje et kammer?
+                            <span class="text-rl-taupe transition-transform group-open:rotate-45 text-2xl">+</span>
+                        </summary>
+                        <p class="text-sm text-rl-black/80 mt-4 leading-relaxed">
+                            Nej. Da mHBOT er en mild wellness-rutine ved lavt tryk, er en lægeundersøgelse ikke et krav. Ønsker du individuel lægefaglig sparring før start, kan du nemt booke en valgfri konsultation via <a href="https://rechargelife.dk/bestiltid-hbot" target="_blank" class="underline text-rl-darkblue font-medium">rechargelife.dk</a>.
+                        </p>
+                    </details>
+
+                    <details class="group bg-[#FAF9F6] p-6 rounded-2xl border border-rl-lightbg">
+                        <summary class="font-semibold text-lg text-rl-darkblue cursor-pointer list-none flex justify-between items-center">
+                            Bliver jeg overladt til mig selv, når kammeret står hjemme?
+                            <span class="text-rl-taupe transition-transform group-open:rotate-45 text-2xl">+</span>
+                        </summary>
+                        <p class="text-sm text-rl-black/80 mt-4 leading-relaxed">
+                            Absolut ikke. Dit lejeforløb inkluderer 3 faste opfølgninger om måneden pr. mail eller telefon, hvor vi sparrer om dine oplevelser og tilpasser protokollen. Ekstra sparring eller en lægekonsultation kan altid tilkøbes.
+                        </p>
+                    </details>
+
+                    <details class="group bg-[#FAF9F6] p-6 rounded-2xl border border-rl-lightbg">
+                        <summary class="font-semibold text-lg text-rl-darkblue cursor-pointer list-none flex justify-between items-center">
+                            Hvorfor må jeg ikke overnatte i kammeret?
+                            <span class="text-rl-taupe transition-transform group-open:rotate-45 text-2xl">+</span>
+                        </summary>
+                        <p class="text-sm text-rl-black/80 mt-4 leading-relaxed">
+                            Når du indånder koncentreret ilt under tryk, akkumulerer kroppen iltenheder. For en sund og sikker balance bør du ikke overskride 360 iltenheder/dag (maks. 4 timer ved 1,5 ATA). Den indbyggede timer sørger automatisk for at afslutte sessionen og sænke trykket.
+                        </p>
+                    </details>
+
+                    <details class="group bg-[#FAF9F6] p-6 rounded-2xl border border-rl-lightbg">
+                        <summary class="font-semibold text-lg text-rl-darkblue cursor-pointer list-none flex justify-between items-center">
+                            Hvilken maske er bedst at bruge?
+                            <span class="text-rl-taupe transition-transform group-open:rotate-45 text-2xl">+</span>
+                        </summary>
+                        <p class="text-sm text-rl-black/80 mt-4 leading-relaxed">
+                            Vi anbefaler en non-rebreathing maske med reservoirpose og envejsventiler for renest mulig iltoptagelse uden genindånding af udåndingsluft. Almindelige iltmasker og næsekanyler fungerer også fint. Nye masker kan altid købes hos os.
+                        </p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= AFSLUTTENDE CTA ======= -->
+        <section class="py-20 bg-rl-darkblue text-white text-center">
+            <div class="container mx-auto px-6 max-w-2xl">
+                <h2 class="font-serif text-3xl md:text-5xl mb-5">Klar til at opgradere din restitution derhjemme?</h2>
+                <p class="text-white/80 mb-9 text-lg font-light">
+                    Vi har et begrænset antal kamre til udlejning ad gangen. Send en uforpligtende forespørgsel i dag og hør næste ledige leveringsdato.
+                </p>
+                <button type="button"
+                        data-emne="Bookingforespørgsel: 30-dages mHBOT hjemmekammer (Bund-CTA)"
+                        class="js-open-contact bg-white text-rl-darkblue font-semibold px-10 py-5 rounded-full hover:bg-rl-lightblue transition duration-300 shadow-xl text-base cursor-pointer">
+                    Book dit hjemmekammer
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======= FOOTER ======= -->
+    <footer class="bg-[#012E40] text-white pt-14 pb-10 border-t border-white/10">
+        <div class="container mx-auto px-6 max-w-6xl space-y-8">
+            <!-- Vigtig wellness-disclaimer -->
+            <div class="bg-white/5 border border-white/10 rounded-xl p-5 text-xs text-rl-lightbg/80 leading-relaxed">
+                <strong>VIGTIGT:</strong> mHBOT er ikke en medicinsk behandling og erstatter ikke lægelig rådgivning eller behandling. Det er en supplerende velvære- og restitutionsproces uden terapeutisk formål. Trykket i hjemmekamre (op til 1,5 ATA) og i vores klinik (op til 2,0 ATA) svarer ikke til hospitalers medicinske trykkamre (2–6 ATA).
+            </div>
+
+            <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-8 text-sm text-rl-lightbg/80 font-light">
+                <div>
+                    <h4 class="font-serif text-lg mb-4 text-white uppercase tracking-widest">RecoveryExpressen</h4>
+                    <p class="text-xs leading-relaxed">En del af Re Charge Life ApS.<br>Baldersvej 9, 3400 Hillerød<br>CVR: 45890589</p>
+                </div>
+                <div>
+                    <h4 class="font-serif text-lg mb-4 text-white uppercase tracking-widest">Kontakt</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="tel:+4531443772" class="hover:text-white transition">+45 31 44 37 72</a></li>
+                        <li><a href="mailto:kontakt@rechargelife.dk" class="hover:text-white transition">kontakt@rechargelife.dk</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-serif text-lg mb-4 text-white uppercase tracking-widest">RechargeLife</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="https://rechargelife.dk" target="_blank" class="hover:text-white transition">Klinik i Hillerød (2,0 ATA)</a></li>
+                        <li><a href="https://rechargelife.dk/bestiltid-hbot" target="_blank" class="hover:text-white transition">Book valgfri lægesamtale</a></li>
+                        <li><a href="https://b2b.rechargelife.dk" target="_blank" class="hover:text-white transition">Erhverv & B2B-løsninger</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-serif text-lg mb-4 text-white uppercase tracking-widest">Vilkår</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="https://b2b.rechargelife.dk/privatlivspolitik.html" target="_blank" class="hover:text-white transition">Privatlivspolitik</a></li>
+                        <li><a href="https://b2b.rechargelife.dk/cookie.html" target="_blank" class="hover:text-white transition">Cookie-politik</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-white/10 text-xs text-rl-lightbg/60">
+                &copy; 2026 RecoveryExpressen &middot; RechargeLife - Beyond Living. CVR: 45890589.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======= FAST "BOOK / SPØRGSMÅL" KNAP ======= -->
+    <button id="open-contact-modal" class="fixed bottom-0 right-6 z-40 bg-white hover:bg-rl-lightbg text-rl-darkblue font-serif text-sm uppercase tracking-widest px-7 py-4 transition-colors duration-300 shadow-[0_-4px_20px_rgba(0,0,0,0.18)] rounded-t-lg cursor-pointer">
+        Book / Spørgsmål
+    </button>
+
+    <!-- ======= BOOKING- & KONTAKTMODAL (AJAX FORMSPREE) ======= -->
+    <div id="contact-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="bg-[#FAF9F6] w-full max-w-xl p-8 md:p-10 relative shadow-2xl rounded-2xl transform scale-95 transition-transform duration-300 my-auto" id="contact-modal-content">
+            <button id="close-contact-modal" class="absolute top-5 right-5 text-rl-black/50 hover:text-rl-black transition-colors cursor-pointer" aria-label="Luk">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe block mb-2">RecoveryExpressen</span>
+            <h3 class="font-serif text-3xl text-rl-darkblue mb-2">Book dit hjemmekammer</h3>
+            <p class="text-sm text-rl-black/70 mb-6">Udfyld herunder – så vender vi hurtigt tilbage med ledige leveringsdatoer.</p>
+
+            <!-- Udskift evt. action-URL til et dedikeret RecoveryExpressen Formspree-endpoint -->
+            <form action="https://formspree.io/f/xkjjldqw" method="POST" class="space-y-4">
+                <input type="hidden" name="_subject" id="form-subject" value="RecoveryExpressen forespørgsel">
+                <input type="hidden" name="Side_Kilde" id="form-page-source" value="RecoveryExpressen (index.html)">
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Navn *</label>
+                        <input type="text" name="Navn" maxlength="100" required class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Telefon *</label>
+                        <input type="tel" name="Telefon" maxlength="20" required class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">E-mail *</label>
+                        <input type="email" name="Email" maxlength="100" required class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Postnr. & by (Sjælland) *</label>
+                        <input type="text" name="By_Postnr" maxlength="60" placeholder="Fx 3400 Hillerød" required class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Ønsket lejeperiode</label>
+                        <select name="Lejeperiode" class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                            <option value="1 måned (30 dage)">1 måned (30 dage)</option>
+                            <option value="2 måneder (60 dage)">2 måneder (60 dage)</option>
+                            <option value="3 måneder (90 dage)">3 måneder (90 dage)</option>
+                            <option value="Kun PEM-hydrogen / Spørgsmål">Kun PEM-hydrogen / Spørgsmål</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Ønsket startdato</label>
+                        <input type="date" name="Startdato" class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                    </div>
+                </div>
+
+                <label class="flex items-center gap-3 pt-1 text-sm text-rl-black/80 cursor-pointer">
+                    <input type="checkbox" name="Tilvalg_PEM_Hydrogen" value="Ja (+1.500 kr./md.)" class="accent-rl-darkblue w-4 h-4">
+                    <span>Ja tak, jeg vil gerne tilføje PEM-hydrogengenerator (+1.500 kr./md.)</span>
+                </label>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Kommentar / spørgsmål</label>
+                    <textarea name="Kommentar" rows="3" maxlength="1000" placeholder="Fortæl evt. kort om dit formål eller spørgsmål til plads/strøm" class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue resize-none text-sm"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-rl-darkblue hover:bg-rl-black text-white font-serif text-sm uppercase tracking-widest py-4 rounded-full transition-colors duration-300 mt-2 cursor-pointer">
+                    Send forespørgsel
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======= JAVASCRIPT: MODAL, TIDSLINJE, MOBILMENU & AJAX FORMSPREE ======= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pageTitle = document.title.split('|')[0].trim();
+            const pageUrl = window.location.href;
+
+            // Modal
+            const openBtn = document.getElementById('open-contact-modal');
+            const customCtaBtns = document.querySelectorAll('.js-open-contact');
+            const closeBtn = document.getElementById('close-contact-modal');
+            const modal = document.getElementById('contact-modal');
+            const modalContent = document.getElementById('contact-modal-content');
+            const subjectInput = document.getElementById('form-subject');
+            const sourceInput = document.getElementById('form-page-source');
+
+            function openContactModal(customSubject) {
+                if (subjectInput) subjectInput.value = customSubject || `RecoveryExpressen henvendelse: ${pageTitle}`;
+                if (sourceInput) sourceInput.value = `${pageTitle} (${pageUrl})`;
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }
+
+            function closeContactModal() {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+            }
+
+            if (openBtn) openBtn.addEventListener('click', () => openContactModal());
+            customCtaBtns.forEach(btn => btn.addEventListener('click', () => openContactModal(btn.getAttribute('data-emne'))));
+            if (closeBtn) closeBtn.addEventListener('click', closeContactModal);
+            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeContactModal(); });
+
+            // Mobilmenu
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+                document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+                });
+            }
+
+            // Interaktiv 5-trins proces
+            const processSteps = document.querySelectorAll('.process-step');
+            if (processSteps.length > 0) processSteps[0].classList.add('process-step-active');
+            processSteps.forEach(step => {
+                step.addEventListener('click', () => {
+                    processSteps.forEach(s => { if (s !== step) s.classList.remove('process-step-active'); });
+                    step.classList.toggle('process-step-active');
+                });
+            });
+
+            // AJAX Formspree med 7-sekunders countdown + GTM dataLayer
+            document.querySelectorAll('form[action^="https://formspree.io"]').forEach(form => {
+                form.addEventListener('submit', async function(event) {
+                    event.preventDefault();
+                    const button = form.querySelector('button[type="submit"]');
+                    button.innerHTML = 'Sender...';
+
+                    try {
+                        const response = await fetch(form.action, {
+                            method: form.method,
+                            body: new FormData(form),
+                            headers: { 'Accept': 'application/json' }
+                        });
+                        if (response.ok) {
+                            window.dataLayer = window.dataLayer || [];
+                            window.dataLayer.push({
+                                'event': 'form_submit',
+                                'form_type': 'recoveryexpressen_booking_modal',
+                                'page_source': pageTitle
+                            });
+
+                            form.innerHTML = `
+                                <div class="text-center py-8">
+                                    <h4 class="text-rl-darkblue font-serif text-2xl mb-2">Tak for din forespørgsel</h4>
+                                    <p class="text-sm text-rl-taupe mb-6">Vi tjekker ledighed og vender tilbage hurtigst muligt.</p>
+                                    <div class="w-12 h-12 mx-auto rounded-full border-2 border-rl-lightblue flex items-center justify-center mb-2">
+                                        <span id="contact-countdown" class="font-serif text-xl font-bold text-rl-darkblue">7</span>
+                                    </div>
+                                    <p class="text-[10px] text-rl-taupe uppercase tracking-widest">Lukker automatisk</p>
+                                </div>
+                            `;
+
+                            let timeLeft = 7;
+                            const countdownEl = document.getElementById('contact-countdown');
+                            const timer = setInterval(() => {
+                                timeLeft--;
+                                if (countdownEl) countdownEl.textContent = timeLeft;
+                                if (timeLeft <= 0) {
+                                    clearInterval(timer);
+                                    closeContactModal();
+                                    setTimeout(() => location.reload(), 500);
+                                }
+                            }, 1000);
+                        } else {
+                            button.innerHTML = 'Der skete en fejl. Prøv igen.';
+                        }
+                    } catch (err) {
+                        button.innerHTML = 'Netværksfejl. Prøv igen.';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
