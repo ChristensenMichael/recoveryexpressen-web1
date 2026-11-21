@@ -89,6 +89,36 @@
       animation: prewarnNightPulse 1.35s ease-in-out infinite;
     }
 
+    /* Diskret 15-sekunders forvarsel: Maske på igen (Dagslys – mørkeblå kontrast på amber pause-skærm) */
+    @keyframes prewarnMaskOnDayPulse {
+      0%, 100% {
+        box-shadow: inset 0 0 0 0px rgba(1, 63, 88, 0);
+        filter: brightness(1);
+      }
+      50% {
+        box-shadow: inset 0 0 0 18px rgba(1, 63, 88, 0.85);
+        filter: brightness(1.03);
+      }
+    }
+
+    /* Diskret 15-sekunders forvarsel: Maske på igen (Aften/Mørke – rolig lyseblå puls) */
+    @keyframes prewarnMaskOnNightPulse {
+      0%, 100% {
+        box-shadow: inset 0 0 0 8px rgba(182, 204, 215, 0.35);
+      }
+      50% {
+        box-shadow: inset 0 0 0 18px rgba(182, 204, 215, 0.95);
+      }
+    }
+
+    .animate-prewarn-on-day {
+      animation: prewarnMaskOnDayPulse 1.35s ease-in-out infinite;
+    }
+
+    .animate-prewarn-on-night {
+      animation: prewarnMaskOnNightPulse 1.35s ease-in-out infinite;
+    }
+
     /* Renset styling til range-slidere */
     input[type="range"] {
       -webkit-appearance: none;
@@ -295,8 +325,8 @@
           </div>
         </div>
 
-        <!-- 4 separate tidsfelter side om side (følger behandlingens rækkefølge) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+        <!-- 5 separate tidsfelter (følger behandlingens rækkefølge) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
           <!-- Felt 1: Indstigningstid før start -->
           <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
             <label for="entryDelayInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight">Indstigningstid før start</label>
@@ -345,7 +375,24 @@
             </div>
           </div>
 
-          <!-- Felt 4: Tryksænkningstid -->
+          <!-- Felt 4: Luftpause (5–7 min, afhængigt af VO₂max) -->
+          <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
+            <label for="pauseInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400 border border-amber-600/40 shrink-0"></span>
+              Luftpause (5–7 min · VO₂max)
+            </label>
+            <div class="flex items-center gap-1.5">
+              <button type="button" data-step-target="pauseSec" data-step-delta="-30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="-30 sek" aria-label="Sænk luftpause 30 sekunder">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <input type="text" id="pauseInput" inputmode="numeric" maxlength="5" value="05:00" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Luftpause i minutter og sekunder" />
+              <button type="button" data-step-target="pauseSec" data-step-delta="30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+30 sek" aria-label="Øg luftpause 30 sekunder">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Felt 5: Tryksænkningstid -->
           <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
             <label for="depressurizeInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full bg-[#7A94A3] shrink-0"></span>
@@ -364,7 +411,7 @@
         </div>
 
         <p class="text-[11px] text-muted text-rl-taupe">
-          Indstigning: 0–10 min &middot; Tryksætning/sænkning: 1–20 min &middot; Ilt pr. blok: 10–30 min. Brug pilene eller tast direkte i formatet <span class="font-semibold">MM:SS</span> (maks. 2 cifre før og efter kolon).
+          Indstigning: 0–10 min &middot; Tryksætning/sænkning: 1–20 min &middot; Ilt pr. blok: 10–30 min &middot; Luftpause: 5–7 min (justeres efter VO₂max). Brug pilene eller tast direkte i formatet <span class="font-semibold">MM:SS</span>.
         </p>
       </section>
 
@@ -415,7 +462,7 @@
           <div id="timelineLegend" class="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3 text-xs text-muted text-rl-black/75">
             <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rl-taupe"></span>Indstigning</span>
             <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rl-lightblue border border-rl-darkblue/40"></span><span id="legendOxygenLabel">Tryksætning &amp; Ilt (20 min)</span></span>
-            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-amber-400"></span>Luftpause (5 min)</span>
+            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-amber-400"></span><span id="legendPauseLabel">Luftpause (5 min)</span></span>
             <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-[#7A94A3]"></span>Tryksænkning</span>
           </div>
         </div>
@@ -583,13 +630,16 @@
     <div class="flex-1 flex flex-col items-center justify-center px-4 text-center z-10 min-h-0">
       <!-- 15 sekunders forvarsel-banner -->
       <div id="preWarnBanner" class="hidden mb-3 sm:mb-4 px-5 py-2 rounded-full bg-amber-500 text-rl-black font-black text-sm sm:text-lg tracking-wide shadow-lg animate-pulse">
-        Gør klar: Maske af om <span id="preWarnSec" class="tabular-nums">15</span> sek.
+        <span id="preWarnLabel">Gør klar: Maske af om</span> <span id="preWarnSec" class="tabular-nums">15</span> sek.
       </div>
 
       <!-- Fase-overskrift -->
       <h2 id="phaseTitle" class="timer-phase-title font-black uppercase tracking-wider">
         MASKE PÅ – ILT
       </h2>
+
+      <!-- Kontekstuel hjælpetekst (fx trykudligning / behold maske på) -->
+      <p id="phaseHint" class="hidden timer-pill mt-2 sm:mt-3 px-4 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs sm:text-base font-bold tracking-wide max-w-xl"></p>
 
       <!-- Kæmpe nedtællingsur -->
       <div id="timerClock" class="timer-clock-text font-black tabular-nums my-2 sm:my-4">
@@ -812,6 +862,7 @@
         entryDelaySec: 150,      // Standard: 2m 30s (min 0, maks 10m)
         pressurizeSec: 300,      // Standard for 1,5 ATA: 5m 00s (min 1m, maks 20m)
         oxygenBlockSec: 1200,    // Standard: 20m 00s (min 10m, maks 30m)
+        pauseSec: 300,           // Standard: 5m 00s (min 5m, maks 7m – afhænger af VO2max)
         depressurizeSec: 300,    // Standard for 1,5 ATA: 5m 00s (min 1m, maks 20m)
         preset: 1,               // 0 = ingen pause, 1 = 1 pause, 2 = 2 pauser, 3 = 3 pauser
         fiO2: 0.95,              // 0.95 (Koncentrator) | 1.0 (Ren ilt)
@@ -838,7 +889,7 @@
       };
 
       let audioCtx = null;
-      let lastPreWarnState = false;
+      let lastPreWarnMode = null;
       let lastLiveChartUpdate = 0;
 
       /* -------------------------------------------------------------------
@@ -862,6 +913,7 @@
         entryDelayInput: document.getElementById('entryDelayInput'),
         pressurizeInput: document.getElementById('pressurizeInput'),
         oxygenBlockInput: document.getElementById('oxygenBlockInput'),
+        pauseInput: document.getElementById('pauseInput'),
         depressurizeInput: document.getElementById('depressurizeInput'),
         timeStepBtns: document.querySelectorAll('.time-step-btn'),
 
@@ -871,6 +923,7 @@
         presetSub2: document.getElementById('presetSub2'),
         presetSub3: document.getElementById('presetSub3'),
         legendOxygenLabel: document.getElementById('legendOxygenLabel'),
+        legendPauseLabel: document.getElementById('legendPauseLabel'),
         themeBtns: document.querySelectorAll('.theme-btn'),
 
         totalDurationBadge: document.getElementById('totalDurationBadge'),
@@ -898,8 +951,10 @@
         stepBadge: document.getElementById('stepBadge'),
         wakeLockBadge: document.getElementById('wakeLockBadge'),
         preWarnBanner: document.getElementById('preWarnBanner'),
+        preWarnLabel: document.getElementById('preWarnLabel'),
         preWarnSec: document.getElementById('preWarnSec'),
         phaseTitle: document.getElementById('phaseTitle'),
+        phaseHint: document.getElementById('phaseHint'),
         timerClock: document.getElementById('timerClock'),
         nextPhaseText: document.getElementById('nextPhaseText'),
         pausedBadge: document.getElementById('pausedBadge'),
@@ -1067,6 +1122,9 @@
           if (typeof saved.oxygenBlockSec === 'number' && saved.oxygenBlockSec >= 600 && saved.oxygenBlockSec <= 1800) {
             state.oxygenBlockSec = saved.oxygenBlockSec;
           }
+          if (typeof saved.pauseSec === 'number' && saved.pauseSec >= 300 && saved.pauseSec <= 420) {
+            state.pauseSec = saved.pauseSec;
+          }
           if (typeof saved.depressurizeSec === 'number' && saved.depressurizeSec >= 60 && saved.depressurizeSec <= 1200) {
             state.depressurizeSec = saved.depressurizeSec;
           }
@@ -1099,6 +1157,7 @@
             entryDelaySec: state.entryDelaySec,
             pressurizeSec: state.pressurizeSec,
             oxygenBlockSec: state.oxygenBlockSec,
+            pauseSec: state.pauseSec,
             depressurizeSec: state.depressurizeSec,
             preset: state.preset,
             fiO2: state.fiO2,
@@ -1147,6 +1206,7 @@
         pushPhase({
           type: 'pressurize',
           title: 'TRYKSÆTNING',
+          hint: 'Husk at trykudligne jævnligt under tryksætningen',
           shortLabel: 'Tryksætning (' + formatSecondsToMMSS(state.pressurizeSec) + ')',
           durationSec: state.pressurizeSec,
           startAta: 1.0,
@@ -1173,11 +1233,14 @@
             strokeColor: sharedStroke
           });
           if (i < oxygenBlocks - 1) {
+            const pauseLabel = state.pauseSec % 60 === 0
+              ? (state.pauseSec / 60) + ' min'
+              : formatSecondsToMMSS(state.pauseSec);
             pushPhase({
               type: 'pause',
               title: 'MASKE AF – PAUSE',
-              shortLabel: 'Pause (5 min)',
-              durationSec: 5 * 60,
+              shortLabel: 'Pause (' + pauseLabel + ')',
+              durationSec: state.pauseSec,
               startAta: ata,
               endAta: ata,
               fillColor: 'rgba(245, 158, 11, 0.34)',
@@ -1189,6 +1252,7 @@
         pushPhase({
           type: 'depressurize',
           title: 'TRYKSÆNKNING',
+          hint: 'Behold masken på – tag den først af, når du er færdig',
           shortLabel: 'Tryksænkning (' + formatSecondsToMMSS(state.depressurizeSec) + ')',
           durationSec: state.depressurizeSec,
           startAta: ata,
@@ -1298,7 +1362,9 @@
           // Diskret fase-mærkat midt i brede blokke
           const segW = x2 - x1;
           if (segW > 46 && (p.type === 'oxygen' || p.type === 'pause')) {
-            const label = p.type === 'oxygen' ? Math.round(p.durationSec / 60) + 'm ilt' : '5m';
+            const label = p.type === 'oxygen'
+              ? Math.round(p.durationSec / 60) + 'm ilt'
+              : (p.durationSec % 60 === 0 ? (p.durationSec / 60) + 'm' : formatSecondsToMMSS(p.durationSec));
             const cx = (x1 + x2) / 2;
             const cy = Math.min(y1, y2) + (baseY - Math.min(y1, y2)) * 0.55;
             html += '<text x="' + cx.toFixed(1) + '" y="' + cy.toFixed(1) + '" text-anchor="middle" fill="' + (isNight ? '#FAF9F6' : '#151F28') + '" font-size="11" font-weight="700" opacity="0.88">' + label + '</text>';
@@ -1443,19 +1509,29 @@
         if (document.activeElement !== el.oxygenBlockInput) {
           el.oxygenBlockInput.value = formatSecondsToMMSS(state.oxygenBlockSec);
         }
+        if (document.activeElement !== el.pauseInput) {
+          el.pauseInput.value = formatSecondsToMMSS(state.pauseSec);
+        }
         if (document.activeElement !== el.depressurizeInput) {
           el.depressurizeInput.value = formatSecondsToMMSS(state.depressurizeSec);
         }
 
-        // Dynamiske tekster på program-knapper og farveforklaring ud fra valgt ilt-interval
+        // Dynamiske tekster på program-knapper og farveforklaring ud fra valgt ilt-interval og luftpause
         const oxyMinShort = state.oxygenBlockSec % 60 === 0
           ? String(state.oxygenBlockSec / 60)
           : formatSecondsToMMSS(state.oxygenBlockSec);
+        const pauseMinShort = state.pauseSec % 60 === 0
+          ? String(state.pauseSec / 60)
+          : formatSecondsToMMSS(state.pauseSec);
+        const pauseLegendText = state.pauseSec % 60 === 0
+          ? (state.pauseSec / 60) + ' min'
+          : formatSecondsToMMSS(state.pauseSec);
         if (el.presetSub0) el.presetSub0.textContent = oxyMinShort + ' min ilt';
-        if (el.presetSub1) el.presetSub1.textContent = oxyMinShort + ' / 5 / ' + oxyMinShort + ' min';
-        if (el.presetSub2) el.presetSub2.textContent = '3 × ' + oxyMinShort + ' + 2 × 5';
-        if (el.presetSub3) el.presetSub3.textContent = '4 × ' + oxyMinShort + ' + 3 × 5';
+        if (el.presetSub1) el.presetSub1.textContent = oxyMinShort + ' / ' + pauseMinShort + ' / ' + oxyMinShort + ' min';
+        if (el.presetSub2) el.presetSub2.textContent = '3 × ' + oxyMinShort + ' + 2 × ' + pauseMinShort;
+        if (el.presetSub3) el.presetSub3.textContent = '4 × ' + oxyMinShort + ' + 3 × ' + pauseMinShort;
         if (el.legendOxygenLabel) el.legendOxygenLabel.textContent = 'Tryksætning & Ilt (' + oxyMinShort + ' min)';
+        if (el.legendPauseLabel) el.legendPauseLabel.textContent = 'Luftpause (' + pauseLegendText + ')';
 
         // Preset-knapper
         el.presetBtns.forEach(function (btn) {
@@ -1744,14 +1820,55 @@
       /* -------------------------------------------------------------------
        * 11. AKTIV TIMER-SKÆRM: FARVETEMA, SPOLE-SLIDER & TIDTAGNING
        * ------------------------------------------------------------------- */
-      function applyTimerTheme(phaseType, isPreWarn) {
+      function getPreWarnInfo(phaseIndex, remainingSec) {
+        if (remainingSec <= 0 || remainingSec > 15) return null;
+        const phase = state.phases[phaseIndex];
+        if (!phase) return null;
+        const nextPhase = state.phases[phaseIndex + 1];
+
+        // Maske af før luftpause (ikke før tryksænkning)
+        if (phase.type === 'oxygen' && nextPhase && nextPhase.type === 'pause') {
+          return { mode: 'mask_off', label: 'Gør klar: Maske af om' };
+        }
+        // Maske på igen når luftpause slutter
+        if (phase.type === 'pause' && nextPhase && nextPhase.type === 'oxygen') {
+          return { mode: 'mask_on', label: 'Gør klar: Maske på om' };
+        }
+        // Maske af først når tryksænkningen er færdig
+        if (phase.type === 'depressurize' && !nextPhase) {
+          return { mode: 'mask_off', label: 'Gør klar: Færdig – maske af om' };
+        }
+        return null;
+      }
+
+      function updatePreWarnBanner(preWarnInfo, remainingSec) {
+        if (!preWarnInfo) {
+          el.preWarnBanner.classList.add('hidden');
+          return;
+        }
+        const isNight = state.theme === 'night';
+        el.preWarnLabel.textContent = preWarnInfo.label;
+        el.preWarnSec.textContent = String(remainingSec);
+        el.preWarnBanner.classList.remove('hidden', 'bg-amber-500', 'text-rl-black', 'bg-rl-darkblue', 'text-white', 'bg-rl-lightblue', 'text-rl-darkblue');
+        if (preWarnInfo.mode === 'mask_on') {
+          if (isNight) {
+            el.preWarnBanner.classList.add('bg-rl-lightblue', 'text-rl-darkblue');
+          } else {
+            el.preWarnBanner.classList.add('bg-rl-darkblue', 'text-white');
+          }
+        } else {
+          el.preWarnBanner.classList.add('bg-amber-500', 'text-rl-black');
+        }
+      }
+
+      function applyTimerTheme(phaseType, preWarnMode) {
         const screen = el.timerScreen;
         const isNight = state.theme === 'night';
 
         screen.className = 'fixed inset-0 z-30 flex flex-col justify-between select-none transition-colors duration-500 overflow-hidden';
 
         if (!isNight) {
-          // DAGSLYS: RechargeLife sort tekst (#151F28). Tryksætning & 20 min Ilt deler samme baggrundsfarve (rl-lightblue)
+          // DAGSLYS: RechargeLife sort tekst (#151F28). Tryksætning & Ilt deler samme baggrundsfarve (rl-lightblue)
           const dayStyles = {
             entry: 'bg-rl-lightbg text-rl-black',
             pressurize: 'bg-rl-lightblue text-rl-black',
@@ -1762,13 +1879,15 @@
           };
           const cls = dayStyles[phaseType] || 'bg-rl-lightblue text-rl-black';
           cls.split(' ').forEach(function (c) { screen.classList.add(c); });
-          if (isPreWarn) {
+          if (preWarnMode === 'mask_off') {
             screen.classList.add('animate-prewarn-day');
+          } else if (preWarnMode === 'mask_on') {
+            screen.classList.add('animate-prewarn-on-day');
           }
           el.toggleThemeActiveIcon.textContent = '🌙';
           el.toggleThemeActiveLabel.textContent = 'Skift til Aften';
         } else {
-          // AFTEN / MØRKE: Kulsort baggrund + RechargeLife hvid tekst (#FAF9F6). Tryksætning & 20 min Ilt deler samme rammefarve (rl-lightblue)
+          // AFTEN / MØRKE: Kulsort baggrund + RechargeLife hvid tekst (#FAF9F6). Tryksætning & Ilt deler samme rammefarve (rl-lightblue)
           screen.classList.add('timer-night');
           const nightStyles = {
             entry: 'bg-black text-[#FAF9F6] border-[10px] border-rl-taupe',
@@ -1780,8 +1899,10 @@
           };
           const cls = nightStyles[phaseType] || 'bg-black text-[#FAF9F6] border-[10px] border-rl-lightblue';
           cls.split(' ').forEach(function (c) { screen.classList.add(c); });
-          if (isPreWarn) {
+          if (preWarnMode === 'mask_off') {
             screen.classList.add('animate-prewarn-night');
+          } else if (preWarnMode === 'mask_on') {
+            screen.classList.add('animate-prewarn-on-night');
           }
           el.toggleThemeActiveIcon.textContent = '☀️';
           el.toggleThemeActiveLabel.textContent = 'Skift til Dagslys';
@@ -1838,7 +1959,7 @@
         state.isRunning = true;
         state.isPaused = false;
         state.isScrubbing = false;
-        lastPreWarnState = false;
+        lastPreWarnMode = null;
         lastLiveChartUpdate = 0;
 
         el.seekSlider.min = '0';
@@ -1880,6 +2001,13 @@
 
         el.stepBadge.textContent = 'Trin ' + (index + 1) + ' af ' + state.phases.length + ' · ' + formatPressureValue(state.pressureAta, state.pressureUnit, true);
         el.phaseTitle.textContent = phase.title;
+        if (phase.hint) {
+          el.phaseHint.textContent = phase.hint;
+          el.phaseHint.classList.remove('hidden');
+        } else {
+          el.phaseHint.textContent = '';
+          el.phaseHint.classList.add('hidden');
+        }
         el.timerClock.textContent = formatMMSS(remMs);
 
         const elapsedInPhaseMs = Math.max(0, state.phaseDurationMs - remMs);
@@ -1894,16 +2022,12 @@
         }
 
         const remainingSec = Math.ceil(remMs / 1000);
-        const shouldPreWarn = Boolean(phase.type === 'oxygen' && remainingSec <= 15 && remainingSec > 0);
-        lastPreWarnState = shouldPreWarn;
-        if (shouldPreWarn) {
-          el.preWarnSec.textContent = String(remainingSec);
-          el.preWarnBanner.classList.remove('hidden');
-        } else {
-          el.preWarnBanner.classList.add('hidden');
-        }
+        const preWarnInfo = getPreWarnInfo(index, remainingSec);
+        const preWarnMode = preWarnInfo ? preWarnInfo.mode : null;
+        lastPreWarnMode = preWarnMode;
+        updatePreWarnBanner(preWarnInfo, remainingSec);
 
-        applyTimerTheme(phase.type, shouldPreWarn);
+        applyTimerTheme(phase.type, preWarnMode);
         const totalElapsedSec = phase.startSec + elapsedInPhaseMs / 1000;
         renderLivePressureChart(totalElapsedSec);
         el.elapsedTimeLabel.textContent = formatSecondsToMMSS(totalElapsedSec);
@@ -1957,18 +2081,21 @@
 
         el.stepBadge.textContent = 'Gennemført';
         el.phaseTitle.textContent = 'BEHANDLING FÆRDIG';
+        el.phaseHint.textContent = '';
+        el.phaseHint.classList.add('hidden');
         el.timerClock.textContent = '00:00';
-        el.nextPhaseText.textContent = 'Du kan nu roligt åbne kammeret';
+        el.nextPhaseText.textContent = 'Tag masken af – du kan nu roligt åbne kammeret';
         el.phaseProgressBar.style.width = '100%';
         el.elapsedTimeLabel.textContent = formatSecondsToMMSS(state.totalSessionSec);
         el.seekSlider.value = String(state.totalSessionSec);
         el.preWarnBanner.classList.add('hidden');
         el.pausedBadge.classList.add('hidden');
+        lastPreWarnMode = null;
 
         el.pauseResumeBtn.classList.add('hidden');
         el.skipPhaseBtn.classList.add('hidden');
 
-        applyTimerTheme('done', false);
+        applyTimerTheme('done', null);
         renderLivePressureChart(state.totalSessionSec);
         playSignalSound(true);
       }
@@ -1980,7 +2107,7 @@
         const remainingMs = state.phaseEndTime - now;
 
         if (remainingMs <= 0) {
-          lastPreWarnState = false;
+          lastPreWarnMode = null;
           enterPhase(state.currentPhaseIndex + 1, true);
           return;
         }
@@ -2001,19 +2128,15 @@
             renderLivePressureChart(totalElapsedSec);
           }
 
-          // 15 sekunders forvarsel inden ilt-fase slutter
+          // 15 sekunders forvarsel: maske af før pause, maske på før ilt, maske af når tryksænkning slutter
           const remainingSec = Math.ceil(remainingMs / 1000);
-          const shouldPreWarn = Boolean(currentPhase.type === 'oxygen' && remainingSec <= 15 && remainingSec > 0);
-          if (shouldPreWarn) {
-            el.preWarnSec.textContent = String(remainingSec);
-            el.preWarnBanner.classList.remove('hidden');
-          } else {
-            el.preWarnBanner.classList.add('hidden');
-          }
+          const preWarnInfo = getPreWarnInfo(state.currentPhaseIndex, remainingSec);
+          const preWarnMode = preWarnInfo ? preWarnInfo.mode : null;
+          updatePreWarnBanner(preWarnInfo, remainingSec);
 
-          if (shouldPreWarn !== lastPreWarnState) {
-            lastPreWarnState = shouldPreWarn;
-            applyTimerTheme(currentPhase.type, shouldPreWarn);
+          if (preWarnMode !== lastPreWarnMode) {
+            lastPreWarnMode = preWarnMode;
+            applyTimerTheme(currentPhase.type, preWarnMode);
           }
         }
       }
@@ -2079,6 +2202,9 @@
           } else if (targetKey === 'oxygenBlockSec') {
             minSec = 600;
             maxSec = 1800;
+          } else if (targetKey === 'pauseSec') {
+            minSec = 300;
+            maxSec = 420;
           }
 
           state[targetKey] = Math.min(maxSec, Math.max(minSec, state[targetKey] + delta));
@@ -2189,6 +2315,7 @@
       bindTimeInput(el.entryDelayInput, 'entryDelaySec', 0, 600, 30);
       bindTimeInput(el.pressurizeInput, 'pressurizeSec', 60, 1200, 30);
       bindTimeInput(el.oxygenBlockInput, 'oxygenBlockSec', 600, 1800, 60);
+      bindTimeInput(el.pauseInput, 'pauseSec', 300, 420, 30);
       bindTimeInput(el.depressurizeInput, 'depressurizeSec', 60, 1200, 30);
 
       // Opsætning: Program / pauser
@@ -2302,7 +2429,12 @@
         savePreferences();
         const phase = state.phases[state.currentPhaseIndex];
         const phaseType = state.isRunning && phase ? phase.type : 'done';
-        applyTimerTheme(phaseType, lastPreWarnState);
+        applyTimerTheme(phaseType, lastPreWarnMode);
+        if (state.isRunning && lastPreWarnMode) {
+          const remMs = state.isPaused ? state.remainingMsWhenPaused : Math.max(0, state.phaseEndTime - Date.now());
+          const remSec = Math.ceil(remMs / 1000);
+          updatePreWarnBanner(getPreWarnInfo(state.currentPhaseIndex, remSec), remSec);
+        }
         if (state.phases.length) {
           renderLivePressureChart(Number(el.seekSlider.value) || 0);
         }
