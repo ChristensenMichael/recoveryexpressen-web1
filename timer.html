@@ -199,8 +199,8 @@
     body.setup-night .text-muted {
       color: #B6CCD7;
     }
-    body.setup-night input[type="text"],
-    body.setup-night select {
+    body.setup-night #setupScreen input[type="text"],
+    body.setup-night #setupScreen select {
       background-color: #0f1b24;
       border-color: #2b4558;
       color: #FAF9F6;
@@ -258,6 +258,7 @@
           <a href="index.html" class="hidden md:inline-block text-xs font-medium text-white/80 hover:text-white transition px-2 py-1">
             ← Forside
           </a>
+          <a href="en/timer.html" class="text-xs font-semibold text-white/85 hover:text-white border border-white/25 hover:bg-white/10 px-3 py-2 rounded-full transition" title="Switch to English">EN</a>
           <button
             type="button"
             id="headerThemeToggleBtn"
@@ -1536,7 +1537,6 @@
         if (el.metaThemeColor) {
           el.metaThemeColor.setAttribute('content', isNight ? '#000000' : '#013F58');
         }
-
         // Header tema-knap ("Skift til ...")
         el.headerThemeIcon.textContent = isNight ? '☀️' : '🌙';
         el.headerThemeText.textContent = isNight ? 'Skift til Dagslys' : 'Skift til Aften';
