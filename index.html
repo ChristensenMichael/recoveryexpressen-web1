@@ -393,7 +393,7 @@
 
         <!-- ======= SYNERGI: PEM-HYDROGENTERAPI ======= -->
         <section class="py-16 bg-[#FAF9F6] border-b border-rl-lightbg">
-            <div class="container mx-auto px-6 max-w-5xl">
+            <div class="container mx-auto px-6 max-w-5xl space-y-4">
                 <div class="bg-white rounded-3xl border border-rl-lightbg p-8 md:p-12 shadow-sm flex flex-col md:flex-row items-center justify-between gap-8">
                     <div class="space-y-3 max-w-2xl">
                         <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Populært tilvalg</span>
@@ -402,21 +402,29 @@
                             Vil du løfte din hjemmeprotokol yderligere? Kobl en klinisk testet, portabel <strong>PEM-hydrogengenerator</strong> på dit lejemål for kun <strong>1.500 kr./md.</strong> Molekylært brint fungerer som en selektiv antioxidant, der modvirker oxidativ stress og supplerer den daglige iltterapi.
                         </p>
                     </div>
-                    <!-- B2B henvisning -->
-                    <div class="mt-4 bg-white border border-rl-lightbg rounded-2xl p-5 text-sm text-rl-black/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <span><strong>Erhverv, sportsklub eller klinik?</strong> Se vores turnkey- og leasingløsninger på B2B-portalen.</span>
-                        <a href="https://b2b.rechargelife.dk" target="_blank" class="shrink-0 font-semibold text-rl-darkblue underline hover:text-rl-taupe transition">
-                            Gå til RechargeLife B2B &rarr;
-                        </a>
-                    </div>
                     <button type="button"
                             data-emne="Forespørgsel: mHBOT + PEM-hydrogengenerator tilvalg"
                             class="js-open-contact shrink-0 bg-rl-darkblue text-white font-semibold px-7 py-4 rounded-full hover:bg-rl-lightblue hover:text-rl-darkblue transition cursor-pointer">
                         Tilføj til forespørgsel
                     </button>
                 </div>
+                <!-- B2B henvisning -->
+                <div class="bg-rl-lightblue/25 border border-rl-lightblue border-l-4 border-l-rl-darkblue rounded-2xl p-6 md:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+                    <div class="space-y-1">
+                        <span class="inline-block text-[10px] font-bold uppercase tracking-[0.2em] text-rl-darkblue bg-white/80 px-2.5 py-0.5 rounded-full">
+                            Erhverv &amp; B2B
+                        </span>
+                        <p class="text-sm md:text-base text-rl-black/85">
+                            <strong class="text-rl-darkblue">Sportsklub, klinik eller hotel?</strong> Se vores nøglefærdige turnkey- og leasingløsninger på B2B-portalen.
+                        </p>
+                    </div>
+                    <a href="https://b2b.rechargelife.dk" target="_blank" class="shrink-0 bg-white hover:bg-rl-darkblue text-rl-darkblue hover:text-white border border-rl-darkblue/25 font-semibold text-xs uppercase tracking-wider px-5 py-3 rounded-full transition shadow-sm text-center">
+                        Gå til RechargeLife B2B &rarr;
+                    </a>
+                </div>
             </div>
         </section>
+    </section>
 
         <!-- ======= INTERAKTIV 5-TRINS PROCES (LEJEFORLØB) ======= -->
         <section id="forloeb" class="py-24 bg-rl-lightbg/20 scroll-mt-20">
@@ -916,57 +924,5 @@
             });
         });
     </script>
-    <script>
-    (function () {
-      const BRIGHTNESS_KEY = 're_hbot_brightness_v1';
-      const slider = document.getElementById('brightnessSlider');
-      const valEl = document.getElementById('brightnessValue');
-      const row = document.getElementById('brightnessControlRow');
-      const defaultCb = document.getElementById('useDeviceDefaultCheckbox');
-      const timerScreen = document.getElementById('timerScreen');
-
-      if (!slider || !defaultCb || !timerScreen) return;
-
-      let prefs = { brightness: 120, useDefault: false };
-      try {
-        const saved = JSON.parse(localStorage.getItem(BRIGHTNESS_KEY));
-        if (saved && typeof saved.brightness === 'number') prefs.brightness = saved.brightness;
-        if (saved && typeof saved.useDefault === 'boolean') prefs.useDefault = saved.useDefault;
-      } catch (e) {}
-
-      function applyBrightness() {
-        slider.value = String(prefs.brightness);
-        if (valEl) valEl.textContent = prefs.brightness + '%';
-        defaultCb.checked = prefs.useDefault;
-
-        if (row) {
-          row.classList.toggle('opacity-40', prefs.useDefault);
-          row.classList.toggle('pointer-events-none', prefs.useDefault);
-        }
-
-        timerScreen.style.filter = prefs.useDefault
-          ? ''
-          : 'brightness(' + (prefs.brightness / 100) + ')';
-      }
-
-      function saveBrightness() {
-        try { localStorage.setItem(BRIGHTNESS_KEY, JSON.stringify(prefs)); } catch (e) {}
-      }
-
-      slider.addEventListener('input', function () {
-        prefs.brightness = Number(slider.value);
-        applyBrightness();
-        saveBrightness();
-      });
-
-      defaultCb.addEventListener('change', function () {
-        prefs.useDefault = defaultCb.checked;
-        applyBrightness();
-        saveBrightness();
-      });
-
-      applyBrightness();
-    })();
-  </script>
 </body>
 </html>
