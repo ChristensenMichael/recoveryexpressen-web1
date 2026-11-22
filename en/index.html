@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ========================================== -->
+    <!-- 1. PRIMARY META-TAGS (Search Engines)      -->
+    <!-- ========================================== -->
+    <title>RecoveryExpressen | Rent a mild HBOT Chamber at Home (30 Days)</title>
+    <meta name="description" content="Rent a professional mild HBOT (mHBOT) chamber (up to 1.5 ATA) for 30 days at home in Zealand, Denmark. Incl. certified delivery, setup & 3 follow-ups. From 6,500 DKK/mo.">
+    <link rel="canonical" href="https://recoveryexpressen.dk/en/index.html">
+    <link rel="alternate" hreflang="en" href="https://recoveryexpressen.dk/en/index.html">
+    <link rel="alternate" hreflang="da" href="https://recoveryexpressen.dk/">
+
+    <!-- ========================================== -->
+    <!-- 2. OPEN GRAPH META-TAGS (Social Media)     -->
+    <!-- ========================================== -->
+    <meta property="og:title" content="RecoveryExpressen | Rent a mild HBOT Chamber at Home">
+    <meta property="og:description" content="Enjoy daily mild HBOT (mHBOT) sessions in the comfort of your own home. Delivered, installed, and safety-checked by an IBUM-certified technician from RechargeLife.">
+    <meta property="og:url" content="https://recoveryexpressen.dk/en/index.html">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://recoveryexpressen.dk/pictures/mhbot-hero.jpg">
+
+    <!-- ========================================== -->
+    <!-- 3. JSON-LD SCHEMA MARKUP (Service + FAQ)   -->
+    <!-- ========================================== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "RecoveryExpressen by RechargeLife",
+          "legalName": "Re Charge Life ApS",
+          "url": "https://recoveryexpressen.dk/en/index.html",
+          "logo": "https://b2b.rechargelife.dk/pictures/Recharge Life_Large_Transparent_Variant 1.png",
+          "taxID": "45890589",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Baldersvej 9",
+            "addressLocality": "Hillerød",
+            "postalCode": "3400",
+            "addressCountry": "DK"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+4531443772",
+            "email": "kontakt@rechargelife.dk",
+            "contactType": "Customer Service"
+          }
+        },
+        {
+          "@type": "Service",
+          "name": "30-Day Home Rental of mild HBOT Chamber (RecoveryExpressen)",
+          "serviceType": "Rental of soft-shell mild HBOT (mHBOT) wellness chamber and PEM hydrogen generator",
+          "provider": {
+            "@type": "Organization",
+            "name": "Re Charge Life ApS"
+          },
+          "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Zealand, Denmark"
+          },
+          "description": "30-day home rental of a soft-shell mild HBOT wellness chamber (up to 1.5 ATA) including oxygen concentrator, compressor, certified installation, and 3 monthly follow-ups."
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is the difference between home rental and the clinic in Hillerød?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "At our clinic in Hillerød, we operate at up to 2.0 ATA in PED-approved hard-shell chambers with an affiliated physician. Home rental of soft-shell chambers (mild HBOT up to 1.5 ATA) is a flexible wellness and recovery solution for frequent daily sessions with zero commute."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do I need a medical exam before renting a chamber?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Since mild HBOT (mHBOT) at up to 1.5 ATA is a gentle wellness routine, a medical exam is not required. However, you can always book an optional consultation with our affiliated physician before starting."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why am I not allowed to sleep overnight in the chamber?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "To maintain a safe physiological balance, you should not exceed the recommended daily limit of 360 oxygen units (OTU), which equals a maximum of 4 hours per day at 1.5 ATA. Always use our session timer placed outside the chamber."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What space and power requirements are needed at home?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Installation requires a clear, flat floor area of at least 2.5 x 2.0 meters (total weight approx. 120 kg), a grounded 230V outlet (3 sockets on a 10A or 13A circuit, power draw approx. 1200W), and good ventilation at 10–28 °C."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter & Belleza -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Belleza&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- RechargeLife Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rl-darkblue': '#013F58',
+                        'rl-lightblue': '#B6CCD7',
+                        'rl-taupe': '#94857B',
+                        'rl-lightbg': '#E0DFD8',
+                        'rl-black': '#151F28',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'serif': ['Belleza', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hover-underline-animation { position: relative; }
+        .hover-underline-animation::after {
+            content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 1px;
+            bottom: -4px; left: 0; background-color: #ffffff; transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        .hover-underline-animation:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+
+        .process-step-content {
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin 0.4s ease-in-out;
+            max-height: 0; opacity: 0; overflow: hidden; margin-top: 0;
+        }
+        .process-step-active .process-step-content { max-height: 260px; opacity: 1; margin-top: 1rem; }
+        .process-step-indicator { transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+        .process-step-active .process-step-indicator { background-color: #013F58; color: #ffffff; border-color: #013F58; }
+    </style>
+
+    <link rel="icon" href="../favicon.png" type="image/png">
+
+    <!-- Google Tag Manager -->
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-N9W74J6F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    </script>
+</head>
+<body class="bg-[#FAF9F6] text-rl-black font-sans antialiased">
+
+    <!-- ======= HEADER / NAVIGATION ======= -->
+    <header class="bg-rl-darkblue shadow-md sticky top-0 z-50 border-b border-white/10 h-20 flex items-center">
+        <nav class="container mx-auto px-6 flex items-center justify-between w-full">
+            <!-- Brand / Logo -->
+            <a href="#top" class="flex items-center gap-3 group py-2">
+                <img src="../pictures/Recharge Life_Large_Transparent_Variant 1.png" alt="RechargeLife" class="h-14 md:h-16 object-contain transition-transform duration-300 group-hover:scale-105">
+                <div class="border-l border-white/25 pl-3">
+                    <span class="font-serif text-xl md:text-2xl text-white tracking-wide block leading-none">RecoveryExpressen</span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] text-rl-lightblue block mt-1">by RechargeLife</span>
+                </div>
+            </a>
+
+            <!-- Desktop anchor navigation -->
+            <div class="hidden lg:flex items-center gap-7 font-medium text-sm text-white">
+                <a href="#who-is-it-for" class="hover-underline-animation">Who it's for</a>
+                <a href="#how-it-works" class="hover-underline-animation">How it works</a>
+                <a href="#rental-process" class="hover-underline-animation">Rental process</a>
+                <a href="#pricing" class="hover-underline-animation">Pricing</a>
+                <a href="#requirements-safety" class="hover-underline-animation">Requirements &amp; safety</a>
+                <a href="#faq" class="hover-underline-animation">FAQ</a>
+                <a href="timer.html" class="text-rl-lightblue font-semibold hover-underline-animation">HBOT Timer</a>
+            </div>
+
+            <!-- CTA + Language switch + Mobile menu button -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                <button type="button"
+                        data-emne="Booking inquiry (EN): mild HBOT home chamber (Header)"
+                        class="js-open-contact hidden sm:inline-block bg-white text-rl-darkblue font-semibold text-xs uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-rl-lightblue transition cursor-pointer">
+                    Book for home
+                </button>
+                <a href="../index.html" class="flex items-center gap-1 text-white font-semibold border border-white/30 rounded-full px-3 py-1.5 bg-transparent hover:bg-white/10 transition text-sm" title="Skift til dansk">
+                    <span>DA</span>
+                </a>
+                <button id="mobile-menu-btn" class="lg:hidden text-white focus:outline-none" aria-label="Open menu">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden absolute top-20 left-0 w-full bg-rl-darkblue border-t border-white/10 lg:hidden shadow-xl">
+            <div class="flex flex-col px-6 py-4 space-y-2 text-white text-base">
+                <a href="#who-is-it-for" class="mobile-nav-link block py-3 border-b border-white/10">Who it's for</a>
+                <a href="#how-it-works" class="mobile-nav-link block py-3 border-b border-white/10">How it works</a>
+                <a href="#rental-process" class="mobile-nav-link block py-3 border-b border-white/10">Rental process</a>
+                <a href="#pricing" class="mobile-nav-link block py-3 border-b border-white/10">Pricing</a>
+                <a href="#requirements-safety" class="mobile-nav-link block py-3 border-b border-white/10">Requirements &amp; safety</a>
+                <a href="#faq" class="mobile-nav-link block py-3 border-b border-white/10">FAQ</a>
+                <a href="timer.html" class="block py-3 border-b border-white/10 text-rl-lightblue font-semibold">HBOT Timer</a>
+                <button type="button" data-emne="Booking inquiry (EN): mild HBOT home chamber (Mobile menu)"
+                        class="js-open-contact mt-2 bg-white text-rl-darkblue font-semibold py-3 rounded-full text-center">
+                    Book for home
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="top">
+        <!-- ======= HERO SECTION ======= -->
+        <section class="relative flex items-center min-h-[82vh] py-20 overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="../pictures/mHBOTForumStand1_small.png" alt="mild HBOT wellness chamber for home rental" class="h-full w-full object-cover object-center">
+                <div class="absolute inset-0 bg-rl-darkblue/80 mix-blend-multiply"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-rl-darkblue/95 via-rl-darkblue/80 to-rl-darkblue/30"></div>
+            </div>
+
+            <div class="container relative z-10 mx-auto px-6">
+                <div class="max-w-3xl space-y-6">
+                    <span class="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-rl-darkblue bg-white px-4 py-1.5 rounded-full shadow-md">
+                        RecoveryExpressen &middot; Delivery across Zealand, Denmark
+                    </span>
+                    <h1 class="font-serif text-4xl md:text-6xl lg:text-7xl leading-[1.08] text-white">
+                        Hyperbaric chamber at home – in your own calm surroundings
+                    </h1>
+                    <p class="text-white/90 text-lg md:text-xl font-light leading-relaxed max-w-2xl">
+                        Enjoy the freedom of daily mild HBOT (mHBOT) sessions with zero travel time. We deliver, install, and safety-check a professional mHBOT wellness chamber (up to 1.5 ATA) right in your home.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <button type="button"
+                                data-emne="Booking inquiry (EN): 30-day mild HBOT home chamber (Hero)"
+                                class="js-open-contact bg-white text-rl-darkblue font-semibold px-8 py-4 rounded-full hover:bg-rl-lightblue transition duration-300 shadow-xl cursor-pointer">
+                            Book your home chamber
+                        </button>
+                        <a href="#pricing" class="border border-white/50 text-white font-medium px-8 py-4 rounded-full hover:bg-white/10 transition duration-300">
+                            View pricing &amp; terms
+                        </a>
+                    </div>
+
+                    <!-- Key highlights -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-8 border-t border-white/20 max-w-2xl text-white/90 text-sm">
+                        <div>
+                            <span class="font-serif text-2xl text-rl-lightblue block">6,500 DKK</span>
+                            <span class="text-xs text-white/75">Per 30 days (up to 4 hrs/day)</span>
+                        </div>
+                        <div>
+                            <span class="font-serif text-2xl text-rl-lightblue block">3 follow-ups</span>
+                            <span class="text-xs text-white/75">Included every month</span>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <span class="font-serif text-2xl text-rl-lightblue block">IBUM-certified</span>
+                            <span class="text-xs text-white/75">Delivery, setup &amp; onboarding</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= TARGET GROUPS (4 CARDS) ======= -->
+        <section id="who-is-it-for" class="py-20 bg-white border-t border-rl-lightbg scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">30-Day Home Protocol</span>
+                    <h2 class="font-serif text-3xl md:text-5xl text-rl-darkblue mt-2">Who benefits from a home chamber?</h2>
+                    <p class="text-rl-black/70 mt-4 text-lg">
+                        Consistency and calm are often the keys to the best results. A monthly rental is designed for anyone who wants daily sessions without spending energy on commuting.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Card 1 -->
+                    <div class="bg-rl-lightbg/30 p-8 rounded-3xl border border-rl-lightbg">
+                        <h3 class="font-serif text-2xl text-rl-darkblue mb-3">Post-surgical recovery, skin &amp; wellness</h3>
+                        <p class="text-rl-black/80 text-sm leading-relaxed mb-4">
+                            Ideal for intensive home routines when your tissue needs extra oxygen and rest the most:
+                        </p>
+                        <ul class="space-y-2.5 text-sm text-rl-black/80">
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Post-surgery:</strong> Supports reduced swelling/inflammation and smoother wound healing.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Skin quality &amp; anti-aging:</strong> Stimulates collagen and elastin for firmer skin and natural glow.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>General recovery:</strong> Supports sleep quality, daily energy, and cellular repair.</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-rl-lightbg/30 p-8 rounded-3xl border border-rl-lightbg">
+                        <h3 class="font-serif text-2xl text-rl-darkblue mb-3">ME, POTS &amp; deep energy recovery (PEM)</h3>
+                        <p class="text-rl-black/80 text-sm leading-relaxed mb-4">
+                            When the commute to a clinic risks draining the very energy the session is meant to restore:
+                        </p>
+                        <ul class="space-y-2.5 text-sm text-rl-black/80">
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Zero commute:</strong> Take your sessions exactly when your body and energy levels allow.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Gentle oxygenation:</strong> Supports cellular energy production and may ease mental fatigue ("brain fog").</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Nervous system calm:</strong> Helps avoid post-exertional malaise (PEM).</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-rl-lightbg/30 p-8 rounded-3xl border border-rl-lightbg">
+                        <h3 class="font-serif text-2xl text-rl-darkblue mb-3">Performance, elite sports &amp; recovery</h3>
+                        <p class="text-rl-black/80 text-sm leading-relaxed mb-4">
+                            During heavy training blocks or ahead of competition when every hour between workouts counts:
+                        </p>
+                        <ul class="space-y-2.5 text-sm text-rl-black/80">
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Less soreness:</strong> Supports faster recovery after high training loads.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Tissue repair:</strong> Aids recovery from micro-trauma after morning or evening training.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Better sleep quality:</strong> The foundation for both physical and mental performance.</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="bg-rl-lightbg/30 p-8 rounded-3xl border border-rl-lightbg">
+                        <h3 class="font-serif text-2xl text-rl-darkblue mb-3">Longevity, biohacking &amp; daily energy</h3>
+                        <p class="text-rl-black/80 text-sm leading-relaxed mb-4">
+                            For anyone looking to run a structured, high-frequency daily wellness protocol:
+                        </p>
+                        <ul class="space-y-2.5 text-sm text-rl-black/80">
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Mental clarity:</strong> Many users experience sharper focus and greater stamina throughout the workday.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Stress reduction:</strong> 60–90 minutes of uninterrupted calm acts as deep nervous system recovery.</span></li>
+                            <li class="flex items-start gap-2"><span class="text-rl-darkblue font-bold">✓</span> <span><strong>Circulation &amp; mitochondria:</strong> Daily mild pressure supports cellular renewal.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= HOW mHBOT WORKS + HOME VS. CLINIC ======= -->
+        <section id="how-it-works" class="py-20 bg-rl-darkblue text-white scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="grid lg:grid-cols-2 gap-14 items-start">
+                    <div class="space-y-6">
+                        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-lightblue">Physiology &amp; experience</span>
+                        <h2 class="font-serif text-3xl md:text-5xl">How mild HBOT (mHBOT) works in the body</h2>
+                        <p class="text-white/85 leading-relaxed">
+                            Normally, oxygen is carried almost exclusively by red blood cells. When you breathe under mildly increased pressure (up to <strong>1.5 ATA</strong>), oxygen dissolves directly into your body's fluids – including blood plasma, lymph, and cerebrospinal fluid.
+                        </p>
+                        <p class="text-white/80 leading-relaxed">
+                            This allows oxygen to reach areas and tissues with reduced microcirculation, calm inflammation, and support your body's natural healing processes.
+                        </p>
+                        <div class="bg-white/10 p-6 rounded-2xl border border-white/15">
+                            <h3 class="font-serif text-xl text-rl-lightblue mb-2">What does a session feel like?</h3>
+                            <p class="text-sm text-white/80 leading-relaxed">
+                                As pressure gently rises, you will feel it in your ears – just like during airplane takeoff. You easily equalize by swallowing or yawning. Within a few minutes the sensation fades, and you can rest, nap, or read a physical book in complete peace.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Comparison: Home rental vs. Clinic in Hillerød -->
+                    <div class="bg-white text-rl-black p-8 md:p-10 rounded-3xl shadow-2xl space-y-6">
+                        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Which option fits you best?</span>
+                        <h3 class="font-serif text-2xl md:text-3xl text-rl-darkblue">Home chamber vs. Clinic in Hillerød</h3>
+
+                        <div class="space-y-4 text-sm">
+                            <div class="p-4 rounded-2xl bg-rl-lightbg/35 border border-rl-lightbg">
+                                <p class="font-bold text-rl-darkblue mb-1">RecoveryExpressen (At home · up to 1.5 ATA)</p>
+                                <p class="text-rl-black/80">Soft-shell mild HBOT wellness chamber for high frequency, consistency, and zero travel time. No prior medical exam required.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-[#FAF9F6] border border-rl-lightbg">
+                                <p class="font-bold text-rl-darkblue mb-1">RechargeLife Clinic (Hillerød · up to 2.0 ATA)</p>
+                                <p class="text-rl-black/80 mb-2">Advanced oxygen therapy in a PED-approved hard-shell chamber with an affiliated physician for intensive clinical protocols.</p>
+                                <a href="https://rechargelife.dk" target="_blank" class="inline-flex items-center text-xs font-semibold text-rl-darkblue underline hover:text-rl-taupe transition">
+                                    Learn more about our Hillerød clinic &rarr;
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-rl-lightbg flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+                            <p class="text-xs text-rl-taupe">
+                                Would you like individual medical guidance before home rental?
+                            </p>
+                            <a href="https://rechargelife.dk/bestiltid-hbot" target="_blank" class="shrink-0 text-xs font-semibold uppercase tracking-wider bg-rl-darkblue text-white px-5 py-3 rounded-full hover:bg-rl-black transition">
+                                Book optional consultation
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= SYNERGY: PEM HYDROGEN THERAPY ======= -->
+        <section class="py-16 bg-[#FAF9F6] border-b border-rl-lightbg">
+            <div class="container mx-auto px-6 max-w-5xl">
+                <div class="bg-white rounded-3xl border border-rl-lightbg p-8 md:p-12 shadow-sm flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="space-y-3 max-w-2xl">
+                        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Popular Add-On</span>
+                        <h2 class="font-serif text-3xl text-rl-darkblue">Ideal synergy with PEM hydrogen therapy</h2>
+                        <p class="text-rl-black/80 leading-relaxed">
+                            Want to take your home protocol even further? Add a clinically tested, portable <strong>PEM hydrogen generator</strong> to your rental for just <strong>1,500 DKK/mo.</strong> Molecular hydrogen acts as a selective antioxidant that counters oxidative stress and complements daily oxygen therapy.
+                        </p>
+                    </div>
+                    <!-- B2B link -->
+                    <div class="mt-4 bg-white border border-rl-lightbg rounded-2xl p-5 text-sm text-rl-black/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <span><strong>Business, sports club, or clinic?</strong> Explore our turnkey and leasing solutions on our B2B portal.</span>
+                        <a href="https://b2b.rechargelife.dk" target="_blank" class="shrink-0 font-semibold text-rl-darkblue underline hover:text-rl-taupe transition">
+                            Visit RechargeLife B2B &rarr;
+                        </a>
+                    </div>
+                    <button type="button"
+                            data-emne="Inquiry (EN): mild HBOT + PEM hydrogen generator add-on"
+                            class="js-open-contact shrink-0 bg-rl-darkblue text-white font-semibold px-7 py-4 rounded-full hover:bg-rl-lightblue hover:text-rl-darkblue transition cursor-pointer">
+                        Add to inquiry
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= INTERACTIVE 5-STEP PROCESS ======= -->
+        <section id="rental-process" class="py-24 bg-rl-lightbg/20 scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-5xl">
+                <div class="text-center mb-14">
+                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Safe from start to finish</span>
+                    <h2 class="font-serif text-3xl md:text-5xl text-rl-darkblue mt-2">How the rental process works</h2>
+                    <p class="text-rl-black/70 mt-4 text-lg">Click each step – with us, you are never left on your own.</p>
+                </div>
+
+                <div class="relative">
+                    <div class="hidden md:block absolute top-10 left-0 w-full h-1 bg-rl-lightbg/60 rounded z-0"></div>
+                    <div class="grid md:grid-cols-5 gap-4 relative z-10" id="process-accordion">
+                        <!-- Step 1 -->
+                        <div class="process-step group cursor-pointer bg-white rounded-2xl shadow-sm border border-rl-lightbg overflow-hidden hover:shadow-md transition">
+                            <div class="p-6 text-center">
+                                <div class="process-step-indicator w-10 h-10 mx-auto rounded-full flex items-center justify-center font-bold text-rl-darkblue border-2 border-rl-lightblue mb-3">1</div>
+                                <h4 class="font-semibold text-rl-black text-sm">Booking &amp; period</h4>
+                            </div>
+                            <div class="process-step-content px-5 pb-6 text-xs text-rl-taupe text-center leading-relaxed">
+                                Choose your preferred start date and fixed rental period (e.g., 1, 2, or 3 months) so a freshly serviced chamber is reserved for you.
+                            </div>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="process-step group cursor-pointer bg-white rounded-2xl shadow-sm border border-rl-lightbg overflow-hidden hover:shadow-md transition">
+                            <div class="p-6 text-center">
+                                <div class="process-step-indicator w-10 h-10 mx-auto rounded-full flex items-center justify-center font-bold text-rl-darkblue border-2 border-rl-lightblue mb-3">2</div>
+                                <h4 class="font-semibold text-rl-black text-sm">Video &amp; safety quiz</h4>
+                            </div>
+                            <div class="process-step-content px-5 pb-6 text-xs text-rl-taupe text-center leading-relaxed">
+                                Before installation, all users in the household watch a short intro video and complete a quick safety quiz.
+                            </div>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="process-step group cursor-pointer bg-white rounded-2xl shadow-sm border border-rl-lightbg overflow-hidden hover:shadow-md transition">
+                            <div class="p-6 text-center">
+                                <div class="process-step-indicator w-10 h-10 mx-auto rounded-full flex items-center justify-center font-bold text-rl-darkblue border-2 border-rl-lightblue mb-3">3</div>
+                                <h4 class="font-semibold text-rl-black text-sm">Delivery &amp; setup</h4>
+                            </div>
+                            <div class="process-step-content px-5 pb-6 text-xs text-rl-taupe text-center leading-relaxed">
+                                A certified technician delivers, assembles, and pressure-tests the chamber in your home and guides you through your first supervised session.
+                            </div>
+                        </div>
+                        <!-- Step 4 -->
+                        <div class="process-step group cursor-pointer bg-white rounded-2xl shadow-sm border border-rl-lightbg overflow-hidden hover:shadow-md transition">
+                            <div class="p-6 text-center">
+                                <div class="process-step-indicator w-10 h-10 mx-auto rounded-full flex items-center justify-center font-bold text-rl-darkblue border-2 border-rl-lightblue mb-3">4</div>
+                                <h4 class="font-semibold text-rl-black text-sm">30 days + 3 check-ins</h4>
+                            </div>
+                            <div class="process-step-content px-5 pb-6 text-xs text-rl-taupe text-center leading-relaxed">
+                                Use the chamber up to 4 hours daily. We check in 3 times per month via email or phone to fine-tune your protocol.
+                            </div>
+                        </div>
+                        <!-- Step 5 -->
+                        <div class="process-step group cursor-pointer bg-white rounded-2xl shadow-sm border border-rl-lightbg overflow-hidden hover:shadow-md transition">
+                            <div class="p-6 text-center">
+                                <div class="process-step-indicator w-10 h-10 mx-auto rounded-full flex items-center justify-center font-bold text-rl-darkblue border-2 border-rl-lightblue mb-3">5</div>
+                                <h4 class="font-semibold text-rl-black text-sm">Extend or return</h4>
+                            </div>
+                            <div class="process-step-content px-5 pb-6 text-xs text-rl-taupe text-center leading-relaxed">
+                                14 days before your period ends, we confirm whether you'd like to extend (subject to availability) or schedule pickup and deposit refund.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= PRICING ======= -->
+        <section id="pricing" class="py-20 bg-white border-t border-rl-lightbg scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="text-center mb-12">
+                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Transparent terms</span>
+                    <h2 class="font-serif text-3xl md:text-5xl text-rl-darkblue mt-2">Home rental pricing</h2>
+                    <p class="text-rl-black/70 mt-3 text-lg">Everything included – spacious quality chamber, powerful oxygen concentrator, compressor, and ongoing guidance.</p>
+                </div>
+
+                <div class="bg-[#FAF9F6] rounded-3xl border border-rl-lightbg overflow-hidden shadow-sm">
+                    <div class="bg-rl-darkblue text-white px-6 py-4 grid grid-cols-12 text-xs font-semibold uppercase tracking-widest">
+                        <div class="col-span-4 md:col-span-3">Item</div>
+                        <div class="col-span-5 md:col-span-6">Description</div>
+                        <div class="col-span-3 text-right">Price</div>
+                    </div>
+
+                    <div class="divide-y divide-rl-lightbg/70 text-sm">
+                        <!-- Row 1 -->
+                        <div class="px-6 py-6 grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-12 md:col-span-3 font-bold text-rl-darkblue">Monthly rental</div>
+                            <div class="col-span-8 md:col-span-6 text-rl-black/80">30 days of home use of a soft-shell mild HBOT (mHBOT) wellness chamber.</div>
+                            <div class="col-span-4 md:col-span-3 text-right">
+                                <span class="font-serif text-2xl text-rl-darkblue block">6,500 DKK</span>
+                                <span class="text-xs text-rl-taupe">per 30 days</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="px-6 py-6 grid grid-cols-12 gap-4 items-center bg-white/60">
+                            <div class="col-span-12 md:col-span-3 font-bold text-rl-darkblue">Included usage &amp; extra hours</div>
+                            <div class="col-span-8 md:col-span-6 text-rl-black/80 space-y-1">
+                                <p>Includes up to <strong>4 hours of daily use</strong> (max 120 hours per 30 days) for physiological safety and equipment longevity.</p>
+                                <p class="text-xs text-rl-taupe">Multiple users in the household? Ask for a custom agreement. All users must complete the intro video &amp; safety quiz. Subletting is not permitted.</p>
+                            </div>
+                            <div class="col-span-4 md:col-span-3 text-right">
+                                <span class="font-serif text-xl text-rl-darkblue block">100 DKK</span>
+                                <span class="text-xs text-rl-taupe">per extra hour</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="px-6 py-6 grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-12 md:col-span-3 font-bold text-rl-darkblue">Certified installation</div>
+                            <div class="col-span-8 md:col-span-6 text-rl-black/80 space-y-1">
+                                <p>Delivery, setup, takedown, and personal onboarding in your home.</p>
+                                <p class="text-xs text-rl-taupe">Includes driving up to 60 km from Hillerød (2.5 DKK/km thereafter). Delivery currently available on Zealand only.</p>
+                            </div>
+                            <div class="col-span-4 md:col-span-3 text-right">
+                                <span class="font-serif text-2xl text-rl-darkblue block">2,500 DKK</span>
+                                <span class="text-xs text-rl-taupe">one-time fee</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 4 -->
+                        <div class="px-6 py-6 grid grid-cols-12 gap-4 items-center bg-white/60">
+                            <div class="col-span-12 md:col-span-3 font-bold text-rl-darkblue">Ongoing follow-ups</div>
+                            <div class="col-span-8 md:col-span-6 text-rl-black/80">3 scheduled monthly check-ins via email or phone about your protocol and results.</div>
+                            <div class="col-span-4 md:col-span-3 text-right">
+                                <span class="font-serif text-xl text-rl-darkblue block">Included</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 5 -->
+                        <div class="px-6 py-6 grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-12 md:col-span-3 font-bold text-rl-darkblue">Security deposit</div>
+                            <div class="col-span-8 md:col-span-6 text-rl-black/80">Refundable security deposit – returned in full after approved equipment inspection.</div>
+                            <div class="col-span-4 md:col-span-3 text-right">
+                                <span class="font-serif text-2xl text-rl-darkblue block">10,000 DKK</span>
+                                <span class="text-xs text-rl-taupe">refundable</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tip box -->
+                <div class="mt-6 bg-rl-lightblue/25 border border-rl-lightblue rounded-2xl p-5 text-sm text-rl-darkblue">
+                    <strong>Add-on:</strong> Add a portable PEM hydrogen generator for <strong>1,500 DKK/mo.</strong> Extra non-rebreathing masks can always be purchased directly from us.
+                </div>
+
+                <div class="text-center mt-10">
+                    <button type="button"
+                            data-emne="Booking inquiry (EN): 30-day mild HBOT home chamber (Pricing)"
+                            class="js-open-contact bg-rl-darkblue text-white font-semibold px-10 py-4 rounded-full hover:bg-rl-lightblue hover:text-rl-darkblue transition duration-300 shadow-lg cursor-pointer">
+                        Check availability &amp; book
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= PRACTICAL REQUIREMENTS & SAFETY ======= -->
+        <section id="requirements-safety" class="py-20 bg-[#FAF9F6] border-t border-rl-lightbg scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- Practical requirements -->
+                    <div class="bg-white p-8 md:p-10 rounded-3xl border border-rl-lightbg shadow-sm">
+                        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Technical checklist</span>
+                        <h2 class="font-serif text-3xl text-rl-darkblue mt-2 mb-6">Practical home requirements</h2>
+                        <ul class="space-y-4 text-sm text-rl-black/80 leading-relaxed">
+                            <li><strong class="text-rl-darkblue">Floor space &amp; weight:</strong> Min. 2.5 × 2.0 meters of clear floor area (chamber approx. 2.35 × 1.20 m). Total weight approx. 120 kg on a solid, flat surface.</li>
+                            <li><strong class="text-rl-darkblue">Power &amp; grounding:</strong> 220–230V outlet with <em>active grounding</em> (strict safety requirement) and 3 free sockets. Continuous draw approx. 1,200W – recommended on a 10A or 13A circuit without heavy appliances running simultaneously.</li>
+                            <li><strong class="text-rl-darkblue">Temperature:</strong> Room temperature between 10 °C and 28 °C ensures optimal operation of the compressor and concentrator.</li>
+                            <li><strong class="text-rl-darkblue">Ventilation:</strong> Ability to open a window or use active ventilation/AC. Avoid rooms with strong cooking odors.</li>
+                            <li><strong class="text-rl-darkblue">Technical service:</strong> RechargeLife handles all filter changes, sanitization, and maintenance between rentals.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Safety rules -->
+                    <div class="bg-white p-8 md:p-10 rounded-3xl border border-rl-lightbg shadow-sm">
+                        <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Uncompromising safety</span>
+                        <h2 class="font-serif text-3xl text-rl-darkblue mt-2 mb-6">6 core safety standards</h2>
+                        <ul class="space-y-4 text-sm text-rl-black/80 leading-relaxed">
+                            <li><strong class="text-rl-darkblue">1. Intro video &amp; safety quiz:</strong> Short online module covering safe operation and ear equalization, completed by all users before starting.</li>
+                            <li><strong class="text-rl-darkblue">2. Certified setup:</strong> Our technician assembles, tests, and walks you through zippers, valves, and the timer in person.</li>
+                            <li><strong class="text-rl-darkblue">3. Supervised first session:</strong> Your first practical run is carried out together with us – at home or in our clinic.</li>
+                            <li><strong class="text-rl-darkblue">4. No overnight stays:</strong> Max 360 oxygen units/day (up to 4 hours at 1.5 ATA). Always use our session timer placed outside the chamber.</li>
+                            <li><strong class="text-rl-darkblue">5. Proper mask:</strong> We recommend a non-rebreathing mask with one-way valves (standard oxygen masks/cannulas also work). Always inspect before use.</li>
+                            <li><strong class="text-rl-darkblue">6. Antistatic attire:</strong> Wear 100% cotton, linen, or bamboo inside the chamber – avoid synthetic fabrics like nylon and polyester.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= E-E-A-T & FAQ ======= -->
+        <section id="faq" class="py-20 bg-white border-t border-rl-lightbg scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="text-center mb-12">
+                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Danish Expertise &amp; FAQ</span>
+                    <h2 class="font-serif text-3xl md:text-5xl text-rl-darkblue mt-2">Frequently asked questions</h2>
+                    <p class="text-rl-black/70 mt-4 text-base">
+                        RecoveryExpressen is operated by <strong>RechargeLife</strong> in Hillerød – backed by an M.Sc. in Engineering (DTU), IBUM certification as <em>Advanced Hyperbaric Technician &amp; Safety Director</em>, and EBAss membership.
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <details class="group bg-[#FAF9F6] p-6 rounded-2xl border border-rl-lightbg" open>
+                        <summary class="font-semibold text-lg text-rl-darkblue cursor-pointer list-none flex justify-between items-center">
+                            What is the difference between home rental and the clinic in Hillerød?
+                            <span class="text-rl-taupe transition-transform group-open:rotate-45 text-2xl">+</span>
+                        </summary>
+                        <p class="text-sm text-rl-black/80 mt-4 leading-relaxed">
+                            At our clinic in Hillerød, we operate at up to 2.0 ATA in PED-approved hard-shell chambers with an affiliated physician for intensive protocols. Home rental of soft-shell chambers (max 1.5 ATA) is a flexible wellness and recovery solution for frequent, daily sessions without travel time.
+                        </p>
+                    </details>
+
+                    <details class="group bg-[#FAF9F6] p-6 rounded-2xl border border-rl-lightbg">
+                        <summary class="font-semibold text-lg text-rl-darkblue cursor-pointer list-none flex justify-between items-center">
+                            Do I need a medical exam before renting a chamber?
+                            <span class="text-rl-taupe transition-transform group-open:rotate-45 text-2xl">+</span>
+                        </summary>
+                        <p class="text-sm text-rl-black/80 mt-4 leading-relaxed">
+                            No. Because mild HBOT is a gentle wellness routine at low pressure, a medical exam is not required. If you want individual medical guidance before starting, you can easily book an optional consultation via <a href="https://rechargelife.dk/bestiltid-hbot" target="_blank" class="underline text-rl-darkblue font-medium">rechargelife.dk</a>.
+                        </p>
+                    </details>
+
+                    <details class="group bg-[#FAF9F6] p-6 rounded-2xl border border-rl-lightbg">
+                        <summary class="font-semibold text-lg text-rl-darkblue cursor-pointer list-none flex justify-between items-center">
+                            Am I left on my own once the chamber is installed at home?
+                            <span class="text-rl-taupe transition-transform group-open:rotate-45 text-2xl">+</span>
+                        </summary>
+                        <p class="text-sm text-rl-black/80 mt-4 leading-relaxed">
+                            Not at all. Your rental includes 3 scheduled monthly follow-ups via email or phone where we review your experience and fine-tune your protocol. Additional coaching or a physician consultation can always be added.
+                        </p>
+                    </details>
+
+                    <details class="group bg-[#FAF9F6] p-6 rounded-2xl border border-rl-lightbg">
+                        <summary class="font-semibold text-lg text-rl-darkblue cursor-pointer list-none flex justify-between items-center">
+                            Why am I not allowed to sleep overnight in the chamber?
+                            <span class="text-rl-taupe transition-transform group-open:rotate-45 text-2xl">+</span>
+                        </summary>
+                        <p class="text-sm text-rl-black/80 mt-4 leading-relaxed">
+                            When breathing concentrated oxygen under pressure, your body accumulates oxygen units (OTU). For a healthy, safe balance, you should not exceed 360 OTU/day (max 4 hours at 1.5 ATA). Use our free timer app on a phone, tablet, or computer placed outside the chamber window: <a href="timer.html" class="underline text-rl-darkblue font-medium">Open HBOT Session Timer &rarr;</a>
+                        </p>
+                    </details>
+
+                    <details class="group bg-[#FAF9F6] p-6 rounded-2xl border border-rl-lightbg">
+                        <summary class="font-semibold text-lg text-rl-darkblue cursor-pointer list-none flex justify-between items-center">
+                            Which oxygen mask is best to use?
+                            <span class="text-rl-taupe transition-transform group-open:rotate-45 text-2xl">+</span>
+                        </summary>
+                        <p class="text-sm text-rl-black/80 mt-4 leading-relaxed">
+                            We recommend a non-rebreathing mask with a reservoir bag and one-way valves for the purest oxygen delivery without rebreathing exhaled air. Standard oxygen masks and nasal cannulas also work well. Extra masks are always available from us.
+                        </p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= FINAL CTA ======= -->
+        <section class="py-20 bg-rl-darkblue text-white text-center">
+            <div class="container mx-auto px-6 max-w-2xl">
+                <h2 class="font-serif text-3xl md:text-5xl mb-5">Ready to upgrade your recovery at home?</h2>
+                <p class="text-white/80 mb-9 text-lg font-light">
+                    We have a limited number of rental chambers available at any time. Send a non-binding inquiry today to check our next available delivery date.
+                </p>
+                <button type="button"
+                        data-emne="Booking inquiry (EN): 30-day mild HBOT home chamber (Bottom CTA)"
+                        class="js-open-contact bg-white text-rl-darkblue font-semibold px-10 py-5 rounded-full hover:bg-rl-lightblue transition duration-300 shadow-xl text-base cursor-pointer">
+                    Book your home chamber
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======= FOOTER ======= -->
+    <footer class="bg-[#012E40] text-white pt-14 pb-10 border-t border-white/10">
+        <div class="container mx-auto px-6 max-w-6xl space-y-8">
+            <!-- Wellness disclaimer -->
+            <div class="bg-white/5 border border-white/10 rounded-xl p-5 text-xs text-rl-lightbg/80 leading-relaxed">
+                <strong>IMPORTANT:</strong> Mild HBOT (mHBOT) is not a medical treatment and does not replace medical advice or treatment. It is a supplementary wellness and recovery routine without therapeutic claims. The pressure in home chambers (up to 1.5 ATA) and our clinic (up to 2.0 ATA) does not correspond to hospital-grade medical hyperbaric chambers (2–6 ATA).
+            </div>
+
+            <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-8 text-sm text-rl-lightbg/80 font-light">
+                <div>
+                    <h4 class="font-serif text-lg mb-4 text-white uppercase tracking-widest">RecoveryExpressen</h4>
+                    <p class="text-xs leading-relaxed">Part of Re Charge Life ApS.<br>Baldersvej 9, 3400 Hillerød, Denmark<br>CVR: 45890589</p>
+                </div>
+                <div>
+                    <h4 class="font-serif text-lg mb-4 text-white uppercase tracking-widest">Contact</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="tel:+4531443772" class="hover:text-white transition">+45 31 44 37 72</a></li>
+                        <li><a href="mailto:kontakt@rechargelife.dk" class="hover:text-white transition">kontakt@rechargelife.dk</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-serif text-lg mb-4 text-white uppercase tracking-widest">RechargeLife</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="https://rechargelife.dk" target="_blank" class="hover:text-white transition">Clinic in Hillerød (2.0 ATA)</a></li>
+                        <li><a href="https://rechargelife.dk/bestiltid-hbot" target="_blank" class="hover:text-white transition">Book optional consultation</a></li>
+                        <li><a href="https://b2b.rechargelife.dk" target="_blank" class="hover:text-white transition">B2B &amp; Turnkey Solutions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-serif text-lg mb-4 text-white uppercase tracking-widest">Legal</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="../terms.html" class="hover:text-white transition">Terms &amp; Conditions (DA)</a></li>
+                        <li><a href="../privatlivspolitik.html" class="hover:text-white transition">Privacy Policy (DA)</a></li>
+                        <li><a href="../cookie.html" class="hover:text-white transition">Cookie Policy (DA)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-white/10 text-xs text-rl-lightbg/60">
+                &copy; 2026 RecoveryExpressen &middot; RechargeLife - Beyond Living. CVR: 45890589.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======= FIXED "BOOK / QUESTIONS" BUTTON ======= -->
+    <button id="open-contact-modal" class="fixed bottom-0 right-6 z-40 bg-white hover:bg-rl-lightbg text-rl-darkblue font-serif text-sm uppercase tracking-widest px-7 py-4 transition-colors duration-300 shadow-[0_-4px_20px_rgba(0,0,0,0.18)] rounded-t-lg cursor-pointer">
+        Book / Questions
+    </button>
+
+    <!-- ======= BOOKING & CONTACT MODAL (AJAX FORMSPREE) ======= -->
+    <div id="contact-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="bg-[#FAF9F6] w-full max-w-xl p-8 md:p-10 relative shadow-2xl rounded-2xl transform scale-95 transition-transform duration-300 my-auto" id="contact-modal-content">
+            <button id="close-contact-modal" class="absolute top-5 right-5 text-rl-black/50 hover:text-rl-black transition-colors cursor-pointer" aria-label="Close">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe block mb-2">RecoveryExpressen</span>
+            <h3 class="font-serif text-3xl text-rl-darkblue mb-2">Book your home chamber</h3>
+            <p class="text-sm text-rl-black/70 mb-6">Fill in the form below – we'll get back to you promptly with available delivery dates.</p>
+
+            <form action="https://formspree.io/f/xkjjldqw" method="POST" class="space-y-4">
+                <input type="hidden" name="_subject" id="form-subject" value="RecoveryExpressen inquiry (EN)">
+                <input type="hidden" name="Side_Kilde" id="form-page-source" value="RecoveryExpressen (en/index.html)">
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Name *</label>
+                        <input type="text" name="Navn" maxlength="100" required class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Phone *</label>
+                        <input type="tel" name="Telefon" maxlength="20" required class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Email *</label>
+                        <input type="email" name="Email" maxlength="100" required class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Postal code &amp; city (Zealand) *</label>
+                        <input type="text" name="By_Postnr" maxlength="60" placeholder="e.g., 3400 Hillerød" required class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Preferred rental period</label>
+                        <select name="Lejeperiode" class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                            <option value="1 month (30 days)">1 month (30 days)</option>
+                            <option value="2 months (60 days)">2 months (60 days)</option>
+                            <option value="3 months (90 days)">3 months (90 days)</option>
+                            <option value="PEM hydrogen only / Questions">PEM hydrogen only / Questions</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Preferred start date</label>
+                        <input type="date" name="Startdato" class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue">
+                    </div>
+                </div>
+
+                <label class="flex items-center gap-3 pt-1 text-sm text-rl-black/80 cursor-pointer">
+                    <input type="checkbox" name="Tilvalg_PEM_Hydrogen" value="Yes (+1,500 DKK/mo)" class="accent-rl-darkblue w-4 h-4">
+                    <span>Yes please, add a PEM hydrogen generator (+1,500 DKK/mo)</span>
+                </label>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1">Comments / questions</label>
+                    <textarea name="Kommentar" rows="3" maxlength="1000" placeholder="Briefly share your goals or any questions about space/power" class="w-full bg-transparent border-b border-rl-taupe/40 pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue resize-none text-sm"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-rl-darkblue hover:bg-rl-black text-white font-serif text-sm uppercase tracking-widest py-4 rounded-full transition-colors duration-300 mt-2 cursor-pointer">
+                    Send inquiry
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======= JAVASCRIPT: MODAL, PROCESS, MOBILE MENU & AJAX FORMSPREE ======= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pageTitle = document.title.split('|')[0].trim();
+            const pageUrl = window.location.href;
+
+            // Modal
+            const openBtn = document.getElementById('open-contact-modal');
+            const customCtaBtns = document.querySelectorAll('.js-open-contact');
+            const closeBtn = document.getElementById('close-contact-modal');
+            const modal = document.getElementById('contact-modal');
+            const modalContent = document.getElementById('contact-modal-content');
+            const subjectInput = document.getElementById('form-subject');
+            const sourceInput = document.getElementById('form-page-source');
+
+            function openContactModal(customSubject) {
+                if (subjectInput) subjectInput.value = customSubject || `RecoveryExpressen inquiry (EN): ${pageTitle}`;
+                if (sourceInput) sourceInput.value = `${pageTitle} (${pageUrl})`;
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }
+
+            function closeContactModal() {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+            }
+
+            if (openBtn) openBtn.addEventListener('click', () => openContactModal());
+            customCtaBtns.forEach(btn => btn.addEventListener('click', () => openContactModal(btn.getAttribute('data-emne'))));
+            if (closeBtn) closeBtn.addEventListener('click', closeContactModal);
+            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeContactModal(); });
+
+            // Mobile menu
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+                document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+                });
+            }
+
+            // Interactive 5-step process
+            const processSteps = document.querySelectorAll('.process-step');
+            if (processSteps.length > 0) processSteps[0].classList.add('process-step-active');
+            processSteps.forEach(step => {
+                step.addEventListener('click', () => {
+                    processSteps.forEach(s => { if (s !== step) s.classList.remove('process-step-active'); });
+                    step.classList.toggle('process-step-active');
+                });
+            });
+
+            // AJAX Formspree with 7-second countdown + GTM dataLayer
+            document.querySelectorAll('form[action^="https://formspree.io"]').forEach(form => {
+                form.addEventListener('submit', async function(event) {
+                    event.preventDefault();
+                    const button = form.querySelector('button[type="submit"]');
+                    button.innerHTML = 'Sending...';
+
+                    try {
+                        const response = await fetch(form.action, {
+                            method: form.method,
+                            body: new FormData(form),
+                            headers: { 'Accept': 'application/json' }
+                        });
+                        if (response.ok) {
+                            window.dataLayer = window.dataLayer || [];
+                            window.dataLayer.push({
+                                'event': 'form_submit',
+                                'form_type': 'recoveryexpressen_booking_modal',
+                                'site_language': 'en',
+                                'page_source': pageTitle
+                            });
+
+                            form.innerHTML = `
+                                <div class="text-center py-8">
+                                    <h4 class="text-rl-darkblue font-serif text-2xl mb-2">Thank you for your inquiry</h4>
+                                    <p class="text-sm text-rl-taupe mb-6">We will check availability and get back to you promptly.</p>
+                                    <div class="w-12 h-12 mx-auto rounded-full border-2 border-rl-lightblue flex items-center justify-center mb-2">
+                                        <span id="contact-countdown" class="font-serif text-xl font-bold text-rl-darkblue">7</span>
+                                    </div>
+                                    <p class="text-[10px] text-rl-taupe uppercase tracking-widest">Closing automatically</p>
+                                </div>
+                            `;
+
+                            let timeLeft = 7;
+                            const countdownEl = document.getElementById('contact-countdown');
+                            const timer = setInterval(() => {
+                                timeLeft--;
+                                if (countdownEl) countdownEl.textContent = timeLeft;
+                                if (timeLeft <= 0) {
+                                    clearInterval(timer);
+                                    closeContactModal();
+                                    setTimeout(() => location.reload(), 500);
+                                }
+                            }, 1000);
+                        } else {
+                            button.innerHTML = 'Something went wrong. Please try again.';
+                        }
+                    } catch (err) {
+                        button.innerHTML = 'Network error. Please try again.';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
