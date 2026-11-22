@@ -185,7 +185,25 @@
                 <a href="#faq" class="hover-underline-animation">FAQ</a>
                 <a href="recoveryexpressen_hbot_timer.html" class="text-rl-lightblue font-semibold hover-underline-animation">Beregner / Timer</a>
             </div>
-
+            <!-- CTA + Sprogvælger + Mobil menu knap -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                <button type="button"
+                        data-emne="Bookingforespørgsel: mild HBOT hjemmekammer (Header)"
+                        class="js-open-contact hidden sm:inline-block bg-white text-rl-darkblue font-semibold text-xs uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-rl-lightblue transition cursor-pointer">
+                    Book til hjemmet
+                </button>
+                <div class="relative group text-sm">
+                    <button type="button" class="flex items-center gap-1 text-white font-semibold border border-white/30 rounded-full px-3 py-1.5 bg-transparent hover:bg-white/10 transition cursor-pointer" aria-label="Vælg sprog">
+                        <span>DA</span>
+                        <svg class="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </div>
+                <button id="mobile-menu-btn" class="lg:hidden text-white focus:outline-none" aria-label="Åbn menu">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
             <!-- CTA + Mobil menu knap -->
             <div class="flex items-center gap-4">
                 <button type="button"
@@ -238,7 +256,7 @@
                         Trykkammer hjemme – i dine egne trygge rammer
                     </h1>
                     <p class="text-white/90 text-lg md:text-xl font-light leading-relaxed max-w-2xl">
-                        Få friheden til daglige mHBOT-sessioner uden transporttid. Vi leverer, installerer og sikkerhedsgodkender et professionelt mHBOT wellness-kammer (op til 1,5 ATA) direkte i din stue.
+                        Få friheden til daglige sessioner med mild HBOT (mHBOT) uden transporttid. Vi leverer, installerer og sikkerhedsgodkender et professionelt mHBOT wellness-kammer (op til 1,5 ATA) direkte i din stue.
                     </p>
 
                     <div class="flex flex-wrap gap-4 pt-4">
@@ -344,7 +362,7 @@
                 <div class="grid lg:grid-cols-2 gap-14 items-start">
                     <div class="space-y-6">
                         <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-lightblue">Fysiologi & oplevelse</span>
-                        <h2 class="font-serif text-3xl md:text-5xl">Sådan virker mHBOT i kroppen</h2>
+                        <h2 class="font-serif text-3xl md:text-5xl">Sådan virker mild HBOT (mHBOT) i kroppen</h2>
                         <p class="text-white/85 leading-relaxed">
                             Normalt transporteres ilt næsten udelukkende via de røde blodlegemer. Når du trækker vejret under let forhøjet tryk (op til <strong>1,5 ATA</strong>), opløses ilten direkte i kroppens væsker – herunder blodplasma, lymfe og hjernevæske.
                         </p>
@@ -505,7 +523,7 @@
                         <!-- Række 1 -->
                         <div class="px-6 py-6 grid grid-cols-12 gap-4 items-center">
                             <div class="col-span-12 md:col-span-3 font-bold text-rl-darkblue">Månedlig leje</div>
-                            <div class="col-span-8 md:col-span-6 text-rl-black/80">30 dages fri brug af blødt wellness-kammer (mHBOT) i eget hjem.</div>
+                            <div class="col-span-8 md:col-span-6 text-rl-black/80">30 dages fri brug af blødt wellness-kammer til mild HBOT (mHBOT) i eget hjem.</div>
                             <div class="col-span-4 md:col-span-3 text-right">
                                 <span class="font-serif text-2xl text-rl-darkblue block">6.500 kr.</span>
                                 <span class="text-xs text-rl-taupe">pr. 30 dage</span>
@@ -914,44 +932,6 @@
                     }
                 });
             });
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const banner = document.getElementById('rl-cookie-banner');
-            const acceptBtn = document.getElementById('rl-cookie-accept');
-            const necessaryBtn = document.getElementById('rl-cookie-necessary');
-            const storedConsent = localStorage.getItem('rl_cookie_consent');
-
-            function pushConsent(statisticsGranted) {
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                    'event': 'rl_consent_updated',
-                    'statistics_consent': statisticsGranted
-                });
-            }
-
-            if (!storedConsent) {
-                banner.classList.remove('hidden');
-            } else if (storedConsent === 'all') {
-                pushConsent(true);
-            }
-
-            if (acceptBtn) {
-                acceptBtn.addEventListener('click', () => {
-                    localStorage.setItem('rl_cookie_consent', 'all');
-                    banner.classList.add('hidden');
-                    pushConsent(true);
-                });
-            }
-
-            if (necessaryBtn) {
-                necessaryBtn.addEventListener('click', () => {
-                    localStorage.setItem('rl_cookie_consent', 'necessary');
-                    banner.classList.add('hidden');
-                    pushConsent(false);
-                });
-            }
         });
     </script>
 </body>

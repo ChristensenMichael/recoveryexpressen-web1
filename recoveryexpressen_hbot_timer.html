@@ -261,6 +261,13 @@
           </button>
         </div>
       </nav>
+      <link rel="icon" href="favicon.png" type="image/png">
+      <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-N9W74J6F"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+      </script>
     </header>
 
     <!-- HOVEDINDHOLD -->
@@ -598,13 +605,22 @@
             <p class="text-rl-lightblue/80 text-[11px] truncate">Gem genvej på iPhone, Android eller computer</p>
           </div>
         </div>
-        <button
-          type="button"
-          id="openInstallModalBtn"
-          class="shrink-0 bg-white hover:bg-rl-lightblue text-rl-darkblue font-semibold text-xs uppercase tracking-wider px-4 py-2.5 rounded-full transition cursor-pointer"
-        >
-          Gem som app
-        </button>
+        <div class="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            id="openFeedbackModalBtn"
+            class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-xs uppercase tracking-wider px-3.5 py-2.5 rounded-full transition cursor-pointer"
+          >
+            Giv feedback
+          </button>
+          <button
+            type="button"
+            id="openInstallModalBtn"
+            class="bg-white hover:bg-rl-lightblue text-rl-darkblue font-semibold text-xs uppercase tracking-wider px-4 py-2.5 rounded-full transition cursor-pointer"
+          >
+            Gem som app
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -827,7 +843,44 @@
       </div>
     </div>
   </div>
+  <!-- ===================================================================== -->
+  <!-- MODAL: DISKRET FEEDBACK-FORMULAR (AJAX FORMSPREE)                     -->
+  <!-- ===================================================================== -->
+  <div id="feedback-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm p-4">
+    <div id="feedback-modal-content" class="bg-[#FAF9F6] text-rl-black w-full max-w-md p-7 sm:p-9 relative shadow-2xl rounded-3xl border border-rl-lightbg transform scale-95 transition-transform duration-300">
+      <button type="button" id="close-feedback-modal" class="absolute top-5 right-5 text-rl-black/50 hover:text-rl-black transition-colors cursor-pointer" aria-label="Luk">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
 
+      <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe block mb-2">HBOT Timer</span>
+      <h3 class="font-serif text-3xl text-rl-darkblue mb-2">Giv feedback</h3>
+      <p class="text-sm text-rl-black/70 mb-6">Mangler du en funktion, en protokol eller har du ris/ros til timeren? Skriv endelig.</p>
+
+      <form action="https://formspree.io/f/xkjjldqw" method="POST" id="timer-feedback-form" class="space-y-5">
+        <input type="hidden" name="_subject" value="Feedback: HBOT Timer (DK)">
+        <input type="hidden" name="Side_Kilde" id="feedback-page-source" value="HBOT Timer (DK)">
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1.5">Navn (valgfrit)</label>
+          <input type="text" name="Navn" maxlength="100" class="w-full bg-transparent border-b border-rl-lightbg pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue transition-colors">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1.5">E-mail (hvis du ønsker svar)</label>
+          <input type="email" name="Email" maxlength="100" class="w-full bg-transparent border-b border-rl-lightbg pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue transition-colors">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1.5">Din feedback *</label>
+          <textarea name="Kommentar" rows="4" maxlength="1000" required placeholder="Skriv din idé eller oplevelse her..." class="w-full bg-transparent border-b border-rl-lightbg pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue transition-colors resize-none text-sm"></textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-rl-darkblue hover:bg-rl-black text-white font-serif text-sm uppercase tracking-widest py-4 rounded-full transition-colors duration-300 cursor-pointer">
+          Send feedback
+        </button>
+      </form>
+    </div>
+  </div>
   <!-- ===================================================================== -->
   <!-- JAVASCRIPT: LOGIK, TRYKKURVE, OTU, WEB AUDIO, WAKE LOCK & COOKIE      -->
   <!-- ===================================================================== -->
@@ -1979,6 +2032,7 @@
         requestWakeLock();
         enterPhase(0, false);
         startTickLoop();
+        if (window.trackTimerEvent) window.trackTimerEvent('timer_start', { pressure_ata: state.pressureAta, total_minutes: Math.round(state.totalSessionSec / 60), air_breaks: state.preset, theme: state.theme });
       }
 
       function enterPhase(index, shouldPlaySound, customRemainingMs) {
@@ -2098,6 +2152,7 @@
         applyTimerTheme('done', null);
         renderLivePressureChart(state.totalSessionSec);
         playSignalSound(true);
+        if (window.trackTimerEvent) window.trackTimerEvent('timer_complete', { pressure_ata: state.pressureAta, total_minutes: Math.round(state.totalSessionSec / 60) });
       }
 
       function tick() {
@@ -2533,6 +2588,90 @@
        * ------------------------------------------------------------------- */
       loadPreferences();
       renderSetupUI();
+    })();
+  </script>
+  <script>
+    (function () {
+      // 1. GTM / GA4 sporing til HBOT-timeren
+      window.trackTimerEvent = function (eventName, extraParams) {
+        window.dataLayer = window.dataLayer || [];
+        var isPwa = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        var lang = (document.documentElement.lang || 'da').toLowerCase().slice(0, 2);
+        window.dataLayer.push(Object.assign({
+          event: eventName,
+          app_name: 'hbot_timer',
+          site_language: lang,
+          is_pwa: isPwa
+        }, extraParams || {}));
+      };
+
+      // 2. Feedback-modal & Formspree AJAX (7-sek. countdown magen til B2B)
+      var openBtn = document.getElementById('openFeedbackModalBtn');
+      var closeBtn = document.getElementById('close-feedback-modal');
+      var modal = document.getElementById('feedback-modal');
+      var modalContent = document.getElementById('feedback-modal-content');
+      var form = document.getElementById('timer-feedback-form');
+      var sourceInput = document.getElementById('feedback-page-source');
+
+      function openModal() {
+        if (sourceInput) sourceInput.value = 'HBOT Timer (DK) - ' + window.location.href;
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modalContent.classList.remove('scale-95');
+        modalContent.classList.add('scale-100');
+      }
+      function closeModal() {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-95');
+      }
+
+      if (openBtn) openBtn.addEventListener('click', openModal);
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (modal) modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+
+      if (form) {
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          var btn = form.querySelector('button[type="submit"]');
+          btn.innerHTML = 'Sender...';
+
+          try {
+            var res = await fetch(form.action, {
+              method: form.method,
+              body: new FormData(form),
+              headers: { 'Accept': 'application/json' }
+            });
+            if (res.ok) {
+              window.trackTimerEvent('timer_feedback_submit');
+              form.innerHTML =
+                '<div class="text-center py-6">' +
+                  '<h4 class="text-rl-darkblue font-serif text-2xl mb-2">Tak for din feedback</h4>' +
+                  '<p class="text-sm text-rl-taupe mb-6">Den hjælper os med at gøre timeren endnu bedre.</p>' +
+                  '<div class="w-12 h-12 mx-auto rounded-full border-2 border-rl-lightblue/60 flex items-center justify-center mb-2">' +
+                    '<span id="feedback-countdown" class="font-serif text-xl font-bold text-rl-darkblue">7</span>' +
+                  '</div>' +
+                  '<p class="text-[10px] text-rl-taupe uppercase tracking-widest">Lukker automatisk</p>' +
+                '</div>';
+
+              var t = 7;
+              var elCount = document.getElementById('feedback-countdown');
+              var timer = setInterval(function () {
+                t--;
+                if (elCount) elCount.textContent = t;
+                if (t <= 0) {
+                  clearInterval(timer);
+                  closeModal();
+                  setTimeout(function () { location.reload(); }, 500);
+                }
+              }, 1000);
+            } else {
+              btn.innerHTML = 'Der skete en fejl. Prøv igen.';
+            }
+          } catch (err) {
+            btn.innerHTML = 'Netværksfejl. Prøv igen.';
+          }
+        });
+      }
     })();
   </script>
 </body>
