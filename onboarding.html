@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="da" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Skjult kundeside: Må ikke indekseres af søgemaskiner -->
+    <meta name="robots" content="noindex, nofollow">
+    <title>Velkommen & Onboarding | RecoveryExpressen by RechargeLife</title>
+    <meta name="description" content="Kundeguide og onboarding til hjemmeleje af mild HBOT (mHBOT) trykkammer fra RecoveryExpressen by RechargeLife.">
+
+    <link rel="icon" href="favicon.png" type="image/png">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter & Belleza -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Belleza&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- RechargeLife Tailwind Konfiguration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rl-darkblue': '#013F58',
+                        'rl-lightblue': '#B6CCD7',
+                        'rl-taupe': '#94857B',
+                        'rl-lightbg': '#E0DFD8',
+                        'rl-black': '#151F28',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'serif': ['Belleza', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-N9W74J6F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    </script>
+</head>
+<body class="bg-[#FAF9F6] text-rl-black font-sans antialiased">
+
+    <!-- ======= HEADER ======= -->
+    <header class="bg-rl-darkblue shadow-md sticky top-0 z-50 border-b border-white/10 h-20 flex items-center">
+        <nav class="container mx-auto px-6 max-w-5xl flex items-center justify-between w-full gap-4">
+            <a href="index.html" class="flex items-center gap-3 group py-2">
+                <img src="pictures/Recharge Life_Large_Transparent_Variant 1.png" alt="RechargeLife" class="h-12 md:h-14 object-contain transition-transform duration-300 group-hover:scale-105">
+                <div class="border-l border-white/25 pl-3">
+                    <span class="font-serif text-lg md:text-2xl text-white tracking-wide block leading-none">RecoveryExpressen</span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] text-rl-lightblue block mt-1">Kunde-onboarding</span>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-3 text-xs sm:text-sm">
+                <a href="recoveryexpressen_hbot_timer.html" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold px-4 py-2 rounded-full transition">
+                    Åbn HBOT Timer
+                </a>
+                <a href="index.html" class="hidden sm:inline-block text-white/80 hover:text-white transition font-medium">
+                    ← Forside
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 max-w-5xl py-12 md:py-16 space-y-12">
+
+        <!-- ======= INTRO / VELKOMST ======= -->
+        <section class="bg-rl-darkblue text-white rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden">
+            <div class="max-w-3xl space-y-4 relative z-10">
+                <span class="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-rl-darkblue bg-white px-3.5 py-1 rounded-full">
+                    Velkommen som lejer
+                </span>
+                <h1 class="font-serif text-3xl md:text-5xl leading-tight">
+                    Din komplette guide til mild HBOT (mHBOT) derhjemme
+                </h1>
+                <p class="text-white/85 text-base md:text-lg font-light leading-relaxed">
+                    Her har vi samlet alt, du skal gennemgå før levering – samt dine manualer, sikkerhedsregler og vores gratis HBOT-timer, så du får en tryg og nem start med dit hjemmekammer.
+                </p>
+
+                <!-- Hurtig-navigation til de 5 trin -->
+                <div class="flex flex-wrap gap-2 pt-3 text-xs font-semibold">
+                    <a href="#trin-1" class="bg-white/15 hover:bg-white/25 px-3.5 py-2 rounded-full transition">1. Før levering</a>
+                    <a href="#trin-2" class="bg-white/15 hover:bg-white/25 px-3.5 py-2 rounded-full transition">2. Video & Quiz</a>
+                    <a href="#trin-3" class="bg-white/15 hover:bg-white/25 px-3.5 py-2 rounded-full transition">3. Samtykke</a>
+                    <a href="#trin-4" class="bg-white/15 hover:bg-white/25 px-3.5 py-2 rounded-full transition">4. Manual & Sikkerhed</a>
+                    <a href="#trin-5" class="bg-white/15 hover:bg-white/25 px-3.5 py-2 rounded-full transition">5. Timer & Hjælp</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= TRIN 1: FORBEREDELSE FØR LEVERING ======= -->
+        <section id="trin-1" class="bg-white rounded-3xl border border-rl-lightbg p-7 md:p-10 shadow-sm scroll-mt-24 space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Trin 1 &middot; Før vi kommer</span>
+                    <h2 class="font-serif text-2xl md:text-3xl text-rl-darkblue mt-1">Forberedelsestjekliste i hjemmet</h2>
+                </div>
+                <span id="checklist-status" class="text-xs font-bold px-3.5 py-1.5 rounded-full bg-rl-lightbg/70 text-rl-darkblue">
+                    0 af 5 klar
+                </span>
+            </div>
+
+            <p class="text-sm text-rl-black/75 leading-relaxed">
+                Tjek venligst punkterne herunder af inden vores tekniker ankommer. Det sikrer en hurtig, sikker opsætning på ca. 45–60 minutter.
+            </p>
+
+            <div class="space-y-3" id="prep-checklist">
+                <label class="flex items-start gap-3.5 p-4 rounded-2xl bg-[#FAF9F6] border border-rl-lightbg cursor-pointer hover:border-rl-darkblue/40 transition">
+                    <input type="checkbox" class="prep-cb mt-1 w-5 h-5 accent-rl-darkblue shrink-0">
+                    <span class="text-sm text-rl-black/85">
+                        <strong class="text-rl-darkblue">Plads & underlag:</strong> Der er ryddet et plant, solidt gulvareal på min. <strong>2,5 × 2,0 meter</strong> (samlet vægt ca. 120 kg) samt 15–20 cm frirum ved kompressor/iltkoncentrator til køling.
+                    </span>
+                </label>
+
+                <label class="flex items-start gap-3.5 p-4 rounded-2xl bg-[#FAF9F6] border border-rl-lightbg cursor-pointer hover:border-rl-darkblue/40 transition">
+                    <input type="checkbox" class="prep-cb mt-1 w-5 h-5 accent-rl-darkblue shrink-0">
+                    <span class="text-sm text-rl-black/85">
+                        <strong class="text-rl-darkblue">Strøm med aktiv jordforbindelse (ufravigeligt krav):</strong> Der er en 230V stikkontakt med <em>aktiv jord</em> i rummet på en min. 10A sikringsgruppe (uden tunge hvidevarer som vaskemaskine/ovn kørende samtidig).
+                    </span>
+                </label>
+
+                <label class="flex items-start gap-3.5 p-4 rounded-2xl bg-[#FAF9F6] border border-rl-lightbg cursor-pointer hover:border-rl-darkblue/40 transition">
+                    <input type="checkbox" class="prep-cb mt-1 w-5 h-5 accent-rl-darkblue shrink-0">
+                    <span class="text-sm text-rl-black/85">
+                        <strong class="text-rl-darkblue">3 ledige udtag med jord:</strong> Enten i væggen eller via en strømfordelingsdåse med jord (giv besked, hvis du ønsker at låne en af os).
+                    </span>
+                </label>
+
+                <label class="flex items-start gap-3.5 p-4 rounded-2xl bg-[#FAF9F6] border border-rl-lightbg cursor-pointer hover:border-rl-darkblue/40 transition">
+                    <input type="checkbox" class="prep-cb mt-1 w-5 h-5 accent-rl-darkblue shrink-0">
+                    <span class="text-sm text-rl-black/85">
+                        <strong class="text-rl-darkblue">Temperatur & udluftning:</strong> Rummet holder 10–28 °C og har mulighed for at åbne vindue eller god ventilation (ikke i køkken/badeværelse).
+                    </span>
+                </label>
+
+                <label class="flex items-start gap-3.5 p-4 rounded-2xl bg-[#FAF9F6] border border-rl-lightbg cursor-pointer hover:border-rl-darkblue/40 transition">
+                    <input type="checkbox" class="prep-cb mt-1 w-5 h-5 accent-rl-darkblue shrink-0">
+                    <span class="text-sm text-rl-black/85">
+                        <strong class="text-rl-darkblue">Påklædning klar til første prøvetur:</strong> Løst tøj i <strong>100 % bomuld, hør eller bambus</strong> (ingen syntetiske stoffer som polyester/nylon, ingen smykker eller parfume).
+                    </span>
+                </label>
+            </div>
+        </section>
+
+        <!-- ======= TRIN 2: INTRODUKTIONSVIDEO & SIKKERHEDSQUIZ ======= -->
+        <section id="trin-2" class="bg-white rounded-3xl border border-rl-lightbg p-7 md:p-10 shadow-sm scroll-mt-24 space-y-6">
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Trin 2 &middot; Obligatorisk før ibrugtagning</span>
+                <h2 class="font-serif text-2xl md:text-3xl text-rl-darkblue mt-1">Introduktionsvideo & Sikkerhedsquiz</h2>
+            </div>
+
+            <p class="text-sm text-rl-black/80 leading-relaxed">
+                <strong>Vigtigt:</strong> Samtlige personer i husstanden, der skal benytte trykkammeret, skal se introduktionsvideoen og gennemføre den korte sikkerhedsquiz, inden kammeret tages i brug.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Video-kort -->
+                <div class="bg-[#FAF9F6] rounded-2xl border border-rl-lightbg p-6 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-rl-darkblue text-white font-bold text-sm">▶</span>
+                        <h3 class="font-serif text-xl text-rl-darkblue">1. Se introduktionsvideoen</h3>
+                        <p class="text-xs text-rl-black/75 leading-relaxed">
+                            Vi gennemgår opstart, lynlåse, ventiler, trykudligning i ørerne samt sikker udstigning.
+                        </p>
+                    </div>
+                    <!-- ERSTAT href MED DIT RIGTIGE YOUTUBE / VIMEO / DRIVE VIDEO-LINK -->
+                    <a href="#INDSAET-VIDEO-LINK" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center justify-center gap-2 bg-rl-darkblue hover:bg-rl-black text-white text-xs font-semibold uppercase tracking-wider px-5 py-3.5 rounded-full transition">
+                        Se introduktionsvideo &rarr;
+                    </a>
+                </div>
+
+                <!-- Quiz-kort -->
+                <div class="bg-[#FAF9F6] rounded-2xl border border-rl-lightbg p-6 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-rl-lightblue text-rl-darkblue font-bold text-sm">✓</span>
+                        <h3 class="font-serif text-xl text-rl-darkblue">2. Besvar sikkerhedsquiz & brugerregistrering</h3>
+                        <p class="text-xs text-rl-black/75 leading-relaxed">
+                            Tager kun 2–3 minutter og dokumenterer, at sikkerhedsreglerne er gennemgået.
+                        </p>
+                    </div>
+                    <!-- ERSTAT href MED DIT RIGTIGE GOOGLE FORMS-LINK TIL SIKKERHEDSQUIZ -->
+                    <a href="#INDSAET-GOOGLE-FORM-QUIZ-LINK" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center justify-center gap-2 bg-rl-darkblue hover:bg-rl-black text-white text-xs font-semibold uppercase tracking-wider px-5 py-3.5 rounded-full transition">
+                        Åbn sikkerhedsquiz (Google Form) &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= TRIN 3: INFORMERET SAMTYKKE & HELBRED ======= -->
+        <section id="trin-3" class="bg-white rounded-3xl border border-rl-lightbg p-7 md:p-10 shadow-sm scroll-mt-24 space-y-6">
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Trin 3 &middot; Helbred & aftale</span>
+                <h2 class="font-serif text-2xl md:text-3xl text-rl-darkblue mt-1">Informeret samtykke & kontraindikationer</h2>
+            </div>
+
+            <p class="text-sm text-rl-black/80 leading-relaxed">
+                For din egen sikkerhed må kammeret <strong>ikke</strong> benyttes ved bl.a. ubehandlet pneumothorax (kollapset lunge), svær KOL/emfysem, aktiv øvre luftvejsinfektion/bihulebetændelse/mellemørebetændelse, feber over 38,5 °C, ureguleret epilepsi, blodtryk over 160/100 mmHg, graviditet eller behandling med visse lægemidler (f.eks. Disulfiram/Antabus, Bleomycin, Doxorubicin eller Cisplatin).
+            </p>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+                <!-- ERSTAT href MED PDF-STI ELLER GOOGLE FORM TIL INFORMERET SAMTYKKE -->
+                <a href="docs/Informeret_Samtykke_mHBOT.pdf" target="_blank"
+                   class="flex items-center justify-between p-5 rounded-2xl bg-[#FAF9F6] border border-rl-lightbg hover:border-rl-darkblue transition group">
+                    <div>
+                        <span class="font-semibold text-sm text-rl-darkblue block">Informeret samtykke (PDF / Skema)</span>
+                        <span class="text-xs text-rl-taupe">Læs og bekræft inden opstart</span>
+                    </div>
+                    <span class="text-rl-darkblue font-bold group-hover:translate-x-1 transition-transform">&rarr;</span>
+                </a>
+
+                <a href="https://rechargelife.dk/bestiltid-hbot" target="_blank" rel="noopener noreferrer"
+                   class="flex items-center justify-between p-5 rounded-2xl bg-[#FAF9F6] border border-rl-lightbg hover:border-rl-darkblue transition group">
+                    <div>
+                        <span class="font-semibold text-sm text-rl-darkblue block">Valgfri lægesamtale (hvis du er i tvivl)</span>
+                        <span class="text-xs text-rl-taupe">Book individuel sparring hos vores læge</span>
+                    </div>
+                    <span class="text-rl-darkblue font-bold group-hover:translate-x-1 transition-transform">&rarr;</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ======= TRIN 4: MANUALER, QUICK GUIDE & SIKKERHED ======= -->
+        <section id="trin-4" class="bg-white rounded-3xl border border-rl-lightbg p-7 md:p-10 shadow-sm scroll-mt-24 space-y-8">
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Trin 4 &middot; Daglig brug</span>
+                <h2 class="font-serif text-2xl md:text-3xl text-rl-darkblue mt-1">Manualer, Quick Guide & Sikkerhedsregler</h2>
+            </div>
+
+            <!-- Downloads -->
+            <div class="grid sm:grid-cols-3 gap-4">
+                <!-- Læg de eksporterede PDF-filer i mappen /docs/ i dit GitHub repo -->
+                <a href="docs/Quick_Guide_Trykkammer_RechargeLife.pdf" target="_blank"
+                   class="p-5 rounded-2xl bg-rl-darkblue text-white hover:bg-rl-black transition flex flex-col justify-between gap-4">
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest text-rl-lightblue">Anbefalet ved kammeret</span>
+                        <h3 class="font-serif text-xl mt-1">Quick Guide (1,5 ATA)</h3>
+                        <p class="text-xs text-white/75 mt-1">Kort 1-sides huskeliste til opstart, trykudligning og afslutning.</p>
+                    </div>
+                    <span class="text-xs font-semibold text-rl-lightblue">Hent PDF &rarr;</span>
+                </a>
+
+                <a href="docs/Brugermanual_RechargeLife_mHBOT.pdf" target="_blank"
+                   class="p-5 rounded-2xl bg-[#FAF9F6] border border-rl-lightbg hover:border-rl-darkblue transition flex flex-col justify-between gap-4">
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest text-rl-taupe">Fuld dokumentation</span>
+                        <h3 class="font-serif text-xl text-rl-darkblue mt-1">Brugermanual (ST2200)</h3>
+                        <p class="text-xs text-rl-black/75 mt-1">Komplet dansk manual til kammer, iltkoncentrator og affugter.</p>
+                    </div>
+                    <span class="text-xs font-semibold text-rl-darkblue">Hent PDF &rarr;</span>
+                </a>
+
+                <a href="docs/Quick_Guide_PEM_Hydrogen.pdf" target="_blank"
+                   class="p-5 rounded-2xl bg-[#FAF9F6] border border-rl-lightbg hover:border-rl-darkblue transition flex flex-col justify-between gap-4">
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest text-rl-taupe">Ved tilvalg</span>
+                        <h3 class="font-serif text-xl text-rl-darkblue mt-1">PEM-Hydrogen Guide</h3>
+                        <p class="text-xs text-rl-black/75 mt-1">Husk: Brug <strong>udelukkende</strong> demineraliseret/destilleret vand.</p>
+                    </div>
+                    <span class="text-xs font-semibold text-rl-darkblue">Hent PDF &rarr;</span>
+                </a>
+            </div>
+
+            <!-- Tilladt vs. Strengt forbudt -->
+            <div class="grid md:grid-cols-2 gap-6 pt-2">
+                <div class="p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-3">
+                    <h3 class="font-semibold text-emerald-900 text-base">✓ Tilladt i kammeret</h3>
+                    <ul class="space-y-2 text-xs text-emerald-950/85 leading-relaxed">
+                        <li><strong>Vand:</strong> En flaske vand – små slurke hjælper ørerne med at trykudligne.</li>
+                        <li><strong>Tyggegummi:</strong> Tyggebevægelsen er en af de bedste måder at udligne tryk på.</li>
+                        <li><strong>Fysiske bøger / blade:</strong> Papir og bøger er helt fint til afslapning.</li>
+                        <li><strong>Antistatisk tøj:</strong> 100 % bomuld, hør eller bambus.</li>
+                    </ul>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-3">
+                    <h3 class="font-semibold text-rose-900 text-base">✕ Strengt forbudt i kammeret</h3>
+                    <ul class="space-y-2 text-xs text-rose-950/85 leading-relaxed">
+                        <li><strong>Al elektronik & batterier:</strong> Ingen mobil, smartwatch, tablet, høreapparater, glukosemålere eller elektroniske bilnøgler.</li>
+                        <li><strong>Brandfarligt & dufte:</strong> Ingen lightere, sprit, parfume, makeup eller oliebaserede cremer.</li>
+                        <li><strong>Madvarer & skarpe genstande:</strong> Ingen mad (udover tyggegummi) og ingen smykker/skarpe ting.</li>
+                        <li><strong>Åbning under tryk:</strong> Åbn <em>aldrig</em> lynlåsen, før lufttømningsventilen har sænket trykket helt til <strong>0 kPa</strong> på manometeret.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Hurtig trin-for-trin påmindelse -->
+            <div class="bg-[#FAF9F6] rounded-2xl border border-rl-lightbg p-6 space-y-3">
+                <h3 class="font-serif text-xl text-rl-darkblue">Hurtig huskeliste ved hver session</h3>
+                <ol class="list-decimal list-inside space-y-1.5 text-xs sm:text-sm text-rl-black/80 leading-relaxed">
+                    <li>Tænd strømskinnen (kompressor, affugter og iltkoncentrator på aftalt flow, typisk 5–6 L/min).</li>
+                    <li>Træd ind i kammeret, luk først den <strong>ydre</strong> lynlås helt og derefter den <strong>indre</strong> lynlås, og tjek at tømmeventilen er lukket.</li>
+                    <li>Tag iltmasken på og trykudlign roligt under tryksætningen (5–10 min). Gør det ondt i ørerne, åbn tømmeventilen en anelse.</li>
+                    <li>Maks. <strong>4 timer i døgnet</strong> (360 iltenheder/dag) – ingen overnatning i kammeret.</li>
+                    <li>Ved afslutning: Åbn tømmeventilen roligt (min. 5 min), vent til manometeret viser <strong>0 kPa</strong>, åbn lynlåsene og sluk maskinerne.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ======= TRIN 5: HBOT TIMER & DIREKTE HJÆLP ======= -->
+        <section id="trin-5" class="bg-rl-darkblue text-white rounded-3xl p-8 md:p-10 shadow-xl scroll-mt-24 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="space-y-3 max-w-2xl">
+                <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-lightblue">Trin 5 &middot; Dit værktøj ved koøjet</span>
+                <h2 class="font-serif text-2xl md:text-4xl">Brug vores gratis HBOT Timer</h2>
+                <p class="text-sm text-white/80 leading-relaxed">
+                    Placér din telefon eller tablet synligt <strong>udenfor</strong> kammerets koøje. Timeren styrer tryksætning, iltblokke, justerbare luftpauser (5–7 min) og tryksænkning med bløde lydsignaler og nattilstand.
+                </p>
+                <p class="text-xs text-rl-lightblue">
+                    Spørgsmål undervejs? Ring på <a href="tel:+4531443772" class="underline font-semibold text-white">31 44 37 72</a> eller skriv til <a href="mailto:kontakt@rechargelife.dk" class="underline font-semibold text-white">kontakt@rechargelife.dk</a>.
+                </p>
+            </div>
+            <div class="shrink-0 flex flex-col gap-3 w-full md:w-auto">
+                <a href="recoveryexpressen_hbot_timer.html"
+                   class="bg-white hover:bg-rl-lightblue text-rl-darkblue font-semibold text-sm px-8 py-4 rounded-full text-center transition shadow-lg">
+                    Åbn HBOT Timer &rarr;
+                </a>
+                <a href="terms.html"
+                   class="border border-white/30 hover:bg-white/10 text-white text-xs font-medium px-6 py-3 rounded-full text-center transition">
+                    Læs lejevilkår & betingelser
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======= FOOTER ======= -->
+    <footer class="bg-[#012E40] text-white py-10 border-t border-white/10 mt-8">
+        <div class="container mx-auto px-6 max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-rl-lightbg/70">
+            <span>&copy; 2026 RecoveryExpressen &middot; Re Charge Life ApS (CVR: 45890589) &middot; Baldersvej 9, 3400 Hillerød</span>
+            <div class="flex gap-4">
+                <a href="terms.html" class="hover:text-white transition">Vilkår</a>
+                <a href="privatlivspolitik.html" class="hover:text-white transition">Privatlivspolitik</a>
+                <a href="cookie.html" class="hover:text-white transition">Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interaktiv tjekliste-tæller (gemmes lokalt i browseren) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('.prep-cb');
+            const statusEl = document.getElementById('checklist-status');
+            const storageKey = 're_onboarding_prep_v1';
+
+            function updateStatus() {
+                const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+                if (statusEl) {
+                    statusEl.textContent = `${checked} af ${checkboxes.length} klar`;
+                    if (checked === checkboxes.length) {
+                        statusEl.className = 'text-xs font-bold px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800';
+                    } else {
+                        statusEl.className = 'text-xs font-bold px-3.5 py-1.5 rounded-full bg-rl-lightbg/70 text-rl-darkblue';
+                    }
+                }
+                try {
+                    localStorage.setItem(storageKey, JSON.stringify(Array.from(checkboxes).map(cb => cb.checked)));
+                } catch (e) {}
+            }
+
+            try {
+                const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                checkboxes.forEach((cb, idx) => { if (saved[idx]) cb.checked = true; });
+            } catch (e) {}
+
+            checkboxes.forEach(cb => cb.addEventListener('change', updateStatus));
+            updateStatus();
+        });
+    </script>
+</body>
+</html>
