@@ -149,9 +149,7 @@
         .process-step-indicator { transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
         .process-step-active .process-step-indicator { background-color: #013F58; color: #ffffff; border-color: #013F58; }
     </style>
-
     <link rel="icon" href="favicon.png" type="image/png">
-
     <!-- Google Tag Manager (opdatér evt. container-ID til RecoveryExpressen) -->
     <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-N9W74J6F"></script>
     <script>
@@ -198,19 +196,6 @@
                         <svg class="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                 </div>
-                <button id="mobile-menu-btn" class="lg:hidden text-white focus:outline-none" aria-label="Åbn menu">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-            <!-- CTA + Mobil menu knap -->
-            <div class="flex items-center gap-4">
-                <button type="button"
-                        data-emne="Bookingforespørgsel: mHBOT hjemmekammer (Header)"
-                        class="js-open-contact hidden sm:inline-block bg-white text-rl-darkblue font-semibold text-xs uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-rl-lightblue transition cursor-pointer">
-                    Book til hjemmet
-                </button>
                 <button id="mobile-menu-btn" class="lg:hidden text-white focus:outline-none" aria-label="Åbn menu">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -619,7 +604,7 @@
                             <li><strong class="text-rl-darkblue">3. Overvåget opstart:</strong> Første praktiske test gennemføres sammen med dig – hjemme i stuen eller i klinikken.</li>
                             <li><strong class="text-rl-darkblue">4. Ingen overnatning:</strong> Maks. 360 iltenheder/dag (svarende til maks. 4 timer ved 1,5 ATA). Brug altid den indbyggede timer.</li>
                             <li><strong class="text-rl-darkblue">5. Korrekt maske:</strong> Vi anbefaler non-rebreathing maske med envejsventiler (alm. iltmaske/næsekanyle kan også bruges). Tjek altid masken inden brug.</li>
-                            <li><strong class="text-rl-darkblue">6. Antistatisk påklædning:</strong> Brug 100 % bomuld, hør eller silke i kammeret – undgå syntetiske materialer som nylon og polyester.</li>
+                            <li><strong class="text-rl-darkblue">6. Antistatisk påklædning:</strong> Brug 100 % bomuld, hør eller bambus i kammeret – undgå syntetiske materialer som nylon og polyester.</li>
                         </ul>
                     </div>
                 </div>
@@ -674,7 +659,7 @@
                             <span class="text-rl-taupe transition-transform group-open:rotate-45 text-2xl">+</span>
                         </summary>
                         <p class="text-sm text-rl-black/80 mt-4 leading-relaxed">
-                            Når du indånder koncentreret ilt under tryk, akkumulerer kroppen iltenheder. For en sund og sikker balance bør du ikke overskride 360 iltenheder/dag (maks. 4 timer ved 1,5 ATA). Benyt vores timer funktion så du kan følge behandlingen via en tablet eller mobiltelefon eller computer, placeret uden. Se timer appen her: <a href="https://recoveryexpressen.dk/recoveryexpressen-hbot-timer.html" target="_blank" class="underline text-rl-darkblue font-medium">https://recoveryexpressen.dk/recoveryexpressen-hbot-timer.html</a>
+                            Når du indånder koncentreret ilt under tryk, akkumulerer kroppen iltenheder. For en sund og sikker balance bør du ikke overskride 360 iltenheder/dag (maks. 4 timer ved 1,5 ATA). Benyt vores timer funktion så du kan følge behandlingen via en tablet eller mobiltelefon eller computer, placeret udenfor. Se timer appen her: <a href="https://recoveryexpressen.dk/recoveryexpressen_hbot_timer.html" target="_blank" class="underline text-rl-darkblue font-medium">https://recoveryexpressen.dk/recoveryexpressen_hbot_timer.html</a>
                         </p>
                     </details>
 
@@ -934,5 +919,57 @@
             });
         });
     </script>
+    <script>
+    (function () {
+      const BRIGHTNESS_KEY = 're_hbot_brightness_v1';
+      const slider = document.getElementById('brightnessSlider');
+      const valEl = document.getElementById('brightnessValue');
+      const row = document.getElementById('brightnessControlRow');
+      const defaultCb = document.getElementById('useDeviceDefaultCheckbox');
+      const timerScreen = document.getElementById('timerScreen');
+
+      if (!slider || !defaultCb || !timerScreen) return;
+
+      let prefs = { brightness: 120, useDefault: false };
+      try {
+        const saved = JSON.parse(localStorage.getItem(BRIGHTNESS_KEY));
+        if (saved && typeof saved.brightness === 'number') prefs.brightness = saved.brightness;
+        if (saved && typeof saved.useDefault === 'boolean') prefs.useDefault = saved.useDefault;
+      } catch (e) {}
+
+      function applyBrightness() {
+        slider.value = String(prefs.brightness);
+        if (valEl) valEl.textContent = prefs.brightness + '%';
+        defaultCb.checked = prefs.useDefault;
+
+        if (row) {
+          row.classList.toggle('opacity-40', prefs.useDefault);
+          row.classList.toggle('pointer-events-none', prefs.useDefault);
+        }
+
+        timerScreen.style.filter = prefs.useDefault
+          ? ''
+          : 'brightness(' + (prefs.brightness / 100) + ')';
+      }
+
+      function saveBrightness() {
+        try { localStorage.setItem(BRIGHTNESS_KEY, JSON.stringify(prefs)); } catch (e) {}
+      }
+
+      slider.addEventListener('input', function () {
+        prefs.brightness = Number(slider.value);
+        applyBrightness();
+        saveBrightness();
+      });
+
+      defaultCb.addEventListener('change', function () {
+        prefs.useDefault = defaultCb.checked;
+        applyBrightness();
+        saveBrightness();
+      });
+
+      applyBrightness();
+    })();
+  </script>
 </body>
 </html>
