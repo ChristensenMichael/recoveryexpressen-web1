@@ -276,7 +276,7 @@
       <!-- Intro-linje -->
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
         <div>
-          <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">Sekvenstimer til koøjet</span>
+          <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">HBOT sekvenstimer</span>
           <h1 class="font-serif text-3xl sm:text-4xl text-heading text-rl-darkblue mt-0.5">Planlæg din HBOT-session</h1>
         </div>
         <p class="text-xs text-muted text-rl-black/65 max-w-xs sm:text-right">
@@ -524,9 +524,28 @@
               <span>Aften / Mørke</span>
             </button>
           </div>
-          <p id="themeDescription" class="text-xs text-muted text-rl-taupe">
-            Rolige RechargeLife-baggrunde med skarp mørk tekst (#151F28) til lyse rum.
-          </p>
+          <!-- Visuel lysstyrke (timerens egen lysstyring) -->
+          <div class="pt-4 border-t border-rl-lightbg/70 space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <label for="brightnessSlider" class="text-xs font-semibold uppercase tracking-wider text-muted text-rl-taupe">
+                Skærmlys på aktiv timer
+              </label>
+              <label class="inline-flex items-center gap-2 text-xs font-medium text-muted text-rl-black/75 cursor-pointer select-none">
+                <input type="checkbox" id="useDeviceDefaultCheckbox" class="w-4 h-4 accent-rl-darkblue rounded cursor-pointer" />
+                <span>Brug enhedens standard</span>
+              </label>
+            </div>
+
+            <div id="brightnessControlRow" class="flex items-center gap-3">
+              <span class="text-xs font-semibold text-muted text-rl-taupe w-20 shrink-0">Lysstyrke</span>
+              <input type="range" id="brightnessSlider" min="30" max="140" step="5" value="120" class="flex-1 cursor-pointer" aria-label="Skærmlys på aktiv timer" />
+              <span id="brightnessValue" class="text-xs font-bold tabular-nums text-heading text-rl-darkblue w-12 text-right">120%</span>
+            </div>
+
+            <p class="text-[11px] text-muted text-rl-taupe">
+              Under 100% dæmper skærmen i mørke. Over 100% giver ekstra lys og kontrast (begrænset af telefonens/tablettens egen maks. lysstyrke).
+            </p>
+          </div>
         </div>
 
         <!-- Lydvalg, egen lydfil & lydstyrke -->
@@ -1621,10 +1640,6 @@
               : 'theme-btn p-3.5 rounded-2xl border-2 flex items-center justify-center gap-2 font-semibold text-sm transition cursor-pointer border-rl-lightbg bg-[#FAF9F6] text-rl-black hover:border-rl-lightblue';
           }
         });
-
-        el.themeDescription.textContent = state.theme === 'day'
-          ? 'Rolige RechargeLife-baggrunde med skarp mørk tekst (#151F28) til lyse rum.'
-          : 'Kulsort baggrund (#000) med RechargeLife-hvid tekst (#FAF9F6) og farvet ramme – blænder ikke i mørke.';
 
         // Lydindstillinger
         el.soundSelect.value = state.soundType;
