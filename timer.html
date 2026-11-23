@@ -50,16 +50,72 @@
       overscroll-behavior-y: none;
     }
 
-    /* Dynamisk ur- og overskriftsskalering på aktiv timer-skærm */
+    /* Dynamisk ur- og overskriftsskalering på aktiv timer-skærm (tilpasset både portræt og landskab) */
     .timer-clock-text {
-      font-size: clamp(4.25rem, 18vw, 14rem);
+      font-size: clamp(3.3rem, min(16vw, 24dvh), 12.5rem);
       line-height: 0.96;
       letter-spacing: -0.04em;
     }
 
     .timer-phase-title {
-      font-size: clamp(1.35rem, 4.4vw, 3.5rem);
-      line-height: 1.1;
+      font-size: clamp(1.2rem, min(4vw, 6.2dvh), 3.25rem);
+      line-height: 1.08;
+    }
+
+    /* Ekstra luft for frontkamera / notch / statusbar i lodret visning */
+    .timer-top-safe {
+      padding-top: calc(env(safe-area-inset-top, 0px) + 2.5rem);
+      padding-left: calc(env(safe-area-inset-left, 0px) + 1rem);
+      padding-right: calc(env(safe-area-inset-right, 0px) + 1rem);
+    }
+
+    .timer-bottom-safe {
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.85rem);
+      padding-left: calc(env(safe-area-inset-left, 0px) + 1rem);
+      padding-right: calc(env(safe-area-inset-right, 0px) + 1rem);
+    }
+
+    /* Kompakt layout når skærmen vendes på siden (landskab / lav højde) */
+    @media (orientation: landscape) and (max-height: 540px) {
+      .timer-top-safe {
+        padding-top: calc(env(safe-area-inset-top, 0px) + 0.55rem);
+      }
+      .timer-clock-text {
+        font-size: clamp(2.8rem, 23dvh, 6.2rem);
+        margin-top: 0.15rem;
+        margin-bottom: 0.15rem;
+      }
+      .timer-phase-title {
+        font-size: clamp(1.05rem, 6.2dvh, 2rem);
+      }
+      #preWarnBanner {
+        margin-bottom: 0.35rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        font-size: 0.8rem;
+      }
+      #phaseHint {
+        margin-top: 0.25rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        font-size: 0.72rem;
+      }
+      #nextPhaseText {
+        font-size: 0.85rem;
+      }
+      #liveChartBox svg {
+        height: 26dvh;
+        max-height: 7.5rem;
+      }
+      .timer-bottom-safe {
+        gap: 0.35rem;
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.45rem);
+      }
+      .timer-ctrl-btn, #stopTimerBtn {
+        padding-top: 0.45rem;
+        padding-bottom: 0.45rem;
+        font-size: 0.75rem;
+      }
     }
 
     /* Diskret 15-sekunders forvarsel (Dagslys) */
@@ -217,7 +273,7 @@
       background-color: #21384a;
     }
   </style>
-  <!-- Google Tag Manager (opdatér evt. container-ID til RecoveryExpressen) -->
+  <!-- Google Tag Manager -->
   <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-N9W74J6F"></script>
   <script>
       window.dataLayer = window.dataLayer || [];
@@ -232,7 +288,7 @@
   <!-- ===================================================================== -->
   <div id="setupScreen" class="min-h-[100dvh] flex flex-col pb-24">
 
-    <!-- HEADER (samme stil som RecoveryExpressen / RechargeLife) -->
+    <!-- HEADER -->
     <header class="bg-rl-darkblue shadow-md sticky top-0 z-40 border-b border-white/10 h-20 flex items-center">
       <nav class="container mx-auto px-4 sm:px-6 max-w-5xl flex items-center justify-between w-full gap-3">
         <!-- Logo & Brand -->
@@ -243,7 +299,6 @@
             alt="RechargeLife"
             class="h-12 sm:h-14 w-auto object-contain shrink-0 transition-transform duration-300 group-hover:scale-105"
           />
-          <!-- Fallback SVG hvis logofilen ikke findes lokalt i preview -->
           <div id="brandLogoFallback" class="hidden w-11 h-11 rounded-full bg-white/10 border border-white/20 items-center justify-center shrink-0">
             <svg class="w-6 h-6 text-rl-lightblue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="9"></circle>
@@ -304,7 +359,6 @@
         <div>
           <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
             <p class="text-xs font-medium text-muted text-rl-black/70">Vælg måltryk (standard tryktid = 1 min pr. 0,1 ATA):</p>
-            <!-- Diskret enhedsvælger (gemmes i cookie) -->
             <div class="inline-flex items-center rounded-full bg-rl-lightbg/70 p-0.5 border border-rl-lightbg text-[11px] font-semibold" id="pressureUnitToggle" role="group" aria-label="Vælg trykenhed">
               <button type="button" data-unit="ATA" class="unit-btn px-2.5 py-0.5 rounded-full transition cursor-pointer">ATA</button>
               <button type="button" data-unit="PSI" class="unit-btn px-2.5 py-0.5 rounded-full transition cursor-pointer">PSI</button>
@@ -421,6 +475,19 @@
           </div>
         </div>
 
+        <!-- Tilvalg: Guidance i de forskellige faser (default aktiv) -->
+        <div class="pt-3 border-t border-rl-lightbg/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <label for="chamberGuidanceCheckbox" class="inline-flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-heading text-rl-darkblue cursor-pointer select-none">
+              <input type="checkbox" id="chamberGuidanceCheckbox" checked class="w-4 h-4 accent-rl-darkblue rounded cursor-pointer" />
+              <span>Vis trin-for-trin guidance undervejs i sessionen</span>
+            </label>
+            <p class="text-[11px] text-muted text-rl-taupe mt-0.5 pl-6">
+              Guider i lynlåse, trykudligning, udluftningsventil, maske på/af under iltpauser samt tjek af 0 på trykmåleren ved afslutning.
+            </p>
+          </div>
+        </div>
+
         <p class="text-[11px] text-muted text-rl-taupe">
           Indstigning: 0–10 min &middot; Tryksætning/sænkning: 1–20 min &middot; Ilt pr. blok: 10–30 min &middot; Luftpause: 5–7 min (justeres efter VO₂max). Brug pilene eller tast direkte i formatet <span class="font-semibold">MM:SS</span>.
         </p>
@@ -458,7 +525,7 @@
           </button>
         </div>
 
-        <!-- Kombineret SVG Trykkurve (Y-akse i valgt enhed, X-akse i minutter) -->
+        <!-- Kombineret SVG Trykkurve -->
         <div class="pt-3 border-t border-rl-lightbg/70">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
             <span id="chartProfileLabel" class="text-xs font-semibold uppercase tracking-[0.15em] text-rl-taupe">Trykprofil (ATA over tid)</span>
@@ -469,7 +536,7 @@
             <svg id="setupPressureSvg" viewBox="0 0 640 205" class="w-full h-auto block overflow-visible" role="img" aria-label="Trykkurve over tid"></svg>
           </div>
 
-          <!-- Farveforklaring (matcher aktiv skærm) -->
+          <!-- Farveforklaring -->
           <div id="timelineLegend" class="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3 text-xs text-muted text-rl-black/75">
             <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rl-taupe"></span>Indstigning</span>
             <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rl-lightblue border border-rl-darkblue/40"></span><span id="legendOxygenLabel">Tryksætning &amp; Ilt (20 min)</span></span>
@@ -485,7 +552,6 @@
               <span class="text-xs font-bold uppercase tracking-wider text-heading text-rl-darkblue">Beregning af iltenheder (OTU / UPTD)</span>
               <p class="text-[11px] text-muted text-rl-taupe mt-0.5">Anbefalet grænse: maks. 360 iltenheder pr. dag (Lambertsen-formlen).</p>
             </div>
-            <!-- Skift mellem 95% (koncentrator) og 100% (ren ilt) -->
             <div class="inline-flex rounded-full bg-rl-lightbg/70 p-0.5 border border-rl-lightbg text-xs font-semibold">
               <button type="button" data-fio2="0.95" class="fio2-btn px-3 py-1 rounded-full transition cursor-pointer">95% (Koncentrator)</button>
               <button type="button" data-fio2="1.0" class="fio2-btn px-3 py-1 rounded-full transition cursor-pointer">100% (Ren ilt)</button>
@@ -528,7 +594,7 @@
               <span>Aften / Mørke</span>
             </button>
           </div>
-          <!-- Visuel lysstyrke (timerens egen lysstyring) -->
+          <!-- Visuel lysstyrke -->
           <div class="pt-4 border-t border-rl-lightbg/70 space-y-2.5">
             <div class="flex items-center justify-between gap-2">
               <label for="brightnessSlider" class="text-xs font-semibold uppercase tracking-wider text-muted text-rl-taupe">
@@ -552,7 +618,7 @@
           </div>
         </div>
 
-        <!-- Lydvalg, egen lydfil & lydstyrke -->
+        <!-- Lydvalg, gentagelser, egen lydfil & lydstyrke -->
         <div class="pt-4 border-t border-rl-lightbg/70 space-y-3.5">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <label for="soundSelect" class="text-xs font-semibold uppercase tracking-wider text-muted text-rl-taupe">Lydsignal ved faseskift</label>
@@ -589,6 +655,16 @@
           </div>
 
           <audio id="customAudioPlayer" preload="auto" class="hidden"></audio>
+
+          <!-- Gentagelser inden for 5 sekunder -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <span class="text-xs font-semibold text-muted text-rl-taupe">Gentag lyd inden for 5 sek.</span>
+            <div class="inline-flex items-center rounded-full bg-rl-lightbg/70 p-0.5 border border-rl-lightbg text-xs font-semibold" id="soundRepeatButtons" role="group" aria-label="Antal gentagelser af lydsignal">
+              <button type="button" data-repeat="1" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">1×</button>
+              <button type="button" data-repeat="2" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">2×</button>
+              <button type="button" data-repeat="3" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">3×</button>
+            </div>
+          </div>
 
           <!-- Lydstyrke -->
           <div class="flex items-center gap-3 pt-1">
@@ -654,21 +730,43 @@
   <!-- ===================================================================== -->
   <!-- AKTIV TIMER-SKÆRM (FULD SKÆRM TIL KOØJET)                             -->
   <!-- ===================================================================== -->
-  <section id="timerScreen" class="hidden fixed inset-0 z-30 flex-col justify-between select-none transition-colors duration-500 overflow-hidden">
+  <section id="timerScreen" class="hidden fixed inset-0 z-30 flex-col justify-between select-none transition-colors duration-300 overflow-hidden">
 
-    <!-- Topbjælke: Trin-indikator & Wake Lock badge -->
-    <div class="w-full px-4 sm:px-8 pt-4 sm:pt-6 flex items-center justify-between gap-3 z-10">
+    <!-- Topbjælke: Trin-indikator, diskret klokkeslæt, fuldskærm-knap & Wake Lock badge -->
+    <div class="timer-top-safe w-full flex flex-wrap items-center justify-between gap-2 z-10">
       <span id="stepBadge" class="timer-pill inline-flex items-center px-3.5 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs sm:text-sm font-bold tracking-wide">
         Trin 1 af 5 · 1,5 ATA
       </span>
 
-      <span id="wakeLockBadge" class="timer-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs font-semibold opacity-90">
-        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-        <span>Skærm vågen</span>
-      </span>
+      <div class="flex items-center gap-2 ml-auto">
+        <span id="currentClockBadge" class="timer-pill inline-flex items-center px-3 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs font-semibold opacity-80 tabular-nums" aria-label="Aktuelt klokkeslæt">
+          --:--
+        </span>
+
+        <button
+          type="button"
+          id="fullscreenBtn"
+          class="timer-pill inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-rl-black/10 hover:bg-rl-black/20 backdrop-blur-sm text-xs font-semibold opacity-85 transition cursor-pointer"
+          title="Skift fuldskærm"
+          aria-label="Skift fuldskærm"
+        >
+          <svg id="fullscreenIcon" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+          <span id="fullscreenLabel" class="hidden sm:inline">Fuldskærm</span>
+        </button>
+
+        <span id="wakeLockBadge" class="timer-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs font-semibold opacity-90">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Skærm vågen</span>
+        </span>
+      </div>
     </div>
 
-    <!-- Center: Forvarsel, Fase-navn, Kæmpe Ur, Næste fase -->
+    <!-- Center: Forvarsel, Fase-navn, Guidance, Kæmpe Ur, Næste fase -->
     <div class="flex-1 flex flex-col items-center justify-center px-4 text-center z-10 min-h-0">
       <!-- 15 sekunders forvarsel-banner -->
       <div id="preWarnBanner" class="hidden mb-3 sm:mb-4 px-5 py-2 rounded-full bg-amber-500 text-rl-black font-black text-sm sm:text-lg tracking-wide shadow-lg animate-pulse">
@@ -680,8 +778,8 @@
         MASKE PÅ – ILT
       </h2>
 
-      <!-- Kontekstuel hjælpetekst (fx trykudligning / behold maske på) -->
-      <p id="phaseHint" class="hidden timer-pill mt-2 sm:mt-3 px-4 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs sm:text-base font-bold tracking-wide max-w-xl"></p>
+      <!-- Kontekstuel guidance for den aktuelle fase -->
+      <p id="phaseHint" class="hidden timer-pill mt-2 sm:mt-3 px-4 py-2 rounded-2xl bg-rl-black/10 backdrop-blur-sm text-xs sm:text-base font-bold tracking-wide max-w-2xl leading-snug"></p>
 
       <!-- Kæmpe nedtællingsur -->
       <div id="timerClock" class="timer-clock-text font-black tabular-nums my-2 sm:my-4">
@@ -699,12 +797,12 @@
       </div>
     </div>
 
-    <!-- Bundsektion: Kompakt live-trykkurve + spole-slider + fremdriftsbjælke + knapper -->
-    <div class="w-full px-4 sm:px-8 pb-4 sm:pb-6 flex flex-col gap-2.5 z-10">
-      <!-- Kompakt live-trykkurve med bevægelig markør -->
+    <!-- Bundsektion: Kompakt live-trykkurve (1/3 af den nederste del) + spole-slider + fremdriftsbjælke + knapper -->
+    <div class="timer-bottom-safe w-full flex flex-col gap-2.5 z-10">
+      <!-- Stor og tydelig live-trykkurve (~1/3 af skærmhøjden) -->
       <div class="w-full max-w-4xl mx-auto">
-        <div id="liveChartBox" class="w-full rounded-2xl bg-rl-black/10 border border-current/15 px-3 py-1.5 backdrop-blur-sm">
-          <svg id="livePressureSvg" viewBox="0 0 600 68" class="w-full h-12 sm:h-16 block overflow-visible" role="img" aria-label="Live trykkurve"></svg>
+        <div id="liveChartBox" class="w-full rounded-2xl border border-current/20 px-3 py-2 backdrop-blur-sm shadow-sm">
+          <svg id="livePressureSvg" viewBox="0 0 640 165" class="w-full h-[28dvh] sm:h-[32dvh] max-h-56 block overflow-visible" role="img" aria-label="Live trykkurve"></svg>
         </div>
       </div>
 
@@ -767,7 +865,6 @@
   <!-- ===================================================================== -->
   <div id="installModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-sm p-4 overflow-y-auto">
     <div class="bg-[#FAF9F6] text-rl-black w-full max-w-lg rounded-3xl shadow-2xl border border-rl-lightbg overflow-hidden my-auto">
-      <!-- Modal top -->
       <div class="bg-rl-darkblue text-white px-6 py-5 flex items-center justify-between">
         <div>
           <span class="text-[10px] uppercase tracking-[0.2em] text-rl-lightblue block">RecoveryExpressen</span>
@@ -779,7 +876,6 @@
       </div>
 
       <div class="p-6 space-y-5">
-        <!-- 1-kliks installation (vises hvis browseren understøtter beforeinstallprompt) -->
         <div id="nativeInstallWrapper" class="hidden bg-rl-lightblue/30 border border-rl-lightblue rounded-2xl p-4 flex items-center justify-between gap-3">
           <p class="text-xs font-medium text-rl-darkblue">Din browser understøtter hurtig 1-kliks installation.</p>
           <button type="button" id="nativeInstallBtn" class="shrink-0 bg-rl-darkblue text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-rl-black transition cursor-pointer">
@@ -787,7 +883,6 @@
           </button>
         </div>
 
-        <!-- Enheds-faner -->
         <div class="grid grid-cols-3 gap-2 bg-rl-lightbg/60 p-1 rounded-2xl">
           <button type="button" data-tab="ios" class="install-tab py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-white text-rl-darkblue shadow-sm">iPhone / iPad</button>
           <button type="button" data-tab="android" class="install-tab py-2 rounded-xl text-xs font-bold transition cursor-pointer text-rl-black/70">Android</button>
@@ -869,6 +964,7 @@
       </div>
     </div>
   </div>
+
   <!-- ===================================================================== -->
   <!-- MODAL: DISKRET FEEDBACK-FORMULAR (AJAX FORMSPREE)                     -->
   <!-- ===================================================================== -->
@@ -907,6 +1003,7 @@
       </form>
     </div>
   </div>
+
   <!-- ===================================================================== -->
   <!-- JAVASCRIPT: LOGIK, TRYKKURVE, OTU, WEB AUDIO, WAKE LOCK & COOKIE      -->
   <!-- ===================================================================== -->
@@ -920,7 +1017,6 @@
       const STORAGE_KEY = 'recoveryexpressen_hbot_prefs_v3';
       const UNIT_COOKIE_NAME = 're_hbot_pressure_unit';
 
-      // Standard tider (sekunder) pr. valgt tryk: 1 min pr. 0,1 ATA over 1,0 ATA
       const PRESSURE_DEFAULTS = {
         1.3: 180,   // 3m 00s
         1.5: 300,   // 5m 00s
@@ -937,17 +1033,19 @@
 
       const state = {
         pressureAta: 1.5,        // 1.3 | 1.5 | 1.6 | 1.75 | 2.0
-        pressureUnit: 'ATA',     // 'ATA' | 'PSI' | 'kPa' (gemmes i cookie)
-        entryDelaySec: 150,      // Standard: 2m 30s (min 0, maks 10m)
-        pressurizeSec: 300,      // Standard for 1,5 ATA: 5m 00s (min 1m, maks 20m)
-        oxygenBlockSec: 1200,    // Standard: 20m 00s (min 10m, maks 30m)
-        pauseSec: 300,           // Standard: 5m 00s (min 5m, maks 7m – afhænger af VO2max)
-        depressurizeSec: 300,    // Standard for 1,5 ATA: 5m 00s (min 1m, maks 20m)
-        preset: 1,               // 0 = ingen pause, 1 = 1 pause, 2 = 2 pauser, 3 = 3 pauser
-        fiO2: 0.95,              // 0.95 (Koncentrator) | 1.0 (Ren ilt)
+        pressureUnit: 'ATA',     // 'ATA' | 'PSI' | 'kPa'
+        entryDelaySec: 150,      // Standard: 2m 30s
+        pressurizeSec: 300,      // Standard for 1,5 ATA: 5m 00s
+        oxygenBlockSec: 1200,    // Standard: 20m 00s
+        pauseSec: 300,           // Standard: 5m 00s
+        depressurizeSec: 300,    // Standard for 1,5 ATA: 5m 00s
+        preset: 1,               // 0..3 pauser
+        fiO2: 0.95,              // 0.95 | 1.0
         theme: 'day',            // 'day' | 'night'
-        soundType: 'yoga_pling', // Standard: Yoga Pling (5 sek. udtone)
+        soundType: 'yoga_pling',
+        soundRepeats: 1,         // 1 | 2 | 3 gentagelser inden for 5 sek.
         volume: 85,              // 0 - 100
+        chamberGuidance: true,   // Default aktiv: guidance gennem faserne
         customAudioUrl: null,
         customAudioName: null,
 
@@ -963,11 +1061,13 @@
         remainingMsWhenPaused: 0,
         rafId: null,
         intervalId: null,
+        clockIntervalId: null,
         wakeLock: null,
         deferredInstallPrompt: null
       };
 
       let audioCtx = null;
+      let activeSoundTimers = [];
       let lastPreWarnMode = null;
       let lastLiveChartUpdate = 0;
 
@@ -995,6 +1095,7 @@
         pauseInput: document.getElementById('pauseInput'),
         depressurizeInput: document.getElementById('depressurizeInput'),
         timeStepBtns: document.querySelectorAll('.time-step-btn'),
+        chamberGuidanceCheckbox: document.getElementById('chamberGuidanceCheckbox'),
 
         presetBtns: document.querySelectorAll('.preset-btn'),
         presetSub0: document.getElementById('presetSub0'),
@@ -1008,7 +1109,6 @@
         totalDurationBadge: document.getElementById('totalDurationBadge'),
         totalWithEntryBadge: document.getElementById('totalWithEntryBadge'),
         setupPressureSvg: document.getElementById('setupPressureSvg'),
-        themeDescription: document.getElementById('themeDescription'),
 
         fio2Btns: document.querySelectorAll('.fio2-btn'),
         otuValue: document.getElementById('otuValue'),
@@ -1016,6 +1116,7 @@
         oxygenTimeValue: document.getElementById('oxygenTimeValue'),
 
         soundSelect: document.getElementById('soundSelect'),
+        repeatBtns: document.querySelectorAll('.repeat-btn'),
         customSoundOption: document.getElementById('customSoundOption'),
         customAudioInput: document.getElementById('customAudioInput'),
         customAudioLabel: document.getElementById('customAudioLabel'),
@@ -1028,6 +1129,9 @@
 
         // Aktiv skærm
         stepBadge: document.getElementById('stepBadge'),
+        currentClockBadge: document.getElementById('currentClockBadge'),
+        fullscreenBtn: document.getElementById('fullscreenBtn'),
+        fullscreenLabel: document.getElementById('fullscreenLabel'),
         wakeLockBadge: document.getElementById('wakeLockBadge'),
         preWarnBanner: document.getElementById('preWarnBanner'),
         preWarnLabel: document.getElementById('preWarnLabel'),
@@ -1070,7 +1174,6 @@
         installPanels: document.querySelectorAll('.install-tab-panel')
       };
 
-      // Logo fallback hvis billedet ikke findes lokalt i preview
       if (el.brandLogoImg) {
         el.brandLogoImg.addEventListener('error', function () {
           el.brandLogoImg.classList.add('hidden');
@@ -1082,15 +1185,61 @@
       }
 
       /* -------------------------------------------------------------------
-       * 3. HJÆLPEFUNKTIONER (COOKIE, TRYKOMREGNING, TIDSFORMATERING)
+       * 3. HJÆLPEFUNKTIONER (COOKIE, TRYKOMREGNING, TIDSFORMATERING, KLOKKE & FULDSKÆRM)
        * ------------------------------------------------------------------- */
+      function updateClockBadge() {
+        if (!el.currentClockBadge) return;
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        el.currentClockBadge.textContent = hh + ':' + mm;
+      }
+
+      function startClockBadgeLoop() {
+        updateClockBadge();
+        if (state.clockIntervalId) clearInterval(state.clockIntervalId);
+        state.clockIntervalId = setInterval(updateClockBadge, 5000);
+      }
+
+      function isFullscreenActive() {
+        return !!(document.fullscreenElement || document.webkitFullscreenElement);
+      }
+
+      function syncFullscreenUi() {
+        if (!el.fullscreenLabel) return;
+        el.fullscreenLabel.textContent = isFullscreenActive() ? 'Afslut fuldskærm' : 'Fuldskærm';
+      }
+
+      async function toggleFullscreen() {
+        try {
+          if (!isFullscreenActive()) {
+            const target = el.timerScreen || document.documentElement;
+            if (target.requestFullscreen) {
+              await target.requestFullscreen();
+            } else if (target.webkitRequestFullscreen) {
+              target.webkitRequestFullscreen();
+            } else if (document.documentElement.requestFullscreen) {
+              await document.documentElement.requestFullscreen();
+            }
+          } else {
+            if (document.exitFullscreen) {
+              await document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+              document.webkitExitFullscreen();
+            }
+          }
+        } catch (err) {}
+        syncFullscreenUi();
+      }
+
+      document.addEventListener('fullscreenchange', syncFullscreenUi);
+      document.addEventListener('webkitfullscreenchange', syncFullscreenUi);
+
       function setCookie(name, value, days) {
         try {
           const maxAge = (days || 365) * 24 * 60 * 60;
           document.cookie = encodeURIComponent(name) + '=' + encodeURIComponent(value) + '; max-age=' + maxAge + '; path=/; SameSite=Lax';
-        } catch (err) {
-          // Ignorer i begrænsede miljøer
-        }
+        } catch (err) {}
       }
 
       function getCookie(name) {
@@ -1103,9 +1252,7 @@
               return decodeURIComponent(c.substring(prefix.length));
             }
           }
-        } catch (err) {
-          // Ignorer
-        }
+        } catch (err) {}
         return null;
       }
 
@@ -1114,7 +1261,6 @@
         return Number(num).toFixed(d).replace('.', ',');
       }
 
-      // Omregner ATA til valgt visningsenhed (gauge-overtryk for PSI og kPa)
       function formatPressureValue(ata, unit, includeUnit) {
         const u = unit || state.pressureUnit;
         let valStr = '';
@@ -1129,6 +1275,26 @@
           valStr = formatDaNumber(ata, dec);
         }
         return includeUnit ? (valStr + ' ' + u) : valStr;
+      }
+
+      function formatVentRatePerMinute(unit) {
+        const u = unit || state.pressureUnit;
+        if (u === 'PSI') {
+          return '10 PSI/min';
+        }
+        if (u === 'kPa') {
+          const kpaRate = Math.round((10 / 14.5038) * 100);
+          return 'ca. ' + kpaRate + ' kPa/min (10 PSI/min)';
+        }
+        const ataRate = formatDaNumber(10 / 14.5038, 2);
+        return 'ca. ' + ataRate + ' ATA/min (10 PSI/min)';
+      }
+
+      function formatZeroGauge(unit) {
+        const u = unit || state.pressureUnit;
+        if (u === 'PSI') return '0 PSI';
+        if (u === 'kPa') return '0 kPa';
+        return '1,0 ATA (0 på trykmåleren)';
       }
 
       function formatSecondsToMMSS(sec) {
@@ -1172,7 +1338,7 @@
       }
 
       /* -------------------------------------------------------------------
-       * 4. INDLÆS / GEM BRUGERPRÆFERENCER (COOKIE + LOCALSTORAGE)
+       * 4. INDLÆS / GEM BRUGERPRÆFERENCER
        * ------------------------------------------------------------------- */
       function loadPreferences() {
         const cookieUnit = getCookie(UNIT_COOKIE_NAME);
@@ -1186,45 +1352,21 @@
           const saved = JSON.parse(raw);
           if (!saved) return;
 
-          if ([1.3, 1.5, 1.6, 1.75, 2.0].includes(saved.pressureAta)) {
-            state.pressureAta = saved.pressureAta;
-          }
-          if (!cookieUnit && ['ATA', 'PSI', 'kPa'].includes(saved.pressureUnit)) {
-            state.pressureUnit = saved.pressureUnit;
-          }
-          if (typeof saved.entryDelaySec === 'number' && saved.entryDelaySec >= 0 && saved.entryDelaySec <= 600) {
-            state.entryDelaySec = saved.entryDelaySec;
-          }
-          if (typeof saved.pressurizeSec === 'number' && saved.pressurizeSec >= 60 && saved.pressurizeSec <= 1200) {
-            state.pressurizeSec = saved.pressurizeSec;
-          }
-          if (typeof saved.oxygenBlockSec === 'number' && saved.oxygenBlockSec >= 600 && saved.oxygenBlockSec <= 1800) {
-            state.oxygenBlockSec = saved.oxygenBlockSec;
-          }
-          if (typeof saved.pauseSec === 'number' && saved.pauseSec >= 300 && saved.pauseSec <= 420) {
-            state.pauseSec = saved.pauseSec;
-          }
-          if (typeof saved.depressurizeSec === 'number' && saved.depressurizeSec >= 60 && saved.depressurizeSec <= 1200) {
-            state.depressurizeSec = saved.depressurizeSec;
-          }
-          if ([0, 1, 2, 3].includes(saved.preset)) {
-            state.preset = saved.preset;
-          }
-          if ([0.95, 1.0].includes(saved.fiO2)) {
-            state.fiO2 = saved.fiO2;
-          }
-          if (['day', 'night'].includes(saved.theme)) {
-            state.theme = saved.theme;
-          }
-          if (VALID_SOUNDS.includes(saved.soundType)) {
-            state.soundType = saved.soundType;
-          }
-          if (typeof saved.volume === 'number' && saved.volume >= 0 && saved.volume <= 100) {
-            state.volume = saved.volume;
-          }
-        } catch (err) {
-          // Ignorer fejl ved privat browsing
-        }
+          if ([1.3, 1.5, 1.6, 1.75, 2.0].includes(saved.pressureAta)) state.pressureAta = saved.pressureAta;
+          if (!cookieUnit && ['ATA', 'PSI', 'kPa'].includes(saved.pressureUnit)) state.pressureUnit = saved.pressureUnit;
+          if (typeof saved.entryDelaySec === 'number' && saved.entryDelaySec >= 0 && saved.entryDelaySec <= 600) state.entryDelaySec = saved.entryDelaySec;
+          if (typeof saved.pressurizeSec === 'number' && saved.pressurizeSec >= 60 && saved.pressurizeSec <= 1200) state.pressurizeSec = saved.pressurizeSec;
+          if (typeof saved.oxygenBlockSec === 'number' && saved.oxygenBlockSec >= 600 && saved.oxygenBlockSec <= 1800) state.oxygenBlockSec = saved.oxygenBlockSec;
+          if (typeof saved.pauseSec === 'number' && saved.pauseSec >= 300 && saved.pauseSec <= 420) state.pauseSec = saved.pauseSec;
+          if (typeof saved.depressurizeSec === 'number' && saved.depressurizeSec >= 60 && saved.depressurizeSec <= 1200) state.depressurizeSec = saved.depressurizeSec;
+          if ([0, 1, 2, 3].includes(saved.preset)) state.preset = saved.preset;
+          if ([0.95, 1.0].includes(saved.fiO2)) state.fiO2 = saved.fiO2;
+          if (['day', 'night'].includes(saved.theme)) state.theme = saved.theme;
+          if (VALID_SOUNDS.includes(saved.soundType)) state.soundType = saved.soundType;
+          if ([1, 2, 3].includes(saved.soundRepeats)) state.soundRepeats = saved.soundRepeats;
+          if (typeof saved.volume === 'number' && saved.volume >= 0 && saved.volume <= 100) state.volume = saved.volume;
+          if (typeof saved.chamberGuidance === 'boolean') state.chamberGuidance = saved.chamberGuidance;
+        } catch (err) {}
       }
 
       function savePreferences() {
@@ -1242,23 +1384,22 @@
             fiO2: state.fiO2,
             theme: state.theme,
             soundType: state.soundType === 'custom' ? 'yoga_pling' : state.soundType,
-            volume: state.volume
+            soundRepeats: state.soundRepeats,
+            volume: state.volume,
+            chamberGuidance: state.chamberGuidance
           };
           localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        } catch (err) {
-          // Ignorer
-        }
+        } catch (err) {}
       }
 
       /* -------------------------------------------------------------------
-       * 5. BYG HBOT-SEKVENSTABEL (TRYKSÆTNING & ILT DELER SAMME FARVE)
+       * 5. BYG HBOT-SEKVENSTABEL (OPDELT GUIDANCE FRA BRUGERMANUALEN)
        * ------------------------------------------------------------------- */
       function buildPhases() {
         const phases = [];
         const ata = state.pressureAta;
         let cursorSec = 0;
 
-        // Fælles farve for Tryksætning og 20 min Ilt (RechargeLife lyseblå #B6CCD7)
         const sharedFill = 'rgba(182, 204, 215, 0.58)';
         const sharedStroke = '#5B8AA1';
 
@@ -1269,10 +1410,14 @@
           cursorSec = endSec;
         }
 
+        // 1. Indstigning: lynlåse + udluftningsventil + trykudligning/maske
         if (state.entryDelaySec > 0) {
           pushPhase({
             type: 'entry',
             title: 'INDSTIGNING',
+            hint: state.chamberGuidance
+              ? 'Luk først den yderste og derefter den inderste lynlås helt til, og luk den sorte udluftningsventil. Har du styr på trykudligningen, kan du tage masken på.'
+              : '',
             shortLabel: 'Indstigning (' + formatSecondsToMMSS(state.entryDelaySec) + ')',
             durationSec: state.entryDelaySec,
             startAta: 1.0,
@@ -1282,10 +1427,13 @@
           });
         }
 
+        // 2. Tryksætning: trykudligning er vigtigere end maskebrug + udluftningsventil ved ubehag
         pushPhase({
           type: 'pressurize',
           title: 'TRYKSÆTNING',
-          hint: 'Husk at trykudligne jævnligt under tryksætningen',
+          hint: state.chamberGuidance
+            ? 'Trykudligning er vigtigere end maskebrug lige nu – synk, gab eller tyg. Gør det ondt i ørerne, åbn kort lidt for udluftningsventilen. Tag masken på, når du har styr på trykudligningen.'
+            : 'Husk at trykudligne jævnligt under tryksætningen',
           shortLabel: 'Tryksætning (' + formatSecondsToMMSS(state.pressurizeSec) + ')',
           durationSec: state.pressurizeSec,
           startAta: 1.0,
@@ -1294,16 +1442,24 @@
           strokeColor: sharedStroke
         });
 
-        // Samme struktur for alle programmer: 0 pauser = 1 iltblok, 1 pause = 2 iltblokke osv.
+        // 3. Iltblokke og luftpauser
         const oxygenBlocks = state.preset + 1;
         const oxyLabel = state.oxygenBlockSec % 60 === 0
           ? (state.oxygenBlockSec / 60) + ' min'
           : formatSecondsToMMSS(state.oxygenBlockSec);
 
         for (let i = 0; i < oxygenBlocks; i++) {
+          const isFirstBlock = (i === 0);
+          const blockHint = state.chamberGuidance
+            ? (isFirstBlock
+                ? 'Maksimalt tryk er opnået – slap af, træk vejret roligt og nyd behandlingen med masken på.'
+                : 'Tag masken på igen (åbn evt. ilthanen), slap af og træk vejret roligt gennem hele blokken.')
+            : '';
+
           pushPhase({
             type: 'oxygen',
             title: 'MASKE PÅ – ILT',
+            hint: blockHint,
             shortLabel: 'Ilt (' + oxyLabel + ')',
             durationSec: state.oxygenBlockSec,
             startAta: ata,
@@ -1311,6 +1467,7 @@
             fillColor: sharedFill,
             strokeColor: sharedStroke
           });
+
           if (i < oxygenBlocks - 1) {
             const pauseLabel = state.pauseSec % 60 === 0
               ? (state.pauseSec / 60) + ' min'
@@ -1318,6 +1475,9 @@
             pushPhase({
               type: 'pause',
               title: 'MASKE AF – PAUSE',
+              hint: state.chamberGuidance
+                ? 'Tag masken af under luftpause (luk evt. ilthanen på tværs af slangen) og træk vejret normalt.'
+                : '',
               shortLabel: 'Pause (' + pauseLabel + ')',
               durationSec: state.pauseSec,
               startAta: ata,
@@ -1328,10 +1488,14 @@
           }
         }
 
+        // 4. Tryksænkning: åbn udluftningsventil lidt ad gangen (~10 PSI/min), behold masken på
+        const ventRateStr = formatVentRatePerMinute(state.pressureUnit);
         pushPhase({
           type: 'depressurize',
           title: 'TRYKSÆNKNING',
-          hint: 'Behold masken på – tag den først af, når du er færdig',
+          hint: state.chamberGuidance
+            ? 'Åbn den sorte udluftningsventil lidt ad gangen, så trykket falder med ' + ventRateStr + '. Behold masken på og træk vejret normalt under hele tryksænkningen.'
+            : 'Behold masken på – tag den først af, når du er færdig',
           shortLabel: 'Tryksænkning (' + formatSecondsToMMSS(state.depressurizeSec) + ')',
           durationSec: state.depressurizeSec,
           startAta: ata,
@@ -1377,7 +1541,7 @@
       }
 
       /* -------------------------------------------------------------------
-       * 7. SVG TRYKKURVER (OPSÆTNING + LIVE UNDER BEHANDLING)
+       * 7. SVG TRYKKURVER
        * ------------------------------------------------------------------- */
       function renderSetupPressureChart(phases) {
         const svg = el.setupPressureSvg;
@@ -1413,7 +1577,6 @@
 
         let html = '';
 
-        // Vandrette gitterlinjer & Y-akse mærkater i valgt enhed
         const midAta = minAta + ataSpan / 2;
         [minAta, midAta, maxAta].forEach(function (ataVal) {
           const y = yOf(ataVal);
@@ -1423,7 +1586,6 @@
           html += '<text x="' + (padL - 8) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="end" fill="' + axisTextColor + '" font-size="11" font-weight="700">' + label + '</text>';
         });
 
-        // Tegn faser som fyldte polygoner + tydelig kurve
         phases.forEach(function (p) {
           const x1 = xOf(p.startSec);
           const x2 = xOf(p.endSec);
@@ -1438,7 +1600,6 @@
           html += '<polygon points="' + points + '" fill="' + p.fillColor + '" />';
           html += '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="' + p.strokeColor + '" stroke-width="3" stroke-linecap="round" />';
 
-          // Diskret fase-mærkat midt i brede blokke
           const segW = x2 - x1;
           if (segW > 46 && (p.type === 'oxygen' || p.type === 'pause')) {
             const label = p.type === 'oxygen'
@@ -1450,7 +1611,6 @@
           }
         });
 
-        // X-akse mærkater (minutter)
         const totalMin = totalSec / 60;
         const stepMin = totalMin <= 45 ? 10 : (totalMin <= 90 ? 15 : 20);
         for (let m = 0; m <= Math.floor(totalMin); m += stepMin) {
@@ -1459,7 +1619,6 @@
           html += '<text x="' + x.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" fill="' + axisTextColor + '" font-size="10.5" font-weight="600">' + m + ' min</text>';
         }
 
-        // Slut-tid mærkat
         const endX = xOf(totalSec);
         if (totalMin % stepMin >= 4) {
           html += '<text x="' + endX.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="end" fill="' + axisTextColor + '" font-size="10.5" font-weight="700">' + Math.round(totalMin) + ' min</text>';
@@ -1477,12 +1636,12 @@
         const targetAta = state.pressureAta;
         const isNight = state.theme === 'night';
         const markerColor = isNight ? '#FAF9F6' : '#151F28';
-        const W = 600;
-        const H = 68;
-        const padL = 48;
-        const padR = 14;
-        const padT = 10;
-        const padB = 14;
+        const W = 640;
+        const H = 165;
+        const padL = 74;
+        const padR = 18;
+        const padT = 18;
+        const padB = 26;
         const plotW = W - padL - padR;
         const plotH = H - padT - padB;
 
@@ -1497,38 +1656,74 @@
         }
 
         const baseY = yOf(minAta);
+        const topY = yOf(targetAta);
+        const midY = (baseY + topY) / 2;
         let html = '';
 
-        // Diskrete Y-labels i valgt trykenhed
-        html += '<text x="' + (padL - 6) + '" y="' + (yOf(targetAta) + 4).toFixed(1) + '" text-anchor="end" fill="currentColor" opacity="0.82" font-size="10" font-weight="700">' + formatPressureValue(targetAta, state.pressureUnit, false) + '</text>';
-        html += '<text x="' + (padL - 6) + '" y="' + (baseY + 3).toFixed(1) + '" text-anchor="end" fill="currentColor" opacity="0.58" font-size="10" font-weight="600">' + formatPressureValue(1.0, state.pressureUnit, false) + '</text>';
-        html += '<line x1="' + padL + '" y1="' + baseY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + baseY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.22" stroke-width="1" />';
+        // Tydelige hjælpelinjer og trykmærkater (top, midt, bund) i valgt enhed
+        html += '<line x1="' + padL + '" y1="' + topY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + topY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.18" stroke-width="1.2" stroke-dasharray="4 4" />';
+        html += '<text x="' + (padL - 8) + '" y="' + (topY + 4).toFixed(1) + '" text-anchor="end" fill="currentColor" opacity="0.9" font-size="12" font-weight="800">' + formatPressureValue(targetAta, state.pressureUnit, true) + '</text>';
 
-        // Tegn faserne
-        phases.forEach(function (p) {
+        html += '<line x1="' + padL + '" y1="' + midY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + midY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.12" stroke-width="1" stroke-dasharray="3 4" />';
+
+        html += '<line x1="' + padL + '" y1="' + baseY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + baseY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.32" stroke-width="1.5" />';
+        html += '<text x="' + (padL - 8) + '" y="' + (baseY + 4).toFixed(1) + '" text-anchor="end" fill="currentColor" opacity="0.72" font-size="11.5" font-weight="700">' + formatPressureValue(1.0, state.pressureUnit, true) + '</text>';
+
+        // Tegn alle faser med høj kontrast og fase-labels
+        phases.forEach(function (p, idx) {
           const x1 = xOf(p.startSec);
           const x2 = xOf(p.endSec);
           const y1 = yOf(p.startAta);
           const y2 = yOf(p.endAta);
+          const isCurrent = state.isRunning && idx === state.currentPhaseIndex;
 
           const points = x1.toFixed(1) + ',' + baseY.toFixed(1) + ' ' +
             x1.toFixed(1) + ',' + y1.toFixed(1) + ' ' +
             x2.toFixed(1) + ',' + y2.toFixed(1) + ' ' +
             x2.toFixed(1) + ',' + baseY.toFixed(1);
 
-          html += '<polygon points="' + points + '" fill="' + p.strokeColor + '" fill-opacity="0.32" />';
-          html += '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="' + p.strokeColor + '" stroke-width="3" stroke-linecap="round" />';
+          html += '<polygon points="' + points + '" fill="' + p.strokeColor + '" fill-opacity="' + (isCurrent ? '0.46' : '0.26') + '" />';
+          html += '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="' + p.strokeColor + '" stroke-width="' + (isCurrent ? '4.5' : '3') + '" stroke-linecap="round" />';
+
+          const segW = x2 - x1;
+          if (segW > 42) {
+            let shortTag = '';
+            if (p.type === 'entry') shortTag = 'Indstigning';
+            else if (p.type === 'pressurize') shortTag = 'Tryk op';
+            else if (p.type === 'oxygen') shortTag = Math.round(p.durationSec / 60) + 'm ilt';
+            else if (p.type === 'pause') shortTag = (p.durationSec % 60 === 0 ? (p.durationSec / 60) + 'm' : formatSecondsToMMSS(p.durationSec)) + ' pause';
+            else if (p.type === 'depressurize') shortTag = 'Tryk ned';
+
+            const cx = (x1 + x2) / 2;
+            const cy = Math.min(y1, y2) + (baseY - Math.min(y1, y2)) * 0.56;
+            html += '<text x="' + cx.toFixed(1) + '" y="' + cy.toFixed(1) + '" text-anchor="middle" fill="currentColor" opacity="' + (isCurrent ? '0.95' : '0.72') + '" font-size="11" font-weight="800">' + shortTag + '</text>';
+          }
         });
 
-        // Live markør
+        // Tidsmarkeringer på X-aksen (start, midt, slut)
+        const totalMin = totalSec / 60;
+        html += '<text x="' + padL + '" y="' + (H - 6) + '" text-anchor="start" fill="currentColor" opacity="0.68" font-size="10.5" font-weight="700">0 min</text>';
+        html += '<text x="' + (padL + plotW / 2).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="middle" fill="currentColor" opacity="0.62" font-size="10.5" font-weight="600">' + formatDaNumber(totalMin / 2, 0) + ' min</text>';
+        html += '<text x="' + (W - padR) + '" y="' + (H - 6) + '" text-anchor="end" fill="currentColor" opacity="0.75" font-size="10.5" font-weight="700">' + formatDaNumber(totalMin, 0) + ' min</text>';
+
+        // Live markør med aktuelt tryk
         const clampedSec = Math.min(totalSec, Math.max(0, elapsedSec));
         const curX = xOf(clampedSec);
         const curAta = getAtaAtElapsed(phases, clampedSec);
         const curY = yOf(curAta);
 
-        html += '<line x1="' + curX.toFixed(1) + '" y1="' + (padT - 2) + '" x2="' + curX.toFixed(1) + '" y2="' + (baseY + 2) + '" stroke="' + markerColor + '" stroke-opacity="0.85" stroke-width="2" stroke-dasharray="3 2" />';
-        html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="7" fill="' + markerColor + '" fill-opacity="0.25" />';
-        html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="4" fill="' + markerColor + '" />';
+        html += '<line x1="' + curX.toFixed(1) + '" y1="' + (padT - 4) + '" x2="' + curX.toFixed(1) + '" y2="' + (baseY + 2) + '" stroke="' + markerColor + '" stroke-opacity="0.9" stroke-width="2.2" stroke-dasharray="4 3" />';
+        html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="10" fill="' + markerColor + '" fill-opacity="0.22" />';
+        html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="5" fill="' + markerColor + '" />';
+
+        const curLabel = formatPressureValue(curAta, state.pressureUnit, true);
+        const labelOnLeft = curX > (W - padR - 85);
+        const boxW = 76;
+        const boxX = labelOnLeft ? Math.max(padL, curX - boxW - 10) : Math.min(W - padR - boxW, curX + 10);
+        const boxY = Math.max(4, Math.min(baseY - 24, curY - 12));
+
+        html += '<rect x="' + boxX.toFixed(1) + '" y="' + boxY.toFixed(1) + '" width="' + boxW + '" height="20" rx="6" fill="' + (isNight ? '#111e28' : '#ffffff') + '" fill-opacity="0.92" stroke="' + markerColor + '" stroke-opacity="0.35" stroke-width="1" />';
+        html += '<text x="' + (boxX + boxW / 2).toFixed(1) + '" y="' + (boxY + 13.5).toFixed(1) + '" text-anchor="middle" fill="' + (isNight ? '#FAF9F6' : '#013F58') + '" font-size="10.5" font-weight="800">' + curLabel + '</text>';
 
         svg.innerHTML = html;
       }
@@ -1542,11 +1737,13 @@
         if (el.metaThemeColor) {
           el.metaThemeColor.setAttribute('content', isNight ? '#000000' : '#013F58');
         }
-        // Header tema-knap ("Skift til ...")
         el.headerThemeIcon.textContent = isNight ? '☀️' : '🌙';
         el.headerThemeText.textContent = isNight ? 'Skift til Dagslys' : 'Skift til Aften';
 
-        // Trykenhed-knapper (ATA / PSI / kPa)
+        if (el.chamberGuidanceCheckbox) {
+          el.chamberGuidanceCheckbox.checked = state.chamberGuidance;
+        }
+
         el.unitBtns.forEach(function (btn) {
           const active = btn.dataset.unit === state.pressureUnit;
           btn.className = active
@@ -1554,7 +1751,13 @@
             : 'unit-btn px-2.5 py-0.5 rounded-full transition cursor-pointer text-rl-black/70 hover:text-rl-darkblue';
         });
 
-        // Trykvalg knapper (viser valgt enhed + standard tid)
+        el.repeatBtns.forEach(function (btn) {
+          const active = Number(btn.dataset.repeat) === state.soundRepeats;
+          btn.className = active
+            ? 'repeat-btn px-3 py-1 rounded-full transition cursor-pointer bg-rl-darkblue text-white shadow-sm'
+            : 'repeat-btn px-3 py-1 rounded-full transition cursor-pointer text-rl-black/70 hover:text-rl-darkblue';
+        });
+
         el.selectedAtaBadge.textContent = formatPressureValue(state.pressureAta, state.pressureUnit, true);
         if (el.chartProfileLabel) {
           el.chartProfileLabel.textContent = 'Trykprofil (' + state.pressureUnit + ' over tid)';
@@ -1577,7 +1780,6 @@
           }
         });
 
-        // Opdatér de 4 tidsfelter (hvis brugeren ikke netop taster i dem)
         if (document.activeElement !== el.entryDelayInput) {
           el.entryDelayInput.value = formatSecondsToMMSS(state.entryDelaySec);
         }
@@ -1594,7 +1796,6 @@
           el.depressurizeInput.value = formatSecondsToMMSS(state.depressurizeSec);
         }
 
-        // Dynamiske tekster på program-knapper og farveforklaring ud fra valgt ilt-interval og luftpause
         const oxyMinShort = state.oxygenBlockSec % 60 === 0
           ? String(state.oxygenBlockSec / 60)
           : formatSecondsToMMSS(state.oxygenBlockSec);
@@ -1611,7 +1812,6 @@
         if (el.legendOxygenLabel) el.legendOxygenLabel.textContent = 'Tryksætning & Ilt (' + oxyMinShort + ' min)';
         if (el.legendPauseLabel) el.legendPauseLabel.textContent = 'Luftpause (' + pauseLegendText + ')';
 
-        // Preset-knapper
         el.presetBtns.forEach(function (btn) {
           const active = Number(btn.dataset.preset) === state.preset;
           if (active) {
@@ -1625,7 +1825,6 @@
           }
         });
 
-        // FiO2-knapper
         el.fio2Btns.forEach(function (btn) {
           const active = Number(btn.dataset.fio2) === state.fiO2;
           btn.className = active
@@ -1633,7 +1832,6 @@
             : 'fio2-btn px-3 py-1 rounded-full transition cursor-pointer text-rl-black/70 hover:text-rl-darkblue';
         });
 
-        // Tema-knapper (Dagslys / Aften)
         el.themeBtns.forEach(function (btn) {
           const active = btn.dataset.theme === state.theme;
           if (active) {
@@ -1647,12 +1845,10 @@
           }
         });
 
-        // Lydindstillinger
         el.soundSelect.value = state.soundType;
         el.volumeSlider.value = String(state.volume);
         el.volumeValue.textContent = state.volume + '%';
 
-        // Byg faser, tegn graf og beregn tider + OTU
         const phases = buildPhases();
         const totalAllSec = phases.reduce(function (acc, p) { return acc + p.durationSec; }, 0);
         const treatmentOnlySec = totalAllSec - state.entryDelaySec;
@@ -1671,8 +1867,14 @@
       }
 
       /* -------------------------------------------------------------------
-       * 9. WEB AUDIO API – YOGA PLING (5 SEK.) + 10 BLØDE LYDE + BIP
+       * 9. WEB AUDIO API – MED 1, 2 ELLER 3 GENTAGELSER INDEN FOR 5 SEK.
        * ------------------------------------------------------------------- */
+      function clearActiveSoundTimers() {
+        while (activeSoundTimers.length) {
+          clearTimeout(activeSoundTimers.pop());
+        }
+      }
+
       function getAudioContext() {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         if (!AudioCtx) return null;
@@ -1709,7 +1911,6 @@
         osc.stop(startTime + duration + 0.04);
       }
 
-      // Blød filtreret bølgelyd til "Blid Havbølge"
       function playSoftNoiseSwell(ctx, startTime, duration, peakGain) {
         const sampleRate = ctx.sampleRate;
         const length = Math.floor(sampleRate * duration);
@@ -1743,11 +1944,11 @@
         src.stop(startTime + duration + 0.05);
       }
 
-      function playSignalSound(isFinished) {
+      function playSingleChime(isFinished, durationScale) {
         if (state.volume <= 0) return;
         const gain = (state.volume / 100) * 0.6;
+        const scale = typeof durationScale === 'number' ? durationScale : 1.0;
 
-        // Egen lydfil hvis valgt
         if (state.soundType === 'custom' && state.customAudioUrl && el.customAudioPlayer) {
           try {
             el.customAudioPlayer.pause();
@@ -1758,16 +1959,13 @@
               playPromise.catch(function () {});
             }
             return;
-          } catch (err) {
-            // Falder tilbage til Web Audio
-          }
+          } catch (err) {}
         }
 
         const ctx = getAudioContext();
         if (!ctx) return;
         const now = ctx.currentTime + 0.02;
 
-        // Ved helt færdig behandling spilles en blid 3-toners afslutning
         if (isFinished) {
           playTone(ctx, 523.25, now, 2.2, 'sine', gain * 0.65, 0.03);
           playTone(ctx, 659.25, now + 0.25, 2.6, 'sine', gain * 0.65, 0.03);
@@ -1778,76 +1976,75 @@
 
         switch (state.soundType) {
           case 'yoga_pling':
-            // Yoga Pling (standard) – klar tingsha/klokke der toner roligt ud over 5 sekunder
-            playTone(ctx, 1046.5, now, 5.0, 'sine', gain * 0.72, 0.008);
-            playTone(ctx, 1048.2, now, 5.0, 'sine', gain * 0.34, 0.008);
-            playTone(ctx, 2093.0, now, 4.2, 'sine', gain * 0.24, 0.006);
-            playTone(ctx, 3135.96, now, 2.8, 'sine', gain * 0.11, 0.005);
-            playTone(ctx, 523.25, now, 4.6, 'sine', gain * 0.22, 0.015);
+            playTone(ctx, 1046.5, now, 5.0 * scale, 'sine', gain * 0.72, 0.008);
+            playTone(ctx, 1048.2, now, 5.0 * scale, 'sine', gain * 0.34, 0.008);
+            playTone(ctx, 2093.0, now, 4.2 * scale, 'sine', gain * 0.24, 0.006);
+            playTone(ctx, 3135.96, now, 2.8 * scale, 'sine', gain * 0.11, 0.005);
+            playTone(ctx, 523.25, now, 4.6 * scale, 'sine', gain * 0.22, 0.015);
             break;
 
           case 'singing_bowl':
-            playTone(ctx, 220.0, now, 4.5, 'sine', gain * 0.75, 0.06);
-            playTone(ctx, 221.4, now, 4.5, 'sine', gain * 0.45, 0.06);
-            playTone(ctx, 608.0, now, 3.8, 'sine', gain * 0.22, 0.04);
-            playTone(ctx, 1142.0, now, 2.5, 'sine', gain * 0.08, 0.03);
+            playTone(ctx, 220.0, now, 4.5 * scale, 'sine', gain * 0.75, 0.06);
+            playTone(ctx, 221.4, now, 4.5 * scale, 'sine', gain * 0.45, 0.06);
+            playTone(ctx, 608.0, now, 3.8 * scale, 'sine', gain * 0.22, 0.04);
+            playTone(ctx, 1142.0, now, 2.5 * scale, 'sine', gain * 0.08, 0.03);
             break;
 
           case 'soft_harp':
             [261.63, 329.63, 392.0, 493.88, 587.33].forEach(function (f, i) {
-              playTone(ctx, f, now + i * 0.14, 2.6, 'sine', gain * 0.45, 0.015);
-              playTone(ctx, f * 2, now + i * 0.14, 1.4, 'sine', gain * 0.12, 0.01);
+              playTone(ctx, f, now + i * 0.12 * scale, 2.4 * scale, 'sine', gain * 0.45, 0.015);
+              playTone(ctx, f * 2, now + i * 0.12 * scale, 1.3 * scale, 'sine', gain * 0.12, 0.01);
             });
             break;
 
           case 'wind_chimes':
             [1174.66, 1318.51, 1567.98, 1760.0, 2093.0].forEach(function (f, i) {
-              playTone(ctx, f, now + i * 0.16, 2.8, 'sine', gain * 0.34, 0.008);
+              playTone(ctx, f, now + i * 0.13 * scale, 2.5 * scale, 'sine', gain * 0.34, 0.008);
             });
             break;
 
           case 'zen_gong':
-            playTone(ctx, 130.81, now, 4.6, 'sine', gain * 0.85, 0.04);
-            playTone(ctx, 196.0, now, 4.0, 'sine', gain * 0.38, 0.04);
-            playTone(ctx, 261.63, now, 3.4, 'triangle', gain * 0.22, 0.03);
-            playTone(ctx, 392.0, now, 2.4, 'sine', gain * 0.14, 0.02);
+            playTone(ctx, 130.81, now, 4.6 * scale, 'sine', gain * 0.85, 0.04);
+            playTone(ctx, 196.0, now, 4.0 * scale, 'sine', gain * 0.38, 0.04);
+            playTone(ctx, 261.63, now, 3.4 * scale, 'triangle', gain * 0.22, 0.03);
+            playTone(ctx, 392.0, now, 2.4 * scale, 'sine', gain * 0.14, 0.02);
             break;
 
           case 'kalimba':
             [392.0, 493.88, 587.33].forEach(function (f, i) {
-              playTone(ctx, f, now + i * 0.22, 1.8, 'triangle', gain * 0.52, 0.008);
-              playTone(ctx, f * 2, now + i * 0.22, 0.7, 'sine', gain * 0.16, 0.005);
+              playTone(ctx, f, now + i * 0.18 * scale, 1.6 * scale, 'triangle', gain * 0.52, 0.008);
+              playTone(ctx, f * 2, now + i * 0.18 * scale, 0.65 * scale, 'sine', gain * 0.16, 0.005);
             });
             break;
 
           case 'crystal_chime':
-            playTone(ctx, 1567.98, now, 3.6, 'sine', gain * 0.55, 0.01);
-            playTone(ctx, 1570.0, now, 3.6, 'sine', gain * 0.3, 0.01);
-            playTone(ctx, 3135.96, now, 2.2, 'sine', gain * 0.14, 0.008);
+            playTone(ctx, 1567.98, now, 3.6 * scale, 'sine', gain * 0.55, 0.01);
+            playTone(ctx, 1570.0, now, 3.6 * scale, 'sine', gain * 0.3, 0.01);
+            playTone(ctx, 3135.96, now, 2.2 * scale, 'sine', gain * 0.14, 0.008);
             break;
 
           case 'warm_marimba':
-            playTone(ctx, 329.63, now, 0.9, 'sine', gain * 0.75, 0.008);
-            playTone(ctx, 659.25, now, 0.25, 'sine', gain * 0.22, 0.005);
-            playTone(ctx, 493.88, now + 0.24, 1.2, 'sine', gain * 0.72, 0.008);
-            playTone(ctx, 987.77, now + 0.24, 0.3, 'sine', gain * 0.18, 0.005);
+            playTone(ctx, 329.63, now, 0.85 * scale, 'sine', gain * 0.75, 0.008);
+            playTone(ctx, 659.25, now, 0.22 * scale, 'sine', gain * 0.22, 0.005);
+            playTone(ctx, 493.88, now + 0.22 * scale, 1.1 * scale, 'sine', gain * 0.72, 0.008);
+            playTone(ctx, 987.77, now + 0.22 * scale, 0.28 * scale, 'sine', gain * 0.18, 0.005);
             break;
 
           case 'ocean_swell':
-            playSoftNoiseSwell(ctx, now, 3.6, gain * 0.38);
-            playTone(ctx, 293.66, now + 0.4, 3.2, 'sine', gain * 0.42, 0.45);
-            playTone(ctx, 440.0, now + 0.7, 2.8, 'sine', gain * 0.25, 0.45);
+            playSoftNoiseSwell(ctx, now, 3.2 * scale, gain * 0.38);
+            playTone(ctx, 293.66, now + 0.35 * scale, 2.8 * scale, 'sine', gain * 0.42, 0.35 * scale);
+            playTone(ctx, 440.0, now + 0.6 * scale, 2.5 * scale, 'sine', gain * 0.25, 0.35 * scale);
             break;
 
           case 'flute_breath':
-            playTone(ctx, 523.25, now, 1.6, 'sine', gain * 0.52, 0.22);
-            playTone(ctx, 659.25, now + 0.65, 2.2, 'sine', gain * 0.52, 0.22);
+            playTone(ctx, 523.25, now, 1.5 * scale, 'sine', gain * 0.52, 0.18 * scale);
+            playTone(ctx, 659.25, now + 0.55 * scale, 2.0 * scale, 'sine', gain * 0.52, 0.18 * scale);
             break;
 
           case 'soft_bell':
-            playTone(ctx, 440.0, now, 3.0, 'sine', gain * 0.65, 0.02);
-            playTone(ctx, 880.0, now, 2.0, 'sine', gain * 0.22, 0.015);
-            playTone(ctx, 1318.51, now, 1.4, 'sine', gain * 0.1, 0.01);
+            playTone(ctx, 440.0, now, 3.0 * scale, 'sine', gain * 0.65, 0.02);
+            playTone(ctx, 880.0, now, 2.0 * scale, 'sine', gain * 0.22, 0.015);
+            playTone(ctx, 1318.51, now, 1.4 * scale, 'sine', gain * 0.1, 0.01);
             break;
 
           case 'beep':
@@ -1858,8 +2055,33 @@
         }
       }
 
+      function playSignalSound(isFinished) {
+        clearActiveSoundTimers();
+        if (state.volume <= 0) return;
+
+        const repeats = Math.min(3, Math.max(1, state.soundRepeats || 1));
+        if (repeats === 1) {
+          playSingleChime(isFinished, 1.0);
+          return;
+        }
+
+        const intervalMs = repeats === 2 ? 2200 : 1650;
+        const durationScale = repeats === 2 ? 0.62 : 0.48;
+
+        for (let i = 0; i < repeats; i++) {
+          if (i === 0) {
+            playSingleChime(isFinished, durationScale);
+          } else {
+            const tId = setTimeout(function () {
+              playSingleChime(isFinished, durationScale);
+            }, i * intervalMs);
+            activeSoundTimers.push(tId);
+          }
+        }
+      }
+
       /* -------------------------------------------------------------------
-       * 10. SCREEN WAKE LOCK API (HOLDER SKÆRMEN VÅGEN)
+       * 10. SCREEN WAKE LOCK API
        * ------------------------------------------------------------------- */
       async function requestWakeLock() {
         if (!('wakeLock' in navigator)) {
@@ -1899,7 +2121,7 @@
       });
 
       /* -------------------------------------------------------------------
-       * 11. AKTIV TIMER-SKÆRM: FARVETEMA, SPOLE-SLIDER & TIDTAGNING
+       * 11. AKTIV TIMER-SKÆRM: FARVETEMA (FIX AF iOS FARVE/ANIMATION), SPOLE & TID
        * ------------------------------------------------------------------- */
       function getPreWarnInfo(phaseIndex, remainingSec) {
         if (remainingSec <= 0 || remainingSec > 15) return null;
@@ -1907,15 +2129,12 @@
         if (!phase) return null;
         const nextPhase = state.phases[phaseIndex + 1];
 
-        // Maske af før luftpause (ikke før tryksænkning)
         if (phase.type === 'oxygen' && nextPhase && nextPhase.type === 'pause') {
           return { mode: 'mask_off', label: 'Gør klar: Maske af om' };
         }
-        // Maske på igen når luftpause slutter
         if (phase.type === 'pause' && nextPhase && nextPhase.type === 'oxygen') {
           return { mode: 'mask_on', label: 'Gør klar: Maske på om' };
         }
-        // Maske af først når tryksænkningen er færdig
         if (phase.type === 'depressurize' && !nextPhase) {
           return { mode: 'mask_off', label: 'Gør klar: Færdig – maske af om' };
         }
@@ -1946,15 +2165,22 @@
         const screen = el.timerScreen;
         const isNight = state.theme === 'night';
 
-        // Nulstil eventuel aktiv 15-sek. forvarsels-animation (vigtigt på iOS Safari ved skift/'Næste')
+        // Fjern eksplicit alle mulige baggrunds-, tekst- og animationsklasser (forhindrer iOS Safari i at hænge i gul pausefarve)
         screen.style.animation = 'none';
+        screen.classList.remove(
+          'timer-night',
+          'bg-rl-lightbg', 'bg-rl-lightblue', 'bg-amber-300', 'bg-[#C7D6DF]', 'bg-[#FAF9F6]', 'bg-black',
+          'text-rl-black', 'text-[#FAF9F6]',
+          'border-[10px]', 'border-rl-taupe', 'border-rl-lightblue', 'border-amber-500', 'border-[#7A94A3]', 'border-emerald-500',
+          'animate-prewarn-day', 'animate-prewarn-night', 'animate-prewarn-on-day', 'animate-prewarn-on-night',
+          'transition-colors', 'duration-300', 'duration-500'
+        );
         void screen.offsetWidth;
         screen.style.animation = '';
 
-        screen.className = 'fixed inset-0 z-30 flex flex-col justify-between select-none transition-colors duration-300 overflow-hidden';
+        screen.classList.add('fixed', 'inset-0', 'z-30', 'flex', 'flex-col', 'justify-between', 'select-none', 'overflow-hidden');
 
         if (!isNight) {
-          // DAGSLYS: RechargeLife sort tekst (#151F28). Tryksætning & Ilt deler samme baggrundsfarve (rl-lightblue)
           const dayStyles = {
             entry: 'bg-rl-lightbg text-rl-black',
             pressurize: 'bg-rl-lightblue text-rl-black',
@@ -1973,7 +2199,6 @@
           el.toggleThemeActiveIcon.textContent = '🌙';
           el.toggleThemeActiveLabel.textContent = 'Skift til Aften';
         } else {
-          // AFTEN / MØRKE: Kulsort baggrund + RechargeLife hvid tekst (#FAF9F6). Tryksætning & Ilt deler samme rammefarve (rl-lightblue)
           screen.classList.add('timer-night');
           const nightStyles = {
             entry: 'bg-black text-[#FAF9F6] border-[10px] border-rl-taupe',
@@ -1994,17 +2219,19 @@
           el.toggleThemeActiveLabel.textContent = 'Skift til Dagslys';
         }
 
-        // Tilpas pills, chart-boks og kontrolknapper til dag/nat-kontrast
+        // Gør pills og graf-boks helt neutrale (uden gul tint på iOS Safari)
         const pillBg = isNight ? 'bg-white/10' : 'bg-rl-black/10';
         const ctrlBg = isNight ? 'bg-white/10 hover:bg-white/20' : 'bg-rl-black/10 hover:bg-rl-black/20';
 
         el.timerPills.forEach(function (p) {
-          p.classList.remove('bg-white/10', 'bg-rl-black/10');
+          p.classList.remove('bg-white/10', 'bg-rl-black/10', 'bg-amber-500', 'bg-amber-300');
           p.classList.add(pillBg);
+          p.style.backgroundColor = isNight ? 'rgba(255, 255, 255, 0.12)' : 'rgba(21, 31, 40, 0.09)';
         });
         if (el.liveChartBox) {
-          el.liveChartBox.classList.remove('bg-white/10', 'bg-rl-black/10');
+          el.liveChartBox.classList.remove('bg-white/10', 'bg-rl-black/10', 'bg-amber-500', 'bg-amber-300');
           el.liveChartBox.classList.add(pillBg);
+          el.liveChartBox.style.backgroundColor = isNight ? 'rgba(255, 255, 255, 0.10)' : 'rgba(21, 31, 40, 0.08)';
         }
         el.timerCtrlBtns.forEach(function (b) {
           b.classList.remove('bg-white/10', 'hover:bg-white/20', 'bg-rl-black/10', 'hover:bg-rl-black/20');
@@ -2036,8 +2263,9 @@
       }
 
       function startTreatment() {
-        // Lås lyd op på brugerens aktive klik
         getAudioContext();
+        startClockBadgeLoop();
+        syncFullscreenUi();
 
         state.phases = buildPhases();
         state.totalSessionSec = state.phases.reduce(function (acc, p) { return acc + p.durationSec; }, 0);
@@ -2127,7 +2355,6 @@
         }
       }
 
-      // Spol til et specifikt tidspunkt (i sekunder) i hele behandlingsforløbet
       function seekToElapsedSec(targetSec) {
         if (!state.phases.length) return;
         const clamped = Math.min(state.totalSessionSec, Math.max(0, Number(targetSec) || 0));
@@ -2166,12 +2393,18 @@
         state.isPaused = false;
         releaseWakeLock();
 
+        const zeroLabel = formatZeroGauge(state.pressureUnit);
         el.stepBadge.textContent = 'Gennemført';
         el.phaseTitle.textContent = 'BEHANDLING FÆRDIG';
-        el.phaseHint.textContent = '';
-        el.phaseHint.classList.add('hidden');
+        if (state.chamberGuidance) {
+          el.phaseHint.textContent = 'Sikr dig, at trykmåleren viser ' + zeroLabel + ', inden du lyner op – tag herefter masken af og forlad kammeret.';
+          el.phaseHint.classList.remove('hidden');
+        } else {
+          el.phaseHint.textContent = '';
+          el.phaseHint.classList.add('hidden');
+        }
         el.timerClock.textContent = '00:00';
-        el.nextPhaseText.textContent = 'Tag masken af – du kan nu roligt åbne kammeret';
+        el.nextPhaseText.textContent = 'Tjek at trykmåleren viser ' + zeroLabel + ', før du lyner op';
         el.phaseProgressBar.style.width = '100%';
         el.elapsedTimeLabel.textContent = formatSecondsToMMSS(state.totalSessionSec);
         el.seekSlider.value = String(state.totalSessionSec);
@@ -2216,7 +2449,6 @@
             renderLivePressureChart(totalElapsedSec);
           }
 
-          // 15 sekunders forvarsel: maske af før pause, maske på før ilt, maske af når tryksænkning slutter
           const remainingSec = Math.ceil(remainingMs / 1000);
           const preWarnInfo = getPreWarnInfo(state.currentPhaseIndex, remainingSec);
           const preWarnMode = preWarnInfo ? preWarnInfo.mode : null;
@@ -2231,6 +2463,11 @@
 
       function stopAndReturnToSetup() {
         stopTickLoop();
+        clearActiveSoundTimers();
+        if (state.clockIntervalId) {
+          clearInterval(state.clockIntervalId);
+          state.clockIntervalId = null;
+        }
         state.isRunning = false;
         state.isPaused = false;
         state.isScrubbing = false;
@@ -2247,14 +2484,19 @@
        * 12. EVENT LISTENERS
        * ------------------------------------------------------------------- */
 
-      // Header: Skift Dagslys / Aften
       el.headerThemeToggleBtn.addEventListener('click', function () {
         state.theme = state.theme === 'day' ? 'night' : 'day';
         savePreferences();
         renderSetupUI();
       });
 
-      // Opsætning: Valg af trykenhed (ATA / PSI / kPa) – gemmes i cookie
+      if (el.chamberGuidanceCheckbox) {
+        el.chamberGuidanceCheckbox.addEventListener('change', function () {
+          state.chamberGuidance = el.chamberGuidanceCheckbox.checked;
+          savePreferences();
+        });
+      }
+
       el.unitBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           state.pressureUnit = btn.dataset.unit;
@@ -2263,7 +2505,14 @@
         });
       });
 
-      // Opsætning: Valg af kammertryk (opdaterer standard tryksætning/sænkning til 1 min pr. 0,1 ATA)
+      el.repeatBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          state.soundRepeats = Number(btn.dataset.repeat) || 1;
+          savePreferences();
+          renderSetupUI();
+        });
+      });
+
       el.ataBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           const ata = Number(btn.dataset.ata);
@@ -2277,7 +2526,6 @@
         });
       });
 
-      // Opsætning: Pile-knapper med faste grænser (Indstigning: 0-10m, Tryk: 1-20m, Ilt: 10-30m)
       el.timeStepBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           const targetKey = btn.dataset.stepTarget;
@@ -2301,7 +2549,6 @@
         });
       });
 
-      // Opsætning: Manuel indtastning i MM:SS (maks. 2 cifre før ':' og 2 efter ':' – overskriver ved flere cifre)
       function bindTimeInput(inputEl, stateKey, minSec, maxSec, arrowStepSec) {
         const step = arrowStepSec || 30;
         inputEl.addEventListener('focus', function () {
@@ -2406,12 +2653,10 @@
       bindTimeInput(el.pauseInput, 'pauseSec', 300, 420, 30);
       bindTimeInput(el.depressurizeInput, 'depressurizeSec', 60, 1200, 30);
 
-      // Opsætning: Program / pauser
       el.presetBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           const nextPreset = Number(btn.dataset.preset);
           state.preset = nextPreset;
-          // Ved valg af "Ingen pause" sættes standardværdierne tilsvarende 1,5 ATA (2:30 indstigning, 5:00 tryk, 20:00 ilt)
           if (nextPreset === 0) {
             state.pressureAta = 1.5;
             state.entryDelaySec = 150;
@@ -2424,7 +2669,6 @@
         });
       });
 
-      // Opsætning: FiO2 valg
       el.fio2Btns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           state.fiO2 = Number(btn.dataset.fio2);
@@ -2433,7 +2677,6 @@
         });
       });
 
-      // Opsætning: Dagslys / Aften knapper
       el.themeBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           state.theme = btn.dataset.theme;
@@ -2442,7 +2685,6 @@
         });
       });
 
-      // Lydvalg & volumen
       el.soundSelect.addEventListener('change', function () {
         state.soundType = el.soundSelect.value;
         savePreferences();
@@ -2458,7 +2700,6 @@
         playSignalSound(false);
       });
 
-      // Egen lydfil
       el.customAudioInput.addEventListener('change', function (e) {
         const file = e.target.files && e.target.files[0];
         if (!file) return;
@@ -2492,10 +2733,12 @@
         el.soundSelect.value = 'yoga_pling';
       });
 
-      // Start behandling
       el.startBtn.addEventListener('click', startTreatment);
 
-      // Spole-slider på aktiv timer-skærm
+      if (el.fullscreenBtn) {
+        el.fullscreenBtn.addEventListener('click', toggleFullscreen);
+      }
+
       el.seekSlider.addEventListener('pointerdown', function () {
         state.isScrubbing = true;
       });
@@ -2511,7 +2754,6 @@
         state.isScrubbing = false;
       });
 
-      // Aktiv skærm: Skift Dagslys / Aften undervejs
       el.toggleThemeActiveBtn.addEventListener('click', function () {
         state.theme = state.theme === 'day' ? 'night' : 'day';
         savePreferences();
@@ -2528,7 +2770,6 @@
         }
       });
 
-      // Aktiv skærm: Pause / Genoptag
       el.pauseResumeBtn.addEventListener('click', function () {
         if (!state.isRunning) return;
         if (!state.isPaused) {
@@ -2545,7 +2786,6 @@
         }
       });
 
-      // Aktiv skærm: Hop til næste fase
       el.skipPhaseBtn.addEventListener('click', function () {
         if (!state.isRunning) return;
         lastPreWarnMode = null;
@@ -2555,7 +2795,6 @@
         enterPhase(state.currentPhaseIndex + 1, false);
       });
 
-      // Aktiv skærm: Stop-knap + bekræftelsesmodal
       el.stopTimerBtn.addEventListener('click', function () {
         if (!state.isRunning) {
           stopAndReturnToSetup();
@@ -2573,7 +2812,6 @@
         }
       });
 
-      // Install-modal (Gem som app)
       function openInstallModal() {
         el.installModal.classList.remove('hidden');
       }
@@ -2641,13 +2879,14 @@
           manifestLink.setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestObj)));
         }
       } catch (err) {}
+      updateClockBadge();
+      syncFullscreenUi();
       loadPreferences();
       renderSetupUI();
     })();
   </script>
   <script>
     (function () {
-      // 1. GTM / GA4 sporing til HBOT-timeren
       window.trackTimerEvent = function (eventName, extraParams) {
         window.dataLayer = window.dataLayer || [];
         var isPwa = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
@@ -2660,7 +2899,6 @@
         }, extraParams || {}));
       };
 
-      // 2. Feedback-modal & Formspree AJAX (7-sek. countdown magen til B2B)
       var openBtn = document.getElementById('openFeedbackModalBtn');
       var closeBtn = document.getElementById('close-feedback-modal');
       var modal = document.getElementById('feedback-modal');

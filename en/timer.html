@@ -52,15 +52,72 @@
       overscroll-behavior-y: none;
     }
 
+    /* Responsive clock & title scaling across portrait and landscape */
     .timer-clock-text {
-      font-size: clamp(4.25rem, 18vw, 14rem);
+      font-size: clamp(3.3rem, min(16vw, 24dvh), 12.5rem);
       line-height: 0.96;
       letter-spacing: -0.04em;
     }
 
     .timer-phase-title {
-      font-size: clamp(1.35rem, 4.4vw, 3.5rem);
-      line-height: 1.1;
+      font-size: clamp(1.2rem, min(4vw, 6.2dvh), 3.25rem);
+      line-height: 1.08;
+    }
+
+    /* Extra top clearance for front camera / notch / status bar in portrait */
+    .timer-top-safe {
+      padding-top: calc(env(safe-area-inset-top, 0px) + 2.5rem);
+      padding-left: calc(env(safe-area-inset-left, 0px) + 1rem);
+      padding-right: calc(env(safe-area-inset-right, 0px) + 1rem);
+    }
+
+    .timer-bottom-safe {
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.85rem);
+      padding-left: calc(env(safe-area-inset-left, 0px) + 1rem);
+      padding-right: calc(env(safe-area-inset-right, 0px) + 1rem);
+    }
+
+    /* Compact layout in landscape orientation (sideways screen) */
+    @media (orientation: landscape) and (max-height: 540px) {
+      .timer-top-safe {
+        padding-top: calc(env(safe-area-inset-top, 0px) + 0.55rem);
+      }
+      .timer-clock-text {
+        font-size: clamp(2.8rem, 23dvh, 6.2rem);
+        margin-top: 0.15rem;
+        margin-bottom: 0.15rem;
+      }
+      .timer-phase-title {
+        font-size: clamp(1.05rem, 6.2dvh, 2rem);
+      }
+      #preWarnBanner {
+        margin-bottom: 0.35rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        font-size: 0.8rem;
+      }
+      #phaseHint {
+        margin-top: 0.25rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        font-size: 0.72rem;
+      }
+      #nextPhaseText {
+        font-size: 0.85rem;
+      }
+      #liveChartBox svg {
+        height: 26dvh;
+        max-height: 7.5rem;
+      }
+      .timer-bottom-safe {
+        gap: 0.35rem;
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.45rem);
+      }
+      .timer-ctrl-btn, #stopTimerBtn {
+        padding-top: 0.45rem;
+        padding-bottom: 0.45rem;
+        font-size: 0.75rem;
+      }
     }
 
     /* Subtle 15-second pre-warning: Mask off (Day) */
@@ -416,10 +473,23 @@
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
               </button>
               <input type="text" id="depressurizeInput" inputmode="numeric" maxlength="5" value="05:00" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Decompression time in minutes and seconds" />
-              <button type="button" data-step-target="depressurizeSec" data-step-delta="30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+30 sec" aria-label="Increase decompression time 30 seconds">
+              <button type="button" data-step-target="depressurizeSec" data-step-delta="30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+30 sek" aria-label="Increase decompression time 30 seconds">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
               </button>
             </div>
+          </div>
+        </div>
+
+        <!-- Option: Step-by-step guidance across phases (active by default) -->
+        <div class="pt-3 border-t border-rl-lightbg/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <label for="chamberGuidanceCheckbox" class="inline-flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-heading text-rl-darkblue cursor-pointer select-none">
+              <input type="checkbox" id="chamberGuidanceCheckbox" checked class="w-4 h-4 accent-rl-darkblue rounded cursor-pointer" />
+              <span>Show step-by-step guidance during the session</span>
+            </label>
+            <p class="text-[11px] text-muted text-rl-taupe mt-0.5 pl-6">
+              Guides you on zippers, ear equalization, deflate valve control, mask on/off during air breaks, and checking 0 on the gauge before exiting.
+            </p>
           </div>
         </div>
 
@@ -554,7 +624,7 @@
           </div>
         </div>
 
-        <!-- Audio selector & volume -->
+        <!-- Audio selector, repeats & volume -->
         <div class="pt-4 border-t border-rl-lightbg/70 space-y-3.5">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <label for="soundSelect" class="text-xs font-semibold uppercase tracking-wider text-muted text-rl-taupe">Phase change sound</label>
@@ -591,6 +661,16 @@
           </div>
 
           <audio id="customAudioPlayer" preload="auto" class="hidden"></audio>
+
+          <!-- Repeats within 5 seconds -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <span class="text-xs font-semibold text-muted text-rl-taupe">Repeat chime within 5 sec</span>
+            <div class="inline-flex items-center rounded-full bg-rl-lightbg/70 p-0.5 border border-rl-lightbg text-xs font-semibold" id="soundRepeatButtons" role="group" aria-label="Number of chime repeats">
+              <button type="button" data-repeat="1" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">1×</button>
+              <button type="button" data-repeat="2" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">2×</button>
+              <button type="button" data-repeat="3" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">3×</button>
+            </div>
+          </div>
 
           <!-- Volume -->
           <div class="flex items-center gap-3 pt-1">
@@ -656,21 +736,43 @@
   <!-- ===================================================================== -->
   <!-- ACTIVE TIMER SCREEN (FULL SCREEN FOR CHAMBER WINDOW)                  -->
   <!-- ===================================================================== -->
-  <section id="timerScreen" class="hidden fixed inset-0 z-30 flex-col justify-between select-none transition-colors duration-300 overflow-hidden">
+  <section id="timerScreen" class="hidden fixed inset-0 z-30 flex-col justify-between select-none overflow-hidden">
 
-    <!-- Top bar: Step indicator & Wake Lock badge -->
-    <div class="w-full px-4 sm:px-8 pt-4 sm:pt-6 flex items-center justify-between gap-3 z-10">
+    <!-- Top bar: Step indicator, subtle current time, fullscreen button & Wake Lock badge -->
+    <div class="timer-top-safe w-full flex flex-wrap items-center justify-between gap-2 z-10">
       <span id="stepBadge" class="timer-pill inline-flex items-center px-3.5 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs sm:text-sm font-bold tracking-wide">
         Step 1 of 5 · 1.5 ATA
       </span>
 
-      <span id="wakeLockBadge" class="timer-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs font-semibold opacity-90">
-        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-        <span>Screen awake</span>
-      </span>
+      <div class="flex items-center gap-2 ml-auto">
+        <span id="currentClockBadge" class="timer-pill inline-flex items-center px-3 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs font-semibold opacity-80 tabular-nums" aria-label="Current time">
+          --:--
+        </span>
+
+        <button
+          type="button"
+          id="fullscreenBtn"
+          class="timer-pill inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-rl-black/10 hover:bg-rl-black/20 backdrop-blur-sm text-xs font-semibold opacity-85 transition cursor-pointer"
+          title="Toggle fullscreen"
+          aria-label="Toggle fullscreen"
+        >
+          <svg id="fullscreenIcon" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+          <span id="fullscreenLabel" class="hidden sm:inline">Fullscreen</span>
+        </button>
+
+        <span id="wakeLockBadge" class="timer-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs font-semibold opacity-90">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Screen awake</span>
+        </span>
+      </div>
     </div>
 
-    <!-- Center: Pre-warning, Phase title, Large Clock, Next phase -->
+    <!-- Center: Pre-warning, Phase title, Guidance, Large Clock, Next phase -->
     <div class="flex-1 flex flex-col items-center justify-center px-4 text-center z-10 min-h-0">
       <!-- 15-second pre-warning banner -->
       <div id="preWarnBanner" class="hidden mb-3 sm:mb-4 px-5 py-2 rounded-full bg-amber-500 text-rl-black font-black text-sm sm:text-lg tracking-wide shadow-lg animate-pulse">
@@ -682,8 +784,8 @@
         MASK ON – OXYGEN
       </h2>
 
-      <!-- Contextual hint -->
-      <p id="phaseHint" class="hidden timer-pill mt-2 sm:mt-3 px-4 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs sm:text-base font-bold tracking-wide max-w-xl"></p>
+      <!-- Contextual phase guidance -->
+      <p id="phaseHint" class="hidden timer-pill mt-2 sm:mt-3 px-4 py-2 rounded-2xl bg-rl-black/10 backdrop-blur-sm text-xs sm:text-base font-bold tracking-wide max-w-2xl leading-snug"></p>
 
       <!-- Large countdown clock -->
       <div id="timerClock" class="timer-clock-text font-black tabular-nums my-2 sm:my-4">
@@ -701,11 +803,11 @@
       </div>
     </div>
 
-    <!-- Bottom section: Live curve + seek slider + progress bar + buttons -->
-    <div class="w-full px-4 sm:px-8 pb-4 sm:pb-6 flex flex-col gap-2.5 z-10">
+    <!-- Bottom section: Large clear pressure curve (~1/3 of screen height) + seek slider + progress bar + buttons -->
+    <div class="timer-bottom-safe w-full flex flex-col gap-2.5 z-10">
       <div class="w-full max-w-4xl mx-auto">
-        <div id="liveChartBox" class="w-full rounded-2xl bg-rl-black/10 border border-current/15 px-3 py-1.5 backdrop-blur-sm">
-          <svg id="livePressureSvg" viewBox="0 0 600 68" class="w-full h-12 sm:h-16 block overflow-visible" role="img" aria-label="Live pressure curve"></svg>
+        <div id="liveChartBox" class="w-full rounded-2xl border border-current/20 px-3 py-2 backdrop-blur-sm shadow-sm">
+          <svg id="livePressureSvg" viewBox="0 0 640 165" class="w-full h-[28dvh] sm:h-[32dvh] max-h-56 block overflow-visible" role="img" aria-label="Live pressure curve"></svg>
         </div>
       </div>
 
@@ -940,7 +1042,9 @@
         fiO2: 0.95,
         theme: 'day',
         soundType: 'yoga_pling',
+        soundRepeats: 1,
         volume: 85,
+        chamberGuidance: true,
         customAudioUrl: null,
         customAudioName: null,
 
@@ -955,11 +1059,13 @@
         remainingMsWhenPaused: 0,
         rafId: null,
         intervalId: null,
+        clockIntervalId: null,
         wakeLock: null,
         deferredInstallPrompt: null
       };
 
       let audioCtx = null;
+      let activeSoundTimers = [];
       let lastPreWarnMode = null;
       let lastLiveChartUpdate = 0;
 
@@ -984,6 +1090,7 @@
         pauseInput: document.getElementById('pauseInput'),
         depressurizeInput: document.getElementById('depressurizeInput'),
         timeStepBtns: document.querySelectorAll('.time-step-btn'),
+        chamberGuidanceCheckbox: document.getElementById('chamberGuidanceCheckbox'),
 
         presetBtns: document.querySelectorAll('.preset-btn'),
         presetSub0: document.getElementById('presetSub0'),
@@ -1004,6 +1111,7 @@
         oxygenTimeValue: document.getElementById('oxygenTimeValue'),
 
         soundSelect: document.getElementById('soundSelect'),
+        repeatBtns: document.querySelectorAll('.repeat-btn'),
         customSoundOption: document.getElementById('customSoundOption'),
         customAudioInput: document.getElementById('customAudioInput'),
         customAudioLabel: document.getElementById('customAudioLabel'),
@@ -1015,6 +1123,9 @@
         startBtn: document.getElementById('startBtn'),
 
         stepBadge: document.getElementById('stepBadge'),
+        currentClockBadge: document.getElementById('currentClockBadge'),
+        fullscreenBtn: document.getElementById('fullscreenBtn'),
+        fullscreenLabel: document.getElementById('fullscreenLabel'),
         wakeLockBadge: document.getElementById('wakeLockBadge'),
         preWarnBanner: document.getElementById('preWarnBanner'),
         preWarnLabel: document.getElementById('preWarnLabel'),
@@ -1065,6 +1176,55 @@
         });
       }
 
+      /* Current clock & Fullscreen helpers */
+      function updateClockBadge() {
+        if (!el.currentClockBadge) return;
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        el.currentClockBadge.textContent = hh + ':' + mm;
+      }
+
+      function startClockBadgeLoop() {
+        updateClockBadge();
+        if (state.clockIntervalId) clearInterval(state.clockIntervalId);
+        state.clockIntervalId = setInterval(updateClockBadge, 5000);
+      }
+
+      function isFullscreenActive() {
+        return !!(document.fullscreenElement || document.webkitFullscreenElement);
+      }
+
+      function syncFullscreenUi() {
+        if (!el.fullscreenLabel) return;
+        el.fullscreenLabel.textContent = isFullscreenActive() ? 'Exit fullscreen' : 'Fullscreen';
+      }
+
+      async function toggleFullscreen() {
+        try {
+          if (!isFullscreenActive()) {
+            const target = el.timerScreen || document.documentElement;
+            if (target.requestFullscreen) {
+              await target.requestFullscreen();
+            } else if (target.webkitRequestFullscreen) {
+              target.webkitRequestFullscreen();
+            } else if (document.documentElement.requestFullscreen) {
+              await document.documentElement.requestFullscreen();
+            }
+          } else {
+            if (document.exitFullscreen) {
+              await document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+              document.webkitExitFullscreen();
+            }
+          }
+        } catch (err) {}
+        syncFullscreenUi();
+      }
+
+      document.addEventListener('fullscreenchange', syncFullscreenUi);
+      document.addEventListener('webkitfullscreenchange', syncFullscreenUi);
+
       function setCookie(name, value, days) {
         try {
           const maxAge = (days || 365) * 24 * 60 * 60;
@@ -1105,6 +1265,26 @@
           valStr = formatEnNumber(ata, dec);
         }
         return includeUnit ? (valStr + ' ' + u) : valStr;
+      }
+
+      function formatVentRatePerMinute(unit) {
+        const u = unit || state.pressureUnit;
+        if (u === 'PSI') {
+          return '10 PSI/min';
+        }
+        if (u === 'kPa') {
+          const kpaRate = Math.round((10 / 14.5038) * 100);
+          return 'approx. ' + kpaRate + ' kPa/min (10 PSI/min)';
+        }
+        const ataRate = formatEnNumber(10 / 14.5038, 2);
+        return 'approx. ' + ataRate + ' ATA/min (10 PSI/min)';
+      }
+
+      function formatZeroGauge(unit) {
+        const u = unit || state.pressureUnit;
+        if (u === 'PSI') return '0 PSI';
+        if (u === 'kPa') return '0 kPa';
+        return '1.0 ATA (0 on the pressure gauge)';
       }
 
       function formatSecondsToMMSS(sec) {
@@ -1170,7 +1350,9 @@
           if ([0.95, 1.0].includes(saved.fiO2)) state.fiO2 = saved.fiO2;
           if (['day', 'night'].includes(saved.theme)) state.theme = saved.theme;
           if (VALID_SOUNDS.includes(saved.soundType)) state.soundType = saved.soundType;
+          if ([1, 2, 3].includes(saved.soundRepeats)) state.soundRepeats = saved.soundRepeats;
           if (typeof saved.volume === 'number' && saved.volume >= 0 && saved.volume <= 100) state.volume = saved.volume;
+          if (typeof saved.chamberGuidance === 'boolean') state.chamberGuidance = saved.chamberGuidance;
         } catch (err) {}
       }
 
@@ -1189,11 +1371,14 @@
             fiO2: state.fiO2,
             theme: state.theme,
             soundType: state.soundType === 'custom' ? 'yoga_pling' : state.soundType,
-            volume: state.volume
+            soundRepeats: state.soundRepeats,
+            volume: state.volume,
+            chamberGuidance: state.chamberGuidance
           }));
         } catch (err) {}
       }
 
+      /* Build phases with step-by-step chamber manual guidance */
       function buildPhases() {
         const phases = [];
         const ata = state.pressureAta;
@@ -1209,10 +1394,14 @@
           cursorSec = endSec;
         }
 
+        // 1. Entry
         if (state.entryDelaySec > 0) {
           pushPhase({
             type: 'entry',
             title: 'CHAMBER ENTRY',
+            hint: state.chamberGuidance
+              ? 'Zip the outer zipper first, then the inner zipper completely closed, and close the black deflate valve. Once comfortable with ear equalization, you may put on your mask.'
+              : '',
             shortLabel: 'Entry (' + formatSecondsToMMSS(state.entryDelaySec) + ')',
             durationSec: state.entryDelaySec,
             startAta: 1.0,
@@ -1222,10 +1411,13 @@
           });
         }
 
+        // 2. Pressurization
         pushPhase({
           type: 'pressurize',
           title: 'PRESSURIZATION',
-          hint: 'Remember to equalize your ears gently as pressure rises',
+          hint: state.chamberGuidance
+            ? 'Ear equalization is more important than mask use right now – swallow, yawn, or chew. If your ears feel uncomfortable, slightly open the deflate valve briefly. Put your mask on once equalizing feels easy.'
+            : 'Remember to equalize your ears gently as pressure rises',
           shortLabel: 'Pressurization (' + formatSecondsToMMSS(state.pressurizeSec) + ')',
           durationSec: state.pressurizeSec,
           startAta: 1.0,
@@ -1234,15 +1426,24 @@
           strokeColor: sharedStroke
         });
 
+        // 3. Oxygen blocks and air breaks
         const oxygenBlocks = state.preset + 1;
         const oxyLabel = state.oxygenBlockSec % 60 === 0
           ? (state.oxygenBlockSec / 60) + ' min'
           : formatSecondsToMMSS(state.oxygenBlockSec);
 
         for (let i = 0; i < oxygenBlocks; i++) {
+          const isFirstBlock = (i === 0);
+          const blockHint = state.chamberGuidance
+            ? (isFirstBlock
+                ? 'Target pressure reached – relax, breathe calmly, and enjoy your session with your mask on.'
+                : 'Put your mask back on (open the oxygen valve if closed), relax, and breathe calmly throughout this block.')
+            : '';
+
           pushPhase({
             type: 'oxygen',
             title: 'MASK ON – OXYGEN',
+            hint: blockHint,
             shortLabel: 'Oxygen (' + oxyLabel + ')',
             durationSec: state.oxygenBlockSec,
             startAta: ata,
@@ -1250,6 +1451,7 @@
             fillColor: sharedFill,
             strokeColor: sharedStroke
           });
+
           if (i < oxygenBlocks - 1) {
             const pauseLabel = state.pauseSec % 60 === 0
               ? (state.pauseSec / 60) + ' min'
@@ -1257,6 +1459,9 @@
             pushPhase({
               type: 'pause',
               title: 'MASK OFF – AIR BREAK',
+              hint: state.chamberGuidance
+                ? 'Remove your mask for the air break (turn the oxygen valve across the hose if desired) and breathe normal chamber air.'
+                : '',
               shortLabel: 'Air break (' + pauseLabel + ')',
               durationSec: state.pauseSec,
               startAta: ata,
@@ -1267,10 +1472,14 @@
           }
         }
 
+        // 4. Decompression
+        const ventRateStr = formatVentRatePerMinute(state.pressureUnit);
         pushPhase({
           type: 'depressurize',
           title: 'DECOMPRESSION',
-          hint: 'Keep your mask on until decompression is complete',
+          hint: state.chamberGuidance
+            ? 'Open the black deflate valve gradually so pressure drops at ' + ventRateStr + '. Keep your mask on and breathe normally until decompression finishes.'
+            : 'Keep your mask on until decompression is complete',
           shortLabel: 'Decompression (' + formatSecondsToMMSS(state.depressurizeSec) + ')',
           durationSec: state.depressurizeSec,
           startAta: ata,
@@ -1399,12 +1608,12 @@
         const targetAta = state.pressureAta;
         const isNight = state.theme === 'night';
         const markerColor = isNight ? '#FAF9F6' : '#151F28';
-        const W = 600;
-        const H = 68;
-        const padL = 48;
-        const padR = 14;
-        const padT = 10;
-        const padB = 14;
+        const W = 640;
+        const H = 165;
+        const padL = 74;
+        const padR = 18;
+        const padT = 18;
+        const padB = 26;
         const plotW = W - padL - padR;
         const plotH = H - padT - padB;
 
@@ -1415,35 +1624,70 @@
         function yOf(ata) { return padT + plotH - ((ata - minAta) / ataSpan) * plotH; }
 
         const baseY = yOf(minAta);
+        const topY = yOf(targetAta);
+        const midY = (baseY + topY) / 2;
         let html = '';
 
-        html += '<text x="' + (padL - 6) + '" y="' + (yOf(targetAta) + 4).toFixed(1) + '" text-anchor="end" fill="currentColor" opacity="0.82" font-size="10" font-weight="700">' + formatPressureValue(targetAta, state.pressureUnit, false) + '</text>';
-        html += '<text x="' + (padL - 6) + '" y="' + (baseY + 3).toFixed(1) + '" text-anchor="end" fill="currentColor" opacity="0.58" font-size="10" font-weight="600">' + formatPressureValue(1.0, state.pressureUnit, false) + '</text>';
-        html += '<line x1="' + padL + '" y1="' + baseY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + baseY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.22" stroke-width="1" />';
+        html += '<line x1="' + padL + '" y1="' + topY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + topY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.18" stroke-width="1.2" stroke-dasharray="4 4" />';
+        html += '<text x="' + (padL - 8) + '" y="' + (topY + 4).toFixed(1) + '" text-anchor="end" fill="currentColor" opacity="0.9" font-size="12" font-weight="800">' + formatPressureValue(targetAta, state.pressureUnit, true) + '</text>';
 
-        phases.forEach(function (p) {
+        html += '<line x1="' + padL + '" y1="' + midY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + midY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.12" stroke-width="1" stroke-dasharray="3 4" />';
+
+        html += '<line x1="' + padL + '" y1="' + baseY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + baseY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.32" stroke-width="1.5" />';
+        html += '<text x="' + (padL - 8) + '" y="' + (baseY + 4).toFixed(1) + '" text-anchor="end" fill="currentColor" opacity="0.72" font-size="11.5" font-weight="700">' + formatPressureValue(1.0, state.pressureUnit, true) + '</text>';
+
+        phases.forEach(function (p, idx) {
           const x1 = xOf(p.startSec);
           const x2 = xOf(p.endSec);
           const y1 = yOf(p.startAta);
           const y2 = yOf(p.endAta);
+          const isCurrent = state.isRunning && idx === state.currentPhaseIndex;
 
           const points = x1.toFixed(1) + ',' + baseY.toFixed(1) + ' ' +
             x1.toFixed(1) + ',' + y1.toFixed(1) + ' ' +
             x2.toFixed(1) + ',' + y2.toFixed(1) + ' ' +
             x2.toFixed(1) + ',' + baseY.toFixed(1);
 
-          html += '<polygon points="' + points + '" fill="' + p.strokeColor + '" fill-opacity="0.32" />';
-          html += '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="' + p.strokeColor + '" stroke-width="3" stroke-linecap="round" />';
+          html += '<polygon points="' + points + '" fill="' + p.strokeColor + '" fill-opacity="' + (isCurrent ? '0.46' : '0.26') + '" />';
+          html += '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="' + p.strokeColor + '" stroke-width="' + (isCurrent ? '4.5' : '3') + '" stroke-linecap="round" />';
+
+          const segW = x2 - x1;
+          if (segW > 42) {
+            let shortTag = '';
+            if (p.type === 'entry') shortTag = 'Entry';
+            else if (p.type === 'pressurize') shortTag = 'Pressurize';
+            else if (p.type === 'oxygen') shortTag = Math.round(p.durationSec / 60) + 'm O₂';
+            else if (p.type === 'pause') shortTag = (p.durationSec % 60 === 0 ? (p.durationSec / 60) + 'm' : formatSecondsToMMSS(p.durationSec)) + ' break';
+            else if (p.type === 'depressurize') shortTag = 'Vent';
+
+            const cx = (x1 + x2) / 2;
+            const cy = Math.min(y1, y2) + (baseY - Math.min(y1, y2)) * 0.56;
+            html += '<text x="' + cx.toFixed(1) + '" y="' + cy.toFixed(1) + '" text-anchor="middle" fill="currentColor" opacity="' + (isCurrent ? '0.95' : '0.72') + '" font-size="11" font-weight="800">' + shortTag + '</text>';
+          }
         });
+
+        const totalMin = totalSec / 60;
+        html += '<text x="' + padL + '" y="' + (H - 6) + '" text-anchor="start" fill="currentColor" opacity="0.68" font-size="10.5" font-weight="700">0 min</text>';
+        html += '<text x="' + (padL + plotW / 2).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="middle" fill="currentColor" opacity="0.62" font-size="10.5" font-weight="600">' + formatEnNumber(totalMin / 2, 0) + ' min</text>';
+        html += '<text x="' + (W - padR) + '" y="' + (H - 6) + '" text-anchor="end" fill="currentColor" opacity="0.75" font-size="10.5" font-weight="700">' + formatEnNumber(totalMin, 0) + ' min</text>';
 
         const clampedSec = Math.min(totalSec, Math.max(0, elapsedSec));
         const curX = xOf(clampedSec);
         const curAta = getAtaAtElapsed(phases, clampedSec);
         const curY = yOf(curAta);
 
-        html += '<line x1="' + curX.toFixed(1) + '" y1="' + (padT - 2) + '" x2="' + curX.toFixed(1) + '" y2="' + (baseY + 2) + '" stroke="' + markerColor + '" stroke-opacity="0.85" stroke-width="2" stroke-dasharray="3 2" />';
-        html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="7" fill="' + markerColor + '" fill-opacity="0.25" />';
-        html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="4" fill="' + markerColor + '" />';
+        html += '<line x1="' + curX.toFixed(1) + '" y1="' + (padT - 4) + '" x2="' + curX.toFixed(1) + '" y2="' + (baseY + 2) + '" stroke="' + markerColor + '" stroke-opacity="0.9" stroke-width="2.2" stroke-dasharray="4 3" />';
+        html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="10" fill="' + markerColor + '" fill-opacity="0.22" />';
+        html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="5" fill="' + markerColor + '" />';
+
+        const curLabel = formatPressureValue(curAta, state.pressureUnit, true);
+        const labelOnLeft = curX > (W - padR - 85);
+        const boxW = 76;
+        const boxX = labelOnLeft ? Math.max(padL, curX - boxW - 10) : Math.min(W - padR - boxW, curX + 10);
+        const boxY = Math.max(4, Math.min(baseY - 24, curY - 12));
+
+        html += '<rect x="' + boxX.toFixed(1) + '" y="' + boxY.toFixed(1) + '" width="' + boxW + '" height="20" rx="6" fill="' + (isNight ? '#111e28' : '#ffffff') + '" fill-opacity="0.92" stroke="' + markerColor + '" stroke-opacity="0.35" stroke-width="1" />';
+        html += '<text x="' + (boxX + boxW / 2).toFixed(1) + '" y="' + (boxY + 13.5).toFixed(1) + '" text-anchor="middle" fill="' + (isNight ? '#FAF9F6' : '#013F58') + '" font-size="10.5" font-weight="800">' + curLabel + '</text>';
 
         svg.innerHTML = html;
       }
@@ -1458,11 +1702,22 @@
         el.headerThemeIcon.textContent = isNight ? '☀️' : '🌙';
         el.headerThemeText.textContent = isNight ? 'Daylight' : 'Night Mode';
 
+        if (el.chamberGuidanceCheckbox) {
+          el.chamberGuidanceCheckbox.checked = state.chamberGuidance;
+        }
+
         el.unitBtns.forEach(function (btn) {
           const active = btn.dataset.unit === state.pressureUnit;
           btn.className = active
             ? 'unit-btn px-2.5 py-0.5 rounded-full transition cursor-pointer bg-rl-darkblue text-white shadow-sm'
             : 'unit-btn px-2.5 py-0.5 rounded-full transition cursor-pointer text-rl-black/70 hover:text-rl-darkblue';
+        });
+
+        el.repeatBtns.forEach(function (btn) {
+          const active = Number(btn.dataset.repeat) === state.soundRepeats;
+          btn.className = active
+            ? 'repeat-btn px-3 py-1 rounded-full transition cursor-pointer bg-rl-darkblue text-white shadow-sm'
+            : 'repeat-btn px-3 py-1 rounded-full transition cursor-pointer text-rl-black/70 hover:text-rl-darkblue';
         });
 
         el.selectedAtaBadge.textContent = formatPressureValue(state.pressureAta, state.pressureUnit, true);
@@ -1555,7 +1810,13 @@
         el.oxygenTimeValue.textContent = otuInfo.oxygenMinutes + ' min';
       }
 
-      /* Web Audio API with iOS silent-buffer unlock */
+      /* Web Audio API with 1, 2 or 3 repeats within 5 seconds */
+      function clearActiveSoundTimers() {
+        while (activeSoundTimers.length) {
+          clearTimeout(activeSoundTimers.pop());
+        }
+      }
+
       function getAudioContext() {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         if (!AudioCtx) return null;
@@ -1621,9 +1882,10 @@
         src.stop(startTime + duration + 0.05);
       }
 
-      function playSignalSound(isFinished) {
+      function playSingleChime(isFinished, durationScale) {
         if (state.volume <= 0) return;
         const gain = (state.volume / 100) * 0.6;
+        const scale = typeof durationScale === 'number' ? durationScale : 1.0;
 
         if (state.soundType === 'custom' && state.customAudioUrl && el.customAudioPlayer) {
           try {
@@ -1650,71 +1912,96 @@
 
         switch (state.soundType) {
           case 'yoga_pling':
-            playTone(ctx, 1046.5, now, 5.0, 'sine', gain * 0.72, 0.008);
-            playTone(ctx, 1048.2, now, 5.0, 'sine', gain * 0.34, 0.008);
-            playTone(ctx, 2093.0, now, 4.2, 'sine', gain * 0.24, 0.006);
-            playTone(ctx, 3135.96, now, 2.8, 'sine', gain * 0.11, 0.005);
-            playTone(ctx, 523.25, now, 4.6, 'sine', gain * 0.22, 0.015);
+            playTone(ctx, 1046.5, now, 5.0 * scale, 'sine', gain * 0.72, 0.008);
+            playTone(ctx, 1048.2, now, 5.0 * scale, 'sine', gain * 0.34, 0.008);
+            playTone(ctx, 2093.0, now, 4.2 * scale, 'sine', gain * 0.24, 0.006);
+            playTone(ctx, 3135.96, now, 2.8 * scale, 'sine', gain * 0.11, 0.005);
+            playTone(ctx, 523.25, now, 4.6 * scale, 'sine', gain * 0.22, 0.015);
             break;
           case 'singing_bowl':
-            playTone(ctx, 220.0, now, 4.5, 'sine', gain * 0.75, 0.06);
-            playTone(ctx, 221.4, now, 4.5, 'sine', gain * 0.45, 0.06);
-            playTone(ctx, 608.0, now, 3.8, 'sine', gain * 0.22, 0.04);
-            playTone(ctx, 1142.0, now, 2.5, 'sine', gain * 0.08, 0.03);
+            playTone(ctx, 220.0, now, 4.5 * scale, 'sine', gain * 0.75, 0.06);
+            playTone(ctx, 221.4, now, 4.5 * scale, 'sine', gain * 0.45, 0.06);
+            playTone(ctx, 608.0, now, 3.8 * scale, 'sine', gain * 0.22, 0.04);
+            playTone(ctx, 1142.0, now, 2.5 * scale, 'sine', gain * 0.08, 0.03);
             break;
           case 'soft_harp':
             [261.63, 329.63, 392.0, 493.88, 587.33].forEach(function (f, i) {
-              playTone(ctx, f, now + i * 0.14, 2.6, 'sine', gain * 0.45, 0.015);
-              playTone(ctx, f * 2, now + i * 0.14, 1.4, 'sine', gain * 0.12, 0.01);
+              playTone(ctx, f, now + i * 0.12 * scale, 2.4 * scale, 'sine', gain * 0.45, 0.015);
+              playTone(ctx, f * 2, now + i * 0.12 * scale, 1.3 * scale, 'sine', gain * 0.12, 0.01);
             });
             break;
           case 'wind_chimes':
             [1174.66, 1318.51, 1567.98, 1760.0, 2093.0].forEach(function (f, i) {
-              playTone(ctx, f, now + i * 0.16, 2.8, 'sine', gain * 0.34, 0.008);
+              playTone(ctx, f, now + i * 0.13 * scale, 2.5 * scale, 'sine', gain * 0.34, 0.008);
             });
             break;
           case 'zen_gong':
-            playTone(ctx, 130.81, now, 4.6, 'sine', gain * 0.85, 0.04);
-            playTone(ctx, 196.0, now, 4.0, 'sine', gain * 0.38, 0.04);
-            playTone(ctx, 261.63, now, 3.4, 'triangle', gain * 0.22, 0.03);
-            playTone(ctx, 392.0, now, 2.4, 'sine', gain * 0.14, 0.02);
+            playTone(ctx, 130.81, now, 4.6 * scale, 'sine', gain * 0.85, 0.04);
+            playTone(ctx, 196.0, now, 4.0 * scale, 'sine', gain * 0.38, 0.04);
+            playTone(ctx, 261.63, now, 3.4 * scale, 'triangle', gain * 0.22, 0.03);
+            playTone(ctx, 392.0, now, 2.4 * scale, 'sine', gain * 0.14, 0.02);
             break;
           case 'kalimba':
             [392.0, 493.88, 587.33].forEach(function (f, i) {
-              playTone(ctx, f, now + i * 0.22, 1.8, 'triangle', gain * 0.52, 0.008);
-              playTone(ctx, f * 2, now + i * 0.22, 0.7, 'sine', gain * 0.16, 0.005);
+              playTone(ctx, f, now + i * 0.18 * scale, 1.6 * scale, 'triangle', gain * 0.52, 0.008);
+              playTone(ctx, f * 2, now + i * 0.18 * scale, 0.65 * scale, 'sine', gain * 0.16, 0.005);
             });
             break;
           case 'crystal_chime':
-            playTone(ctx, 1567.98, now, 3.6, 'sine', gain * 0.55, 0.01);
-            playTone(ctx, 1570.0, now, 3.6, 'sine', gain * 0.3, 0.01);
-            playTone(ctx, 3135.96, now, 2.2, 'sine', gain * 0.14, 0.008);
+            playTone(ctx, 1567.98, now, 3.6 * scale, 'sine', gain * 0.55, 0.01);
+            playTone(ctx, 1570.0, now, 3.6 * scale, 'sine', gain * 0.3, 0.01);
+            playTone(ctx, 3135.96, now, 2.2 * scale, 'sine', gain * 0.14, 0.008);
             break;
           case 'warm_marimba':
-            playTone(ctx, 329.63, now, 0.9, 'sine', gain * 0.75, 0.008);
-            playTone(ctx, 659.25, now, 0.25, 'sine', gain * 0.22, 0.005);
-            playTone(ctx, 493.88, now + 0.24, 1.2, 'sine', gain * 0.72, 0.008);
-            playTone(ctx, 987.77, now + 0.24, 0.3, 'sine', gain * 0.18, 0.005);
+            playTone(ctx, 329.63, now, 0.85 * scale, 'sine', gain * 0.75, 0.008);
+            playTone(ctx, 659.25, now, 0.22 * scale, 'sine', gain * 0.22, 0.005);
+            playTone(ctx, 493.88, now + 0.22 * scale, 1.1 * scale, 'sine', gain * 0.72, 0.008);
+            playTone(ctx, 987.77, now + 0.22 * scale, 0.28 * scale, 'sine', gain * 0.18, 0.005);
             break;
           case 'ocean_swell':
-            playSoftNoiseSwell(ctx, now, 3.6, gain * 0.38);
-            playTone(ctx, 293.66, now + 0.4, 3.2, 'sine', gain * 0.42, 0.45);
-            playTone(ctx, 440.0, now + 0.7, 2.8, 'sine', gain * 0.25, 0.45);
+            playSoftNoiseSwell(ctx, now, 3.2 * scale, gain * 0.38);
+            playTone(ctx, 293.66, now + 0.35 * scale, 2.8 * scale, 'sine', gain * 0.42, 0.35 * scale);
+            playTone(ctx, 440.0, now + 0.6 * scale, 2.5 * scale, 'sine', gain * 0.25, 0.35 * scale);
             break;
           case 'flute_breath':
-            playTone(ctx, 523.25, now, 1.6, 'sine', gain * 0.52, 0.22);
-            playTone(ctx, 659.25, now + 0.65, 2.2, 'sine', gain * 0.52, 0.22);
+            playTone(ctx, 523.25, now, 1.5 * scale, 'sine', gain * 0.52, 0.18 * scale);
+            playTone(ctx, 659.25, now + 0.55 * scale, 2.0 * scale, 'sine', gain * 0.52, 0.18 * scale);
             break;
           case 'soft_bell':
-            playTone(ctx, 440.0, now, 3.0, 'sine', gain * 0.65, 0.02);
-            playTone(ctx, 880.0, now, 2.0, 'sine', gain * 0.22, 0.015);
-            playTone(ctx, 1318.51, now, 1.4, 'sine', gain * 0.1, 0.01);
+            playTone(ctx, 440.0, now, 3.0 * scale, 'sine', gain * 0.65, 0.02);
+            playTone(ctx, 880.0, now, 2.0 * scale, 'sine', gain * 0.22, 0.015);
+            playTone(ctx, 1318.51, now, 1.4 * scale, 'sine', gain * 0.1, 0.01);
             break;
           case 'beep':
           default:
             playTone(ctx, 1000, now, 0.18, 'triangle', gain, 0.01);
             playTone(ctx, 1000, now + 0.25, 0.22, 'triangle', gain, 0.01);
             break;
+        }
+      }
+
+      function playSignalSound(isFinished) {
+        clearActiveSoundTimers();
+        if (state.volume <= 0) return;
+
+        const repeats = Math.min(3, Math.max(1, state.soundRepeats || 1));
+        if (repeats === 1) {
+          playSingleChime(isFinished, 1.0);
+          return;
+        }
+
+        const intervalMs = repeats === 2 ? 2200 : 1650;
+        const durationScale = repeats === 2 ? 0.62 : 0.48;
+
+        for (let i = 0; i < repeats; i++) {
+          if (i === 0) {
+            playSingleChime(isFinished, durationScale);
+          } else {
+            const tId = setTimeout(function () {
+              playSingleChime(isFinished, durationScale);
+            }, i * intervalMs);
+            activeSoundTimers.push(tId);
+          }
         }
       }
 
@@ -1789,12 +2076,20 @@
         const screen = el.timerScreen;
         const isNight = state.theme === 'night';
 
-        // Reset any running pre-warning animation cleanly (fixes iOS Safari color persistence when skipping phases)
+        // Explicitly strip all color & animation classes (prevents iOS Safari from sticking in amber break color)
         screen.style.animation = 'none';
+        screen.classList.remove(
+          'timer-night',
+          'bg-rl-lightbg', 'bg-rl-lightblue', 'bg-amber-300', 'bg-[#C7D6DF]', 'bg-[#FAF9F6]', 'bg-black',
+          'text-rl-black', 'text-[#FAF9F6]',
+          'border-[10px]', 'border-rl-taupe', 'border-rl-lightblue', 'border-amber-500', 'border-[#7A94A3]', 'border-emerald-500',
+          'animate-prewarn-day', 'animate-prewarn-night', 'animate-prewarn-on-day', 'animate-prewarn-on-night',
+          'transition-colors', 'duration-300', 'duration-500'
+        );
         void screen.offsetWidth;
         screen.style.animation = '';
 
-        screen.className = 'fixed inset-0 z-30 flex flex-col justify-between select-none transition-colors duration-300 overflow-hidden';
+        screen.classList.add('fixed', 'inset-0', 'z-30', 'flex', 'flex-col', 'justify-between', 'select-none', 'overflow-hidden');
 
         if (!isNight) {
           const dayStyles = {
@@ -1833,12 +2128,14 @@
         const ctrlBg = isNight ? 'bg-white/10 hover:bg-white/20' : 'bg-rl-black/10 hover:bg-rl-black/20';
 
         el.timerPills.forEach(function (p) {
-          p.classList.remove('bg-white/10', 'bg-rl-black/10');
+          p.classList.remove('bg-white/10', 'bg-rl-black/10', 'bg-amber-500', 'bg-amber-300');
           p.classList.add(pillBg);
+          p.style.backgroundColor = isNight ? 'rgba(255, 255, 255, 0.12)' : 'rgba(21, 31, 40, 0.09)';
         });
         if (el.liveChartBox) {
-          el.liveChartBox.classList.remove('bg-white/10', 'bg-rl-black/10');
+          el.liveChartBox.classList.remove('bg-white/10', 'bg-rl-black/10', 'bg-amber-500', 'bg-amber-300');
           el.liveChartBox.classList.add(pillBg);
+          el.liveChartBox.style.backgroundColor = isNight ? 'rgba(255, 255, 255, 0.10)' : 'rgba(21, 31, 40, 0.08)';
         }
         el.timerCtrlBtns.forEach(function (b) {
           b.classList.remove('bg-white/10', 'hover:bg-white/20', 'bg-rl-black/10', 'hover:bg-rl-black/20');
@@ -1863,6 +2160,8 @@
 
       function startTreatment() {
         getAudioContext();
+        startClockBadgeLoop();
+        syncFullscreenUi();
 
         state.phases = buildPhases();
         state.totalSessionSec = state.phases.reduce(function (acc, p) { return acc + p.durationSec; }, 0);
@@ -1980,12 +2279,18 @@
         state.isPaused = false;
         releaseWakeLock();
 
+        const zeroLabel = formatZeroGauge(state.pressureUnit);
         el.stepBadge.textContent = 'Completed';
         el.phaseTitle.textContent = 'SESSION COMPLETE';
-        el.phaseHint.textContent = '';
-        el.phaseHint.classList.add('hidden');
+        if (state.chamberGuidance) {
+          el.phaseHint.textContent = 'Verify the pressure gauge reads ' + zeroLabel + ' before unzipping – then remove your mask and exit the chamber.';
+          el.phaseHint.classList.remove('hidden');
+        } else {
+          el.phaseHint.textContent = '';
+          el.phaseHint.classList.add('hidden');
+        }
         el.timerClock.textContent = '00:00';
-        el.nextPhaseText.textContent = 'Remove your mask – you may safely open the chamber once at 0';
+        el.nextPhaseText.textContent = 'Check that the pressure gauge reads ' + zeroLabel + ' before unzipping';
         el.phaseProgressBar.style.width = '100%';
         el.elapsedTimeLabel.textContent = formatSecondsToMMSS(state.totalSessionSec);
         el.seekSlider.value = String(state.totalSessionSec);
@@ -2044,6 +2349,11 @@
 
       function stopAndReturnToSetup() {
         stopTickLoop();
+        clearActiveSoundTimers();
+        if (state.clockIntervalId) {
+          clearInterval(state.clockIntervalId);
+          state.clockIntervalId = null;
+        }
         state.isRunning = false;
         state.isPaused = false;
         state.isScrubbing = false;
@@ -2063,9 +2373,24 @@
         renderSetupUI();
       });
 
+      if (el.chamberGuidanceCheckbox) {
+        el.chamberGuidanceCheckbox.addEventListener('change', function () {
+          state.chamberGuidance = el.chamberGuidanceCheckbox.checked;
+          savePreferences();
+        });
+      }
+
       el.unitBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           state.pressureUnit = btn.dataset.unit;
+          savePreferences();
+          renderSetupUI();
+        });
+      });
+
+      el.repeatBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          state.soundRepeats = Number(btn.dataset.repeat) || 1;
           savePreferences();
           renderSetupUI();
         });
@@ -2267,6 +2592,10 @@
 
       el.startBtn.addEventListener('click', startTreatment);
 
+      if (el.fullscreenBtn) {
+        el.fullscreenBtn.addEventListener('click', toggleFullscreen);
+      }
+
       el.seekSlider.addEventListener('pointerdown', function () { state.isScrubbing = true; });
       el.seekSlider.addEventListener('input', function () {
         state.isScrubbing = true;
@@ -2387,6 +2716,8 @@
         }
       } catch (err) {}
 
+      updateClockBadge();
+      syncFullscreenUi();
       loadPreferences();
       renderSetupUI();
     })();
