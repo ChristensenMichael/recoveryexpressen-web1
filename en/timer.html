@@ -14,6 +14,8 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" id="metaThemeColor" content="#013F58" />
   <link rel="icon" href="../favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../favicon.png" />
+  <link rel="manifest" id="pwaManifestLink" href="data:application/manifest+json,%7B%22name%22%3A%22RecoveryExpressen%20HBOT%20Timer%22%2C%22short_name%22%3A%22HBOT%20Timer%22%2C%22start_url%22%3A%22.%2Ftimer.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23013F58%22%2C%22theme_color%22%3A%22%23013F58%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22..%2Ffavicon.png%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fpng%22%7D%2C%7B%22src%22%3A%22..%2Ffavicon.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -596,6 +598,9 @@
             <input type="range" id="volumeSlider" min="0" max="100" value="85" class="flex-1 cursor-pointer" aria-label="Volume" />
             <span id="volumeValue" class="text-xs font-bold tabular-nums text-heading text-rl-darkblue w-10 text-right">85%</span>
           </div>
+          <p class="text-[11px] text-muted text-rl-taupe">
+            On iPhone: Make sure the physical Ring/Silent switch on the side is off and media volume is turned up to hear phase chimes.
+          </p>
         </div>
       </section>
 
@@ -651,7 +656,7 @@
   <!-- ===================================================================== -->
   <!-- ACTIVE TIMER SCREEN (FULL SCREEN FOR CHAMBER WINDOW)                  -->
   <!-- ===================================================================== -->
-  <section id="timerScreen" class="hidden fixed inset-0 z-30 flex-col justify-between select-none transition-colors duration-500 overflow-hidden">
+  <section id="timerScreen" class="hidden fixed inset-0 z-30 flex-col justify-between select-none transition-colors duration-300 overflow-hidden">
 
     <!-- Top bar: Step indicator & Wake Lock badge -->
     <div class="w-full px-4 sm:px-8 pt-4 sm:pt-6 flex items-center justify-between gap-3 z-10">
@@ -827,7 +832,7 @@
                 <line x1="12" y1="18" x2="12.01" y2="18"></line>
               </svg>
             </div>
-            <p class="text-xs text-rl-black/80 leading-relaxed"><strong>2.</strong> Select <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong> and confirm.</p>
+            <p class="text-xs text-rl-black/80 leading-relaxed"><strong>2.</strong> Select <strong>"Add to Home screen"</strong> and confirm to create the shortcut with your logo.</p>
           </div>
         </div>
 
@@ -1550,12 +1555,19 @@
         el.oxygenTimeValue.textContent = otuInfo.oxygenMinutes + ' min';
       }
 
-      /* Web Audio API */
+      /* Web Audio API with iOS silent-buffer unlock */
       function getAudioContext() {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         if (!AudioCtx) return null;
         if (!audioCtx) audioCtx = new AudioCtx();
         if (audioCtx.state === 'suspended') audioCtx.resume().catch(function () {});
+        try {
+          const buf = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
+          const src = audioCtx.createBufferSource();
+          src.buffer = buf;
+          src.connect(audioCtx.destination);
+          src.start(0);
+        } catch (err) {}
         return audioCtx;
       }
 
@@ -1777,7 +1789,12 @@
         const screen = el.timerScreen;
         const isNight = state.theme === 'night';
 
-        screen.className = 'fixed inset-0 z-30 flex flex-col justify-between select-none transition-colors duration-500 overflow-hidden';
+        // Reset any running pre-warning animation cleanly (fixes iOS Safari color persistence when skipping phases)
+        screen.style.animation = 'none';
+        void screen.offsetWidth;
+        screen.style.animation = '';
+
+        screen.className = 'fixed inset-0 z-30 flex flex-col justify-between select-none transition-colors duration-300 overflow-hidden';
 
         if (!isNight) {
           const dayStyles = {
@@ -2293,6 +2310,10 @@
 
       el.skipPhaseBtn.addEventListener('click', function () {
         if (!state.isRunning) return;
+        lastPreWarnMode = null;
+        if (el.preWarnBanner) {
+          el.preWarnBanner.classList.add('hidden');
+        }
         enterPhase(state.currentPhaseIndex + 1, false);
       });
 
@@ -2345,6 +2366,26 @@
           el.nativeInstallWrapper.classList.add('hidden');
         });
       }
+
+      try {
+        const manifestLink = document.getElementById('pwaManifestLink');
+        if (manifestLink) {
+          const iconUrl = new URL('../favicon.png', window.location.href).href;
+          const manifestObj = {
+            name: 'RecoveryExpressen HBOT Timer',
+            short_name: 'HBOT Timer',
+            start_url: window.location.pathname || './timer.html',
+            display: 'standalone',
+            background_color: '#013F58',
+            theme_color: '#013F58',
+            icons: [
+              { src: iconUrl, sizes: '192x192', type: 'image/png' },
+              { src: iconUrl, sizes: '512x512', type: 'image/png' }
+            ]
+          };
+          manifestLink.setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestObj)));
+        }
+      } catch (err) {}
 
       loadPreferences();
       renderSetupUI();

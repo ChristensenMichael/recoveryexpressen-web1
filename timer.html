@@ -10,6 +10,9 @@
   <meta name="apple-mobile-web-app-title" content="HBOT Timer" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" id="metaThemeColor" content="#013F58" />
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="manifest" id="pwaManifestLink" href="data:application/manifest+json,%7B%22name%22%3A%22RecoveryExpressen%20HBOT%20Timer%22%2C%22short_name%22%3A%22HBOT%20Timer%22%2C%22start_url%22%3A%22.%2Ftimer.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23013F58%22%2C%22theme_color%22%3A%22%23013F58%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22favicon.png%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fpng%22%7D%2C%7B%22src%22%3A%22favicon.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -269,7 +272,6 @@
           </button>
         </div>
       </nav>
-      <link rel="icon" href="favicon.png" type="image/png">
     </header>
 
     <!-- HOVEDINDHOLD -->
@@ -594,6 +596,9 @@
             <input type="range" id="volumeSlider" min="0" max="100" value="85" class="flex-1 cursor-pointer" aria-label="Lydniveau" />
             <span id="volumeValue" class="text-xs font-bold tabular-nums text-heading text-rl-darkblue w-10 text-right">85%</span>
           </div>
+          <p class="text-[11px] text-muted text-rl-taupe">
+            På iPhone: Slå lydløs-knappen på siden fra og skru op for medier/lydstyrke, hvis lyden ikke høres.
+          </p>
         </div>
       </section>
 
@@ -832,7 +837,7 @@
                 <line x1="12" y1="18" x2="12.01" y2="18"></line>
               </svg>
             </div>
-            <p class="text-xs text-rl-black/80 leading-relaxed"><strong>2.</strong> Vælg <strong>"Føj til startskærm"</strong> eller <strong>"Installér app"</strong> og bekræft.</p>
+            <p class="text-xs text-rl-black/80 leading-relaxed"><strong>2.</strong> Vælg <strong>"Føj til startskærm"</strong> og bekræft for at oprette genvejen med dit logo.</p>
           </div>
         </div>
 
@@ -1677,6 +1682,13 @@
         if (audioCtx.state === 'suspended') {
           audioCtx.resume().catch(function () {});
         }
+        try {
+          const buf = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
+          const src = audioCtx.createBufferSource();
+          src.buffer = buf;
+          src.connect(audioCtx.destination);
+          src.start(0);
+        } catch (err) {}
         return audioCtx;
       }
 
@@ -1934,7 +1946,12 @@
         const screen = el.timerScreen;
         const isNight = state.theme === 'night';
 
-        screen.className = 'fixed inset-0 z-30 flex flex-col justify-between select-none transition-colors duration-500 overflow-hidden';
+        // Nulstil eventuel aktiv 15-sek. forvarsels-animation (vigtigt på iOS Safari ved skift/'Næste')
+        screen.style.animation = 'none';
+        void screen.offsetWidth;
+        screen.style.animation = '';
+
+        screen.className = 'fixed inset-0 z-30 flex flex-col justify-between select-none transition-colors duration-300 overflow-hidden';
 
         if (!isNight) {
           // DAGSLYS: RechargeLife sort tekst (#151F28). Tryksætning & Ilt deler samme baggrundsfarve (rl-lightblue)
@@ -2531,6 +2548,10 @@
       // Aktiv skærm: Hop til næste fase
       el.skipPhaseBtn.addEventListener('click', function () {
         if (!state.isRunning) return;
+        lastPreWarnMode = null;
+        if (el.preWarnBanner) {
+          el.preWarnBanner.classList.add('hidden');
+        }
         enterPhase(state.currentPhaseIndex + 1, false);
       });
 
@@ -2602,6 +2623,24 @@
       /* -------------------------------------------------------------------
        * 13. INITIALISERING
        * ------------------------------------------------------------------- */
+      try {
+        const manifestLink = document.getElementById('pwaManifestLink');
+        if (manifestLink) {
+          const manifestObj = {
+            name: 'RecoveryExpressen HBOT Timer',
+            short_name: 'HBOT Timer',
+            start_url: window.location.pathname || './timer.html',
+            display: 'standalone',
+            background_color: '#013F58',
+            theme_color: '#013F58',
+            icons: [
+              { src: 'favicon.png', sizes: '192x192', type: 'image/png' },
+              { src: 'favicon.png', sizes: '512x512', type: 'image/png' }
+            ]
+          };
+          manifestLink.setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestObj)));
+        }
+      } catch (err) {}
       loadPreferences();
       renderSetupUI();
     })();
