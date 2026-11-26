@@ -1,1286 +1,1250 @@
 <!DOCTYPE html>
 <html lang="da" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>RecoveryExpressen | HBOT Timer</title>
-    <meta name="description" content="HBOT- og mHBOT-sekvenstimer fra RecoveryExpressen by RechargeLife med trykkurve, iltenheder (OTU), dagslys/aften-tilstand og bløde lydsignaler." />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="HBOT Timer" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="theme-color" id="metaThemeColor" content="#013F58" />
-    <link rel="icon" href="favicon.png" type="image/png" />
-    <link rel="apple-touch-icon" href="favicon.png" />
-    <link rel="manifest" id="pwaManifestLink" href='data:application/manifest+json,{"name":"RecoveryExpressen HBOT Timer","short_name":"HBOT Timer","start_url":"./timer.html","display":"standalone","background_color":"#013F58","theme_color":"#013F58","icons":[{"src":"favicon.png","sizes":"192x192","type":"image/png"},{"src":"favicon.png","sizes":"512x512","type":"image/png"}]}' />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>RecoveryExpressen | HBOT Timer</title>
+  <meta name="description" content="HBOT- og mHBOT-sekvenstimer fra RecoveryExpressen by RechargeLife med trykkurve, iltenheder (OTU), dagslys/aften-tilstand og bløde lydsignaler." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="HBOT Timer" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" id="metaThemeColor" content="#013F58" />
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="manifest" id="pwaManifestLink" href='data:application/manifest+json,{"name":"RecoveryExpressen HBOT Timer","short_name":"HBOT Timer","start_url":"./timer.html","display":"standalone","background_color":"#013F58","theme_color":"#013F58","icons":[{"src":"favicon.png","sizes":"192x192","type":"image/png"},{"src":"favicon.png","sizes":"512x512","type":"image/png"}]}' />
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Fonts: Inter & Belleza -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Belleza&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- Google Fonts: Inter & Belleza -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Belleza&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-    <!-- RechargeLife Tailwind Konfiguration -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'rl-darkblue': '#013F58',
-                        'rl-lightblue': '#B6CCD7',
-                        'rl-taupe': '#94857B',
-                        'rl-lightbg': '#E0DFD8',
-                        'rl-black': '#151F28',
-                    },
-                    fontFamily: {
-                        'sans': ['Inter', 'sans-serif'],
-                        'serif': ['Belleza', 'serif'],
-                    }
-                }
-            }
-        };
-    </script>
+  <!-- RechargeLife Tailwind Konfiguration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'rl-darkblue': '#013F58',
+            'rl-lightblue': '#B6CCD7',
+            'rl-taupe': '#94857B',
+            'rl-lightbg': '#E0DFD8',
+            'rl-black': '#151F28',
+          },
+          fontFamily: {
+            'sans': ['Inter', 'sans-serif'],
+            'serif': ['Belleza', 'serif'],
+          }
+        }
+      }
+    };
+  </script>
 
-    <style>
-        /* Grundopsætning til stabil fuldskærmsvisning i både stående og liggende format */
-        html, body {
-            min-height: 100dvh;
-            overscroll-behavior-y: none;
-        }
+  <style>
+    /* Grundopsætning til stabil fuldskærmsvisning i både stående og liggende format */
+    html, body {
+      min-height: 100dvh;
+      overscroll-behavior-y: none;
+    }
 
-        /* Dynamisk ur- og overskriftsskalering på aktiv timer-skærm (tilpasset både portræt og landskab) */
-        .timer-clock-text {
-            font-size: clamp(3.3rem, min(16vw, 24dvh), 12.5rem);
-            line-height: 0.96;
-            letter-spacing: -0.04em;
-        }
+    /* Dynamisk ur- og overskriftsskalering på aktiv timer-skærm (tilpasset både portræt og landskab) */
+    .timer-clock-text {
+      font-size: clamp(3.3rem, min(16vw, 24dvh), 12.5rem);
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+    }
 
-        .timer-phase-title {
-            font-size: clamp(1.2rem, min(4vw, 6.2dvh), 3.25rem);
-            line-height: 1.08;
-        }
+    .timer-phase-title {
+      font-size: clamp(1.2rem, min(4vw, 6.2dvh), 3.25rem);
+      line-height: 1.08;
+    }
 
-        /* Ekstra luft for frontkamera / notch / statusbar i lodret visning */
-        .timer-top-safe {
-            padding-top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
-            padding-left: calc(env(safe-area-inset-left, 0px) + 0.85rem);
-            padding-right: calc(env(safe-area-inset-right, 0px) + 0.85rem);
-        }
+    /* Ekstra luft for frontkamera / notch / statusbar i lodret visning */
+    .timer-top-safe {
+      padding-top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
+      padding-left: calc(env(safe-area-inset-left, 0px) + 0.85rem);
+      padding-right: calc(env(safe-area-inset-right, 0px) + 0.85rem);
+    }
 
-        .timer-bottom-safe {
-            padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.65rem);
-            padding-left: calc(env(safe-area-inset-left, 0px) + 0.85rem);
-            padding-right: calc(env(safe-area-inset-right, 0px) + 0.85rem);
-        }
+    .timer-bottom-safe {
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.65rem);
+      padding-left: calc(env(safe-area-inset-left, 0px) + 0.85rem);
+      padding-right: calc(env(safe-area-inset-right, 0px) + 0.85rem);
+    }
 
-        .timer-ctrl-btn,
-        #stopTimerBtn {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            min-height: 2.25rem;
-        }
+    .timer-ctrl-btn,
+    #stopTimerBtn {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      min-height: 2.25rem;
+    }
 
-        /* Standard (stående / portræt): Centreret lodret stak */
-        .timer-center-row {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.4rem;
-        }
-        .timer-left-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
+    /* Default (stående / portræt): Centreret lodret stak */
+    .timer-center-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    .timer-left-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
 
-        /* Liggende format (horisontal): 3 kolonner side om side på tværs af skærmen */
-        @media (orientation: landscape) and (max-height: 540px) {
-            .timer-top-safe {
-                padding-top: calc(env(safe-area-inset-top, 0px) + 0.35rem);
-            }
-            .timer-center-row {
-                display: grid !important;
-                grid-template-columns: minmax(140px, 1.15fr) auto minmax(160px, 1.35fr);
-                align-items: center;
-                gap: 1.25rem;
-                width: 100%;
-                max-width: 76rem;
-                margin: 0.15rem auto;
-                padding-left: 0.75rem;
-                padding-right: 0.75rem;
-            }
-            .timer-left-info {
-                grid-column: 1;
-                justify-self: start;
-                align-items: flex-start;
-                text-align: left;
-                gap: 0.2rem;
-            }
-            .timer-phase-title {
-                font-size: clamp(0.95rem, 4.4dvh, 1.35rem);
-                line-height: 1.05;
-            }
-            #nextPhaseText {
-                font-size: 0.78rem;
-                line-height: 1.2;
-                text-align: left;
-                margin-top: 0;
-            }
-            .timer-clock-text {
-                grid-column: 2;
-                justify-self: center;
-                font-size: clamp(2.1rem, 16dvh, 3.6rem);
-                line-height: 0.98;
-                margin: 0;
-            }
-            #phaseHint {
-                grid-column: 3;
-                justify-self: end;
-                width: 100%;
-                max-width: 24rem;
-                margin: 0;
-                padding: 0.45rem 0.7rem;
-                max-height: 6rem;
-                overflow-y: auto;
-                font-size: 0.75rem;
-                line-height: 1.3;
-                text-align: left;
-                border: 1px solid rgba(21, 31, 40, 0.22);
-            }
-            .timer-night #phaseHint {
-                border-color: rgba(250, 249, 246, 0.25);
-            }
-            #preWarnBanner {
-                margin-bottom: 0.2rem;
-                padding-top: 0.2rem;
-                padding-bottom: 0.2rem;
-                font-size: 0.75rem;
-            }
-            #liveChartBox {
-                width: 100%;
-            }
-            #livePressureSvg {
-                width: 100%;
-                height: 22dvh;
-                max-height: 6rem;
-            }
-            .timer-bottom-safe {
-                gap: 0.25rem;
-                padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.3rem);
-            }
-            .timer-ctrl-btn,
-            #stopTimerBtn {
-                padding-top: 0.35rem;
-                padding-bottom: 0.35rem;
-                min-height: 1.95rem;
-                font-size: 0.72rem;
-            }
-        }
-        /* Diskret 15-sekunders forvarsel (Dagslys) */
-        @keyframes prewarnDayPulse {
-            0%, 100% {
-                box-shadow: inset 0 0 0 0px rgba(217, 119, 6, 0);
-                filter: brightness(1);
-            }
-            50% {
-                box-shadow: inset 0 0 0 18px rgba(217, 119, 6, 0.78);
-                filter: brightness(1.03);
-            }
-        }
+    /* Liggende format (horisontal): 3 kolonner side om side på tværs af skærmen */
+    @media (orientation: landscape) and (max-height: 540px) {
+      .timer-top-safe {
+        padding-top: calc(env(safe-area-inset-top, 0px) + 0.35rem);
+      }
+      .timer-center-row {
+        display: grid !important;
+        grid-template-columns: minmax(140px, 1.15fr) auto minmax(160px, 1.35fr);
+        align-items: center;
+        gap: 1.25rem;
+        width: 100%;
+        max-width: 76rem;
+        margin: 0.15rem auto;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+      .timer-left-info {
+        grid-column: 1;
+        justify-self: start;
+        align-items: flex-start;
+        text-align: left;
+        gap: 0.2rem;
+      }
+      .timer-phase-title {
+        font-size: clamp(0.95rem, 4.4dvh, 1.35rem);
+        line-height: 1.05;
+      }
+      #nextPhaseText {
+        font-size: 0.78rem;
+        line-height: 1.2;
+        text-align: left;
+        margin-top: 0;
+      }
+      .timer-clock-text {
+        grid-column: 2;
+        justify-self: center;
+        font-size: clamp(2.1rem, 16dvh, 3.6rem);
+        line-height: 0.98;
+        margin: 0;
+      }
+      #phaseHint {
+        grid-column: 3;
+        justify-self: end;
+        width: 100%;
+        max-width: 24rem;
+        margin: 0;
+        padding: 0.45rem 0.7rem;
+        max-height: 6rem;
+        overflow-y: auto;
+        font-size: 0.75rem;
+        line-height: 1.3;
+        text-align: left;
+        border: 1px solid rgba(21, 31, 40, 0.22);
+      }
+      .timer-night #phaseHint {
+        border-color: rgba(250, 249, 246, 0.25);
+      }
+      #preWarnBanner {
+        margin-bottom: 0.2rem;
+        padding-top: 0.2rem;
+        padding-bottom: 0.2rem;
+        font-size: 0.75rem;
+      }
+      #liveChartBox {
+        width: 100%;
+      }
+      #livePressureSvg {
+        width: 100%;
+        height: 22dvh;
+        max-height: 6rem;
+      }
+      .timer-bottom-safe {
+        gap: 0.25rem;
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.3rem);
+      }
+      .timer-ctrl-btn,
+      #stopTimerBtn {
+        padding-top: 0.35rem;
+        padding-bottom: 0.35rem;
+        min-height: 1.95rem;
+        font-size: 0.72rem;
+      }
+    }
+    /* Diskret 15-sekunders forvarsel (Dagslys) */
+    @keyframes prewarnDayPulse {
+      0%, 100% {
+        box-shadow: inset 0 0 0 0px rgba(217, 119, 6, 0);
+        filter: brightness(1);
+      }
+      50% {
+        box-shadow: inset 0 0 0 18px rgba(217, 119, 6, 0.78);
+        filter: brightness(1.03);
+      }
+    }
 
-        /* Diskret 15-sekunders forvarsel (Aften/Mørke) */
-        @keyframes prewarnNightPulse {
-            0%, 100% {
-                box-shadow: inset 0 0 0 8px rgba(245, 158, 11, 0.35);
-            }
-            50% {
-                box-shadow: inset 0 0 0 18px rgba(245, 158, 11, 0.92);
-            }
-        }
+    /* Diskret 15-sekunders forvarsel (Aften/Mørke) */
+    @keyframes prewarnNightPulse {
+      0%, 100% {
+        box-shadow: inset 0 0 0 8px rgba(245, 158, 11, 0.35);
+      }
+      50% {
+        box-shadow: inset 0 0 0 18px rgba(245, 158, 11, 0.92);
+      }
+    }
 
-        .animate-prewarn-day {
-            animation: prewarnDayPulse 1.35s ease-in-out infinite;
-        }
+    .animate-prewarn-day {
+      animation: prewarnDayPulse 1.35s ease-in-out infinite;
+    }
 
-        .animate-prewarn-night {
-            animation: prewarnNightPulse 1.35s ease-in-out infinite;
-        }
+    .animate-prewarn-night {
+      animation: prewarnNightPulse 1.35s ease-in-out infinite;
+    }
 
-        /* Diskret 15-sekunders forvarsel: Maske på igen (Dagslys) */
-        @keyframes prewarnMaskOnDayPulse {
-            0%, 100% {
-                box-shadow: inset 0 0 0 0px rgba(1, 63, 88, 0);
-                filter: brightness(1);
-            }
-            50% {
-                box-shadow: inset 0 0 0 18px rgba(1, 63, 88, 0.85);
-                filter: brightness(1.03);
-            }
-        }
+    /* Diskret 15-sekunders forvarsel: Maske på igen (Dagslys) */
+    @keyframes prewarnMaskOnDayPulse {
+      0%, 100% {
+        box-shadow: inset 0 0 0 0px rgba(1, 63, 88, 0);
+        filter: brightness(1);
+      }
+      50% {
+        box-shadow: inset 0 0 0 18px rgba(1, 63, 88, 0.85);
+        filter: brightness(1.03);
+      }
+    }
 
-        /* Diskret 15-sekunders forvarsel: Maske på igen (Aften/Mørke) */
-        @keyframes prewarnMaskOnNightPulse {
-            0%, 100% {
-                box-shadow: inset 0 0 0 8px rgba(182, 204, 215, 0.35);
-            }
-            50% {
-                box-shadow: inset 0 0 0 18px rgba(182, 204, 215, 0.95);
-            }
-        }
+    /* Diskret 15-sekunders forvarsel: Maske på igen (Aften/Mørke) */
+    @keyframes prewarnMaskOnNightPulse {
+      0%, 100% {
+        box-shadow: inset 0 0 0 8px rgba(182, 204, 215, 0.35);
+      }
+      50% {
+        box-shadow: inset 0 0 0 18px rgba(182, 204, 215, 0.95);
+      }
+    }
 
-        .animate-prewarn-on-day {
-            animation: prewarnMaskOnDayPulse 1.35s ease-in-out infinite;
-        }
+    .animate-prewarn-on-day {
+      animation: prewarnMaskOnDayPulse 1.35s ease-in-out infinite;
+    }
 
-        .animate-prewarn-on-night {
-            animation: prewarnMaskOnNightPulse 1.35s ease-in-out infinite;
-        }
+    .animate-prewarn-on-night {
+      animation: prewarnMaskOnNightPulse 1.35s ease-in-out infinite;
+    }
 
-        /* Renset styling til range-slidere */
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            background: #E0DFD8;
-            height: 6px;
-            border-radius: 9999px;
-            outline: none;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 9999px;
-            background: #013F58;
-            border: 2px solid #FAF9F6;
-            cursor: pointer;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-        }
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 9999px;
-            background: #013F58;
-            border: 2px solid #FAF9F6;
-            cursor: pointer;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-        }
+    /* Renset styling til range-slidere */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: #E0DFD8;
+      height: 6px;
+      border-radius: 9999px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 9999px;
+      background: #013F58;
+      border: 2px solid #FAF9F6;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 9999px;
+      background: #013F58;
+      border: 2px solid #FAF9F6;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
 
-        /* Spole-slider på aktiv timer-skærm */
-        input[type="range"].seek-slider {
-            background: rgba(21, 31, 40, 0.22);
-            height: 8px;
-        }
-        input[type="range"].seek-slider::-webkit-slider-thumb {
-            width: 22px;
-            height: 22px;
-            background: #151F28;
-            border: 3px solid #FAF9F6;
-        }
-        input[type="range"].seek-slider::-moz-range-thumb {
-            width: 22px;
-            height: 22px;
-            background: #151F28;
-            border: 3px solid #FAF9F6;
-        }
-        .timer-night input[type="range"].seek-slider {
-            background: rgba(250, 249, 246, 0.24);
-        }
-        .timer-night input[type="range"].seek-slider::-webkit-slider-thumb {
-            background: #FAF9F6;
-            border: 3px solid #013F58;
-        }
-        .timer-night input[type="range"].seek-slider::-moz-range-thumb {
-            background: #FAF9F6;
-            border: 3px solid #013F58;
-        }
+    /* Spole-slider på aktiv timer-skærm */
+    input[type="range"].seek-slider {
+      background: rgba(21, 31, 40, 0.22);
+      height: 8px;
+    }
+    input[type="range"].seek-slider::-webkit-slider-thumb {
+      width: 22px;
+      height: 22px;
+      background: #151F28;
+      border: 3px solid #FAF9F6;
+    }
+    input[type="range"].seek-slider::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      background: #151F28;
+      border: 3px solid #FAF9F6;
+    }
+    .timer-night input[type="range"].seek-slider {
+      background: rgba(250, 249, 246, 0.24);
+    }
+    .timer-night input[type="range"].seek-slider::-webkit-slider-thumb {
+      background: #FAF9F6;
+      border: 3px solid #013F58;
+    }
+    .timer-night input[type="range"].seek-slider::-moz-range-thumb {
+      background: #FAF9F6;
+      border: 3px solid #013F58;
+    }
 
-        /* Aften/mørke-tema på opsætningsskærmen */
-        body.setup-night {
-            background-color: #0b141b;
-            color: #FAF9F6;
-        }
-        body.setup-night .surface-card {
-            background-color: #111e28;
-            border-color: #213747;
-            color: #FAF9F6;
-        }
-        body.setup-night .surface-subtle {
-            background-color: #172733;
-            border-color: #274052;
-            color: #FAF9F6;
-        }
-        body.setup-night .text-heading {
-            color: #FAF9F6;
-        }
-        body.setup-night .text-muted {
-            color: #B6CCD7;
-        }
-        body.setup-night #setupScreen input[type="text"],
-        body.setup-night #setupScreen select {
-            background-color: #0f1b24;
-            border-color: #2b4558;
-            color: #FAF9F6;
-        }
-        body.setup-night .time-step-btn {
-            background-color: #182a38;
-            border-color: #2b4558;
-            color: #B6CCD7;
-        }
-        body.setup-night .time-step-btn:hover {
-            background-color: #21384a;
-        }
-        .shared-banner {
-          background-color: rgba(16, 185, 129, 0.14);
-          border: 1px solid rgba(16, 185, 129, 0.45);
-          color: inherit;
-          padding: 10px 16px;
-          border-radius: 8px;
-          margin-bottom: 14px;
-          font-size: 0.92rem;
-          text-align: center;
-        }
+    /* Aften/mørke-tema på opsætningsskærmen */
+    body.setup-night {
+      background-color: #0b141b;
+      color: #FAF9F6;
+    }
+    body.setup-night .surface-card {
+      background-color: #111e28;
+      border-color: #213747;
+      color: #FAF9F6;
+    }
+    body.setup-night .surface-subtle {
+      background-color: #172733;
+      border-color: #274052;
+      color: #FAF9F6;
+    }
+    body.setup-night .text-heading {
+      color: #FAF9F6;
+    }
+    body.setup-night .text-muted {
+      color: #B6CCD7;
+    }
+    body.setup-night #setupScreen input[type="text"],
+    body.setup-night #setupScreen select {
+      background-color: #0f1b24;
+      border-color: #2b4558;
+      color: #FAF9F6;
+    }
+    body.setup-night .time-step-btn {
+      background-color: #182a38;
+      border-color: #2b4558;
+      color: #B6CCD7;
+    }
+    body.setup-night .time-step-btn:hover {
+      background-color: #21384a;
+    }
+  </style>
 
-        .btn-share {
-          padding: 10px 16px;
-          border-radius: 8px;
-          border: 1px solid currentColor;
-          background: transparent;
-          color: inherit;
-          font-weight: 600;
-          cursor: pointer;
-        }
-
-        .btn-share:hover {
-          opacity: 0.85;
-        }
-
-        .share-feedback {
-          margin-left: 10px;
-          font-size: 0.88rem;
-          font-weight: 500;
-        }
-    </style>
-
-    <!-- Google Tag Manager -->
-    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-N9W74J6F"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-    </script>
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-N9W74J6F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
 </head>
 <body class="bg-[#FAF9F6] text-rl-black font-sans antialiased transition-colors duration-300">
 
-    <!-- ===================================================================== -->
-    <!-- OPSÆTNINGSSKÆRM                                                       -->
-    <!-- ===================================================================== -->
-    <div id="setupScreen" class="min-h-[100dvh] flex flex-col pb-24">
+  <!-- ===================================================================== -->
+  <!-- OPSÆTNINGSSKÆRM -->
+  <!-- ===================================================================== -->
+  <div id="setupScreen" class="min-h-[100dvh] flex flex-col pb-24">
 
-        <!-- HEADER -->
-        <header class="bg-rl-darkblue shadow-md sticky top-0 z-40 border-b border-white/10 h-20 flex items-center">
-            <nav class="container mx-auto px-4 sm:px-6 max-w-5xl flex items-center justify-between w-full gap-3">
-                <a href="index.html" class="flex items-center gap-3 group py-1 min-w-0">
-                    <!-- Banner der kun vises, når siden åbnes via et delt link -->
-                    <div id="sharedProtocolBanner" class="shared-banner" style="display: none;">
-                      Protokol klargjort af <strong>RecoveryExpressen</strong>
-                    </div>
-                    <img
-                        id="brandLogoImg"
-                        src="pictures/Recharge%20Life_Large_Transparent_Variant%201.png"
-                        alt="RechargeLife"
-                        class="h-12 sm:h-14 w-auto object-contain shrink-0 transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div id="brandLogoFallback" class="hidden w-11 h-11 rounded-full bg-white/10 border border-white/20 items-center justify-center shrink-0">
-                        <svg class="w-6 h-6 text-rl-lightblue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="9"></circle>
-                            <polyline points="12 7 12 12 15.5 14"></polyline>
-                        </svg>
-                    </div>
-                    <div class="border-l border-white/25 pl-3 min-w-0">
-                        <span class="font-serif text-lg sm:text-2xl text-white tracking-wide block leading-none truncate">RecoveryExpressen</span>
-                        <span class="text-[10px] uppercase tracking-[0.2em] text-rl-lightblue block mt-1 truncate">HBOT Timer &middot; by RechargeLife</span>
-                    </div>
-                </a>
+    <!-- HEADER -->
+    <header class="bg-rl-darkblue shadow-md sticky top-0 z-40 border-b border-white/10 h-20 flex items-center">
+      <nav class="container mx-auto px-4 sm:px-6 max-w-5xl flex items-center justify-between w-full gap-3">
+        <a href="index.html" class="flex items-center gap-3 group py-1 min-w-0">
+          <img
+            id="brandLogoImg"
+            src="pictures/Recharge%20Life_Large_Transparent_Variant%201.png"
+            alt="RechargeLife"
+            class="h-12 sm:h-14 w-auto object-contain shrink-0 transition-transform duration-300 group-hover:scale-105"
+          />
+          <div id="brandLogoFallback" class="hidden w-11 h-11 rounded-full bg-white/10 border border-white/20 items-center justify-center shrink-0">
+            <svg class="w-6 h-6 text-rl-lightblue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"></circle>
+              <polyline points="12 7 12 12 15.5 14"></polyline>
+            </svg>
+          </div>
+          <div class="border-l border-white/25 pl-3 min-w-0">
+            <span class="font-serif text-lg sm:text-2xl text-white tracking-wide block leading-none truncate">RecoveryExpressen</span>
+            <span class="text-[10px] uppercase tracking-[0.2em] text-rl-lightblue block mt-1 truncate">HBOT Timer &middot; by RechargeLife</span>
+          </div>
+        </a>
 
-                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-                    <a href="index.html" class="hidden md:inline-block text-xs font-medium text-white/80 hover:text-white transition px-2 py-1">
-                        ← Forside
-                    </a>
-                    <a href="en/timer.html" class="text-xs font-semibold text-white/85 hover:text-white border border-white/25 hover:bg-white/10 px-3 py-2 rounded-full transition" title="Switch to English">EN</a>
-                    <button
-                        type="button"
-                        id="headerThemeToggleBtn"
-                        class="inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/20 px-3.5 py-2 rounded-full transition cursor-pointer"
-                    >
-                        <span id="headerThemeIcon">🌙</span>
-                        <span id="headerThemeText">Skift til Aften</span>
-                    </button>
-                </div>
-            </nav>
-        </header>
-
-        <!-- HOVEDINDHOLD -->
-        <main class="container mx-auto px-4 sm:px-6 max-w-4xl pt-6 sm:pt-8 space-y-5 flex-1">
-
-            <!-- Intro-linje -->
-            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
-                <div>
-                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">HBOT sekvenstimer</span>
-                    <h1 class="font-serif text-3xl sm:text-4xl text-heading text-rl-darkblue mt-0.5">Planlæg din HBOT-session</h1>
-                </div>
-                <p class="text-xs text-muted text-rl-black/65 max-w-xs sm:text-right">
-                    Placér skærmen synligt udenfor kammerets koøje. Skærmen holdes automatisk vågen under hele forløbet.
-                </p>
-            </div>
-
-            <!-- KORT 1: KAMMERTRYK & TIDER -->
-            <section class="surface-card bg-white rounded-3xl border border-rl-lightbg p-5 sm:p-6 shadow-sm space-y-5">
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                    <div>
-                        <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-rl-taupe block">Trin 1</span>
-                        <h2 class="font-serif text-2xl text-heading text-rl-darkblue">Kammertryk og tider</h2>
-                    </div>
-                    <span id="selectedAtaBadge" class="inline-flex items-center px-3.5 py-1 rounded-full bg-rl-lightblue/45 text-rl-darkblue text-xs font-bold tabular-nums">
-                        1,5 ATA
-                    </span>
-                </div>
-
-                <!-- Trykvalg (ATA / PSI / kPa) -->
-                <div>
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
-                        <p class="text-xs font-medium text-muted text-rl-black/70">Vælg måltryk (standard tryktid = 1 min pr. 0,1 ATA):</p>
-                        <div class="inline-flex items-center rounded-full bg-rl-lightbg/70 p-0.5 border border-rl-lightbg text-[11px] font-semibold" id="pressureUnitToggle" role="group" aria-label="Vælg trykenhed">
-                            <button type="button" data-unit="ATA" class="unit-btn px-2.5 py-0.5 rounded-full transition cursor-pointer">ATA</button>
-                            <button type="button" data-unit="PSI" class="unit-btn px-2.5 py-0.5 rounded-full transition cursor-pointer">PSI</button>
-                            <button type="button" data-unit="kPa" class="unit-btn px-2.5 py-0.5 rounded-full transition cursor-pointer">kPa</button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-5 gap-1.5 sm:gap-2" id="pressureAtaButtons">
-                        <button type="button" data-ata="1.3" class="ata-btn py-2.5 px-1 sm:px-2 rounded-2xl border-2 text-xs sm:text-sm font-bold transition-all cursor-pointer text-center tabular-nums">
-                            <span class="ata-val">1,3</span>
-                            <span class="block text-[10px] font-medium opacity-75">3m00s</span>
-                        </button>
-                        <button type="button" data-ata="1.5" class="ata-btn py-2.5 px-1 sm:px-2 rounded-2xl border-2 text-xs sm:text-sm font-bold transition-all cursor-pointer text-center tabular-nums">
-                            <span class="ata-val">1,5</span>
-                            <span class="block text-[10px] font-medium opacity-75">5m00s</span>
-                        </button>
-                        <button type="button" data-ata="1.6" class="ata-btn py-2.5 px-1 sm:px-2 rounded-2xl border-2 text-xs sm:text-sm font-bold transition-all cursor-pointer text-center tabular-nums">
-                            <span class="ata-val">1,6</span>
-                            <span class="block text-[10px] font-medium opacity-75">6m00s</span>
-                        </button>
-                        <button type="button" data-ata="1.75" class="ata-btn py-2.5 px-1 sm:px-2 rounded-2xl border-2 text-xs sm:text-sm font-bold transition-all cursor-pointer text-center tabular-nums">
-                            <span class="ata-val">1,75</span>
-                            <span class="block text-[10px] font-medium opacity-75">7m30s</span>
-                        </button>
-                        <button type="button" data-ata="2.0" class="ata-btn py-2.5 px-1 sm:px-2 rounded-2xl border-2 text-xs sm:text-sm font-bold transition-all cursor-pointer text-center tabular-nums">
-                            <span class="ata-val">2,0</span>
-                            <span class="block text-[10px] font-medium opacity-75">10m00s</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 5 separate tidsfelter -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
-                    <!-- Felt 1: Indstigningstid før start -->
-                    <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
-                        <label for="entryDelayInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight">Indstigningstid før start</label>
-                        <div class="flex items-center gap-1.5">
-                            <button type="button" data-step-target="entryDelaySec" data-step-delta="-30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="-30 sek" aria-label="Sænk indstigningstid 30 sekunder">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </button>
-                            <input type="text" id="entryDelayInput" inputmode="numeric" maxlength="5" value="02:30" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Indstigningstid i minutter og sekunder" />
-                            <button type="button" data-step-target="entryDelaySec" data-step-delta="30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+30 sek" aria-label="Øg indstigningstid 30 sekunder">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Felt 2: Tryksætningstid -->
-                    <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
-                        <label for="pressurizeInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-rl-lightblue border border-rl-darkblue/40 shrink-0"></span>
-                            Tryksætningstid
-                        </label>
-                        <div class="flex items-center gap-1.5">
-                            <button type="button" data-step-target="pressurizeSec" data-step-delta="-30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="-30 sek" aria-label="Sænk tryksætningstid 30 sekunder">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </button>
-                            <input type="text" id="pressurizeInput" inputmode="numeric" maxlength="5" value="05:00" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Tryksætningstid i minutter og sekunder" />
-                            <button type="button" data-step-target="pressurizeSec" data-step-delta="30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+30 sek" aria-label="Øg tryksætningstid 30 sekunder">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Felt 3: Ilt-interval (10–30 min) -->
-                    <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
-                        <label for="oxygenBlockInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-rl-lightblue border border-rl-darkblue/40 shrink-0"></span>
-                            Ilt pr. blok (10–30 min)
-                        </label>
-                        <div class="flex items-center gap-1.5">
-                            <button type="button" data-step-target="oxygenBlockSec" data-step-delta="-60" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="-1 min" aria-label="Sænk ilttid 1 minut">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </button>
-                            <input type="text" id="oxygenBlockInput" inputmode="numeric" maxlength="5" value="20:00" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Ilttid pr. blok i minutter og sekunder" />
-                            <button type="button" data-step-target="oxygenBlockSec" data-step-delta="60" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+1 min" aria-label="Øg ilttid 1 minut">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Felt 4: Luftpause (5–7 min, afhængigt af VO2max) -->
-                    <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
-                        <label for="pauseInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 border border-amber-600/40 shrink-0"></span>
-                            Luftpause (5–7 min · VO₂max)
-                        </label>
-                        <div class="flex items-center gap-1.5">
-                            <button type="button" data-step-target="pauseSec" data-step-delta="-30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="-30 sek" aria-label="Sænk luftpause 30 sekunder">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </button>
-                            <input type="text" id="pauseInput" inputmode="numeric" maxlength="5" value="05:00" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Luftpause i minutter og sekunder" />
-                            <button type="button" data-step-target="pauseSec" data-step-delta="30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+30 sek" aria-label="Øg luftpause 30 sekunder">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Felt 5: Tryksænkningstid -->
-                    <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
-                        <label for="depressurizeInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#7A94A3] shrink-0"></span>
-                            Tryksænkningstid
-                        </label>
-                        <div class="flex items-center gap-1.5">
-                            <button type="button" data-step-target="depressurizeSec" data-step-delta="-30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="-30 sek" aria-label="Sænk tryksænkningstid 30 sekunder">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </button>
-                            <input type="text" id="depressurizeInput" inputmode="numeric" maxlength="5" value="05:00" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Tryksænkningstid i minutter og sekunder" />
-                            <button type="button" data-step-target="depressurizeSec" data-step-delta="30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+30 sek" aria-label="Øg tryksænkningstid 30 sekunder">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tilvalg: Guidance i de forskellige faser -->
-                <div class="pt-3 border-t border-rl-lightbg/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                        <label for="chamberGuidanceCheckbox" class="inline-flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-heading text-rl-darkblue cursor-pointer select-none">
-                            <input type="checkbox" id="chamberGuidanceCheckbox" checked class="w-4 h-4 accent-rl-darkblue rounded cursor-pointer" />
-                            <span>Vis trin-for-trin guidance undervejs i sessionen</span>
-                        </label>
-                        <p class="text-[11px] text-muted text-rl-taupe mt-0.5 pl-6">
-                            Guider i lynlåse, trykudligning, udluftningsventil, maske på og af under iltpauser samt tjek af 0 på trykmåleren ved afslutning.
-                        </p>
-                    </div>
-                </div>
-
-                <p class="text-[11px] text-muted text-rl-taupe">
-                    Indstigning: 0–10 min &middot; Tryksætning og sænkning: 1–20 min &middot; Ilt pr. blok: 10–30 min &middot; Luftpause: 5–7 min (justeres efter VO₂max). Brug pilene eller tast direkte i formatet <span class="font-semibold">MM:SS</span>.
-                </p>
-            </section>
-
-            <!-- KORT 2: VÆLG PROGRAM (PAUSER) + TRYKKURVE + ILTENHEDER -->
-            <section class="surface-card bg-white rounded-3xl border border-rl-lightbg p-5 sm:p-6 shadow-sm space-y-5">
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                    <div>
-                        <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-rl-taupe block">Trin 2</span>
-                        <h2 class="font-serif text-2xl text-heading text-rl-darkblue">Ilt-sekvens og trykkurve</h2>
-                    </div>
-                    <span id="totalDurationBadge" class="inline-flex items-center px-3.5 py-1 rounded-full bg-rl-lightbg/70 text-rl-darkblue text-xs font-bold tabular-nums">
-                        Behandling: 55 min
-                    </span>
-                </div>
-
-                <!-- 4 program-knapper -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="presetButtons">
-                    <button type="button" data-preset="0" class="preset-btn p-3.5 rounded-2xl border-2 text-left transition-all cursor-pointer">
-                        <span class="font-bold text-sm block">Ingen pause</span>
-                        <span id="presetSub0" class="text-xs opacity-75 block mt-0.5">20 min ilt</span>
-                    </button>
-                    <button type="button" data-preset="1" class="preset-btn p-3.5 rounded-2xl border-2 text-left transition-all cursor-pointer">
-                        <span class="font-bold text-sm block">1 pause</span>
-                        <span id="presetSub1" class="text-xs opacity-75 block mt-0.5">20 / 5 / 20 min</span>
-                    </button>
-                    <button type="button" data-preset="2" class="preset-btn p-3.5 rounded-2xl border-2 text-left transition-all cursor-pointer">
-                        <span class="font-bold text-sm block">2 pauser</span>
-                        <span id="presetSub2" class="text-xs opacity-75 block mt-0.5">3 × 20 + 2 × 5</span>
-                    </button>
-                    <button type="button" data-preset="3" class="preset-btn p-3.5 rounded-2xl border-2 text-left transition-all cursor-pointer">
-                        <span class="font-bold text-sm block">3 pauser</span>
-                        <span id="presetSub3" class="text-xs opacity-75 block mt-0.5">4 × 20 + 3 × 5</span>
-                    </button>
-                </div>
-
-                <!-- Kombineret SVG Trykkurve -->
-                <div class="pt-3 border-t border-rl-lightbg/70">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                        <span id="chartProfileLabel" class="text-xs font-semibold uppercase tracking-[0.15em] text-rl-taupe">Trykprofil (ATA over tid)</span>
-                        <span id="totalWithEntryBadge" class="text-xs font-medium text-muted text-rl-black/70 tabular-nums">Inkl. indstigning: 57 min 30 sek</span>
-                    </div>
-
-                    <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-2.5 sm:p-3">
-                        <svg id="setupPressureSvg" viewBox="0 0 640 205" class="w-full h-auto block overflow-visible" role="img" aria-label="Trykkurve over tid"></svg>
-                    </div>
-
-                    <div id="timelineLegend" class="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3 text-xs text-muted text-rl-black/75">
-                        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rl-taupe"></span>Indstigning</span>
-                        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rl-lightblue border border-rl-darkblue/40"></span><span id="legendOxygenLabel">Tryksætning og ilt (20 min)</span></span>
-                        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-amber-400"></span><span id="legendPauseLabel">Luftpause (5 min)</span></span>
-                        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-[#7A94A3]"></span>Tryksænkning</span>
-                    </div>
-                </div>
-
-                <!-- Iltenheder (OTU / UPTD) beregning -->
-                <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-4 space-y-3">
-                    <div class="flex flex-wrap items-center justify-between gap-2">
-                        <div>
-                            <span class="text-xs font-bold uppercase tracking-wider text-heading text-rl-darkblue">Beregning af iltenheder (OTU / UPTD)</span>
-                            <p class="text-[11px] text-muted text-rl-taupe mt-0.5">Anbefalet grænse: maks. 360 iltenheder pr. dag (Lambertsen-formlen).</p>
-                        </div>
-                        <div class="inline-flex rounded-full bg-rl-lightbg/70 p-0.5 border border-rl-lightbg text-xs font-semibold">
-                            <button type="button" data-fio2="0.95" class="fio2-btn px-3 py-1 rounded-full transition cursor-pointer">95% (Koncentrator)</button>
-                            <button type="button" data-fio2="1.0" class="fio2-btn px-3 py-1 rounded-full transition cursor-pointer">100% (Ren ilt)</button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-2.5 text-center">
-                        <div class="surface-card bg-white border border-rl-lightbg rounded-xl p-2.5">
-                            <span class="text-[11px] text-muted text-rl-taupe block">Iltenheder</span>
-                            <span id="otuValue" class="font-serif text-2xl text-heading text-rl-darkblue tabular-nums">66 OTU</span>
-                        </div>
-                        <div class="surface-card bg-white border border-rl-lightbg rounded-xl p-2.5">
-                            <span class="text-[11px] text-muted text-rl-taupe block">Iltpartialtryk (pO₂)</span>
-                            <span id="po2Value" class="font-serif text-2xl text-heading text-rl-darkblue tabular-nums">1,43 ATA</span>
-                        </div>
-                        <div class="surface-card bg-white border border-rl-lightbg rounded-xl p-2.5">
-                            <span class="text-[11px] text-muted text-rl-taupe block">Samlet ilttid</span>
-                            <span id="oxygenTimeValue" class="font-serif text-2xl text-heading text-rl-darkblue tabular-nums">40 min</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- KORT 3: LYSFORHOLD & LYDSIGNAL -->
-            <section class="surface-card bg-white rounded-3xl border border-rl-lightbg p-5 sm:p-6 shadow-sm space-y-5">
-                <div>
-                    <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-rl-taupe block">Trin 3</span>
-                    <h2 class="font-serif text-2xl text-heading text-rl-darkblue">Skærmtilstand og lydsignal</h2>
-                </div>
-
-                <!-- Dagslys vs. Aften/Mørke -->
-                <div class="space-y-2">
-                    <div class="grid grid-cols-2 gap-2.5">
-                        <button type="button" data-theme="day" class="theme-btn p-3.5 rounded-2xl border-2 flex items-center justify-center gap-2 font-semibold text-sm transition cursor-pointer">
-                            <span>☀️</span>
-                            <span>Dagslys</span>
-                        </button>
-                        <button type="button" data-theme="night" class="theme-btn p-3.5 rounded-2xl border-2 flex items-center justify-center gap-2 font-semibold text-sm transition cursor-pointer">
-                            <span>🌙</span>
-                            <span>Aften og mørke</span>
-                        </button>
-                    </div>
-
-                    <!-- Visuel lysstyrke -->
-                    <div class="pt-4 border-t border-rl-lightbg/70 space-y-2.5">
-                        <div class="flex items-center justify-between gap-2">
-                            <label for="brightnessSlider" class="text-xs font-semibold uppercase tracking-wider text-muted text-rl-taupe">
-                                Skærmlys på aktiv timer
-                            </label>
-                            <label class="inline-flex items-center gap-2 text-xs font-medium text-muted text-rl-black/75 cursor-pointer select-none">
-                                <input type="checkbox" id="useDeviceDefaultCheckbox" class="w-4 h-4 accent-rl-darkblue rounded cursor-pointer" />
-                                <span>Brug enhedens standard</span>
-                            </label>
-                        </div>
-
-                        <div id="brightnessControlRow" class="flex items-center gap-3">
-                            <span class="text-xs font-semibold text-muted text-rl-taupe w-20 shrink-0">Lysstyrke</span>
-                            <input type="range" id="brightnessSlider" min="30" max="140" step="5" value="120" class="flex-1 cursor-pointer" aria-label="Skærmlys på aktiv timer" />
-                            <span id="brightnessValue" class="text-xs font-bold tabular-nums text-heading text-rl-darkblue w-12 text-right">120%</span>
-                        </div>
-
-                        <p class="text-[11px] text-muted text-rl-taupe">
-                            Under 100% dæmper skærmen i mørke. Over 100% giver ekstra lys og kontrast (begrænset af telefonens eller tablettens egen maks. lysstyrke).
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Lydvalg, gentagelser, egen lydfil & lydstyrke -->
-                <div class="pt-4 border-t border-rl-lightbg/70 space-y-3.5">
-                    <div class="flex flex-wrap items-center justify-between gap-2">
-                        <label for="soundSelect" class="text-xs font-semibold uppercase tracking-wider text-muted text-rl-taupe">Lydsignal ved faseskift</label>
-                        <button type="button" id="testSoundBtn" class="inline-flex items-center gap-1.5 text-xs font-semibold bg-rl-darkblue hover:bg-rl-black text-white px-4 py-1.5 rounded-full transition cursor-pointer">
-                            <span>🔊</span>
-                            <span>Test lyd</span>
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <select id="soundSelect" class="w-full rounded-2xl border border-rl-lightbg bg-[#FAF9F6] px-3.5 py-2.5 text-sm font-medium text-rl-black focus:outline-none focus:ring-2 focus:ring-rl-darkblue/30 focus:border-rl-darkblue">
-                            <option value="yoga_pling">Yoga Pling (5 sek. udtone – standard)</option>
-                            <option value="singing_bowl">Tibetansk syngeskål (varm og rolig)</option>
-                            <option value="soft_harp">Blød harpe-akkord</option>
-                            <option value="wind_chimes">Krystal vindspil</option>
-                            <option value="zen_gong">Dyb zen-gong</option>
-                            <option value="kalimba">Blød kalimba</option>
-                            <option value="crystal_chime">Krystal-klokke</option>
-                            <option value="warm_marimba">Varm marimba</option>
-                            <option value="ocean_swell">Blid havbølge og grundtone</option>
-                            <option value="flute_breath">Rolig fløjte-klang</option>
-                            <option value="soft_bell">Blød tempeltone</option>
-                            <option value="beep">Klar dobbelt-bip (støjsikker)</option>
-                            <option value="custom" id="customSoundOption" disabled>Egen lydfil (ingen valgt)</option>
-                        </select>
-
-                        <div class="flex items-center gap-2">
-                            <label for="customAudioInput" class="flex-1 text-center rounded-2xl border border-dashed border-rl-taupe/60 hover:border-rl-darkblue px-3.5 py-2.5 text-xs font-semibold text-muted text-rl-darkblue cursor-pointer transition truncate">
-                                <span id="customAudioLabel">+ Vælg egen .mp3 eller .wav</span>
-                            </label>
-                            <input type="file" id="customAudioInput" accept="audio/*" class="hidden" />
-                            <button type="button" id="clearCustomAudioBtn" class="hidden px-3 py-2.5 rounded-2xl bg-rose-100 text-rose-700 hover:bg-rose-200 text-xs font-bold cursor-pointer transition" title="Fjern egen lydfil">✕</button>
-                        </div>
-                    </div>
-
-                    <audio id="customAudioPlayer" preload="auto" class="hidden"></audio>
-
-                    <!-- Gentagelser inden for 5 sekunder -->
-                    <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-                        <span class="text-xs font-semibold text-muted text-rl-taupe">Gentag lyd inden for 5 sek.</span>
-                        <div class="inline-flex items-center rounded-full bg-rl-lightbg/70 p-0.5 border border-rl-lightbg text-xs font-semibold" id="soundRepeatButtons" role="group" aria-label="Antal gentagelser af lydsignal">
-                            <button type="button" data-repeat="1" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">1×</button>
-                            <button type="button" data-repeat="2" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">2×</button>
-                            <button type="button" data-repeat="3" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">3×</button>
-                        </div>
-                    </div>
-
-                    <!-- Lydstyrke -->
-                    <div class="flex items-center gap-3 pt-1">
-                        <span class="text-xs font-semibold text-muted text-rl-taupe w-20 shrink-0">Lydniveau</span>
-                        <input type="range" id="volumeSlider" min="0" max="100" value="85" class="flex-1 cursor-pointer" aria-label="Lydniveau" />
-                        <span id="volumeValue" class="text-xs font-bold tabular-nums text-heading text-rl-darkblue w-10 text-right">85%</span>
-                    </div>
-                    <p class="text-[11px] text-muted text-rl-taupe">
-                        På iPhone: Slå lydløs-knappen på siden fra og skru op for medier og lydstyrke, hvis lyden ikke høres.
-                    </p>
-                </div>
-            </section>
-
-            <!-- START-KNAP -->
-            <div class="pt-1 pb-4">
-                <button
-                    type="button"
-                    id="startBtn"
-                    class="w-full py-4 sm:py-5 rounded-full bg-rl-darkblue hover:bg-rl-black active:scale-[0.99] text-white font-serif text-xl sm:text-2xl tracking-wider shadow-xl transition cursor-pointer flex items-center justify-center gap-3"
-                >
-                    <span>Start HBOT-behandling</span>
-                    <span class="text-rl-lightblue text-xl">→</span>
-                </button>
-            </div>
-        </main>
-
-        <!-- FAST BUNDBJÆLKE: GEM SOM APP / DESKTOP -->
-        <div class="fixed bottom-0 inset-x-0 z-30 bg-[#012E40] border-t border-white/15 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.18)]">
-            <div class="container mx-auto max-w-4xl flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3 min-w-0">
-                    <div class="w-9 h-9 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0 text-rl-lightblue">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-white font-semibold text-xs sm:text-sm truncate">Brug timeren som en rigtig app i fuld skærm</p>
-                        <p class="text-rl-lightblue/80 text-[11px] truncate">Gem genvej på iPhone, Android eller computer</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2 shrink-0">
-                    <button type="button" id="shareSetupBtn" class="btn-share">
-                      Del denne HBOT opsætning
-                    </button>
-                    <span id="shareFeedback" class="share-feedback" aria-live="polite"></span>
-                    <button
-                        type="button"
-                        id="openFeedbackModalBtn"
-                        class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-xs uppercase tracking-wider px-3.5 py-2.5 rounded-full transition cursor-pointer"
-                    >
-                        Giv feedback
-                    </button>
-                    <button
-                        type="button"
-                        id="openInstallModalBtn"
-                        class="bg-white hover:bg-rl-lightblue text-rl-darkblue font-semibold text-xs uppercase tracking-wider px-4 py-2.5 rounded-full transition cursor-pointer"
-                    >
-                        Gem som app
-                    </button>
-                </div>
-            </div>
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+          <a href="index.html" class="hidden md:inline-block text-xs font-medium text-white/80 hover:text-white transition px-2 py-1">
+            ← Forside
+          </a>
+          <a href="en/timer.html" class="text-xs font-semibold text-white/85 hover:text-white border border-white/25 hover:bg-white/10 px-3 py-2 rounded-full transition" title="Switch to English">EN</a>
+          <button
+            type="button"
+            id="headerThemeToggleBtn"
+            class="inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/20 px-3.5 py-2 rounded-full transition cursor-pointer"
+          >
+            <span id="headerThemeIcon">🌙</span>
+            <span id="headerThemeText">Skift til Aften</span>
+          </button>
         </div>
+      </nav>
+    </header>
+
+    <!-- HOVEDINDHOLD -->
+    <main class="container mx-auto px-4 sm:px-6 max-w-4xl pt-6 sm:pt-8 space-y-5 flex-1">
+
+      <!-- Banner der kun vises, når siden åbnes via et delt link -->
+      <div id="sharedProtocolBanner" class="hidden rounded-2xl border border-rl-darkblue/25 bg-rl-lightblue/35 px-4 py-3 text-center text-xs sm:text-sm font-medium text-heading text-rl-darkblue shadow-xs">
+        Protokol klargjort af <strong>RecoveryExpressen</strong> – tjek udluftningsventilen før start
+      </div>
+
+      <!-- Intro-linje -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe">HBOT sekvenstimer</span>
+          <h1 class="font-serif text-3xl sm:text-4xl text-heading text-rl-darkblue mt-0.5">Planlæg din HBOT-session</h1>
+        </div>
+        <p class="text-xs text-muted text-rl-black/65 max-w-xs sm:text-right">
+          Placér skærmen synligt udenfor kammerets koøje. Skærmen holdes automatisk vågen under hele forløbet.
+        </p>
+      </div>
+
+      <!-- KORT 1: KAMMERTRYK & TIDER -->
+      <section class="surface-card bg-white rounded-3xl border border-rl-lightbg p-5 sm:p-6 shadow-sm space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-rl-taupe block">Trin 1</span>
+            <h2 class="font-serif text-2xl text-heading text-rl-darkblue">Kammertryk og tider</h2>
+          </div>
+          <span id="selectedAtaBadge" class="inline-flex items-center px-3.5 py-1 rounded-full bg-rl-lightblue/45 text-rl-darkblue text-xs font-bold tabular-nums">
+            1,5 ATA
+          </span>
+        </div>
+
+        <!-- Trykvalg (ATA / PSI / kPa) -->
+        <div>
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+            <p class="text-xs font-medium text-muted text-rl-black/70">Vælg måltryk (standard tryktid = 1 min pr. 0,1 ATA):</p>
+            <div class="inline-flex items-center rounded-full bg-rl-lightbg/70 p-0.5 border border-rl-lightbg text-[11px] font-semibold" id="pressureUnitToggle" role="group" aria-label="Vælg trykenhed">
+              <button type="button" data-unit="ATA" class="unit-btn px-2.5 py-0.5 rounded-full transition cursor-pointer">ATA</button>
+              <button type="button" data-unit="PSI" class="unit-btn px-2.5 py-0.5 rounded-full transition cursor-pointer">PSI</button>
+              <button type="button" data-unit="kPa" class="unit-btn px-2.5 py-0.5 rounded-full transition cursor-pointer">kPa</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-5 gap-1.5 sm:gap-2" id="pressureAtaButtons">
+            <button type="button" data-ata="1.3" class="ata-btn py-2.5 px-1 sm:px-2 rounded-2xl border-2 text-xs sm:text-sm font-bold transition-all cursor-pointer text-center tabular-nums">
+              <span class="ata-val">1,3</span>
+              <span class="block text-[10px] font-medium opacity-75">3m00s</span>
+            </button>
+            <button type="button" data-ata="1.5" class="ata-btn py-2.5 px-1 sm:px-2 rounded-2xl border-2 text-xs sm:text-sm font-bold transition-all cursor-pointer text-center tabular-nums">
+              <span class="ata-val">1,5</span>
+              <span class="block text-[10px] font-medium opacity-75">5m00s</span>
+            </button>
+            <button type="button" data-ata="1.6" class="ata-btn py-2.5 px-1 sm:px-2 rounded-2xl border-2 text-xs sm:text-sm font-bold transition-all cursor-pointer text-center tabular-nums">
+              <span class="ata-val">1,6</span>
+              <span class="block text-[10px] font-medium opacity-75">6m00s</span>
+            </button>
+            <button type="button" data-ata="1.75" class="ata-btn py-2.5 px-1 sm:px-2 rounded-2xl border-2 text-xs sm:text-sm font-bold transition-all cursor-pointer text-center tabular-nums">
+              <span class="ata-val">1,75</span>
+              <span class="block text-[10px] font-medium opacity-75">7m30s</span>
+            </button>
+            <button type="button" data-ata="2.0" class="ata-btn py-2.5 px-1 sm:px-2 rounded-2xl border-2 text-xs sm:text-sm font-bold transition-all cursor-pointer text-center tabular-nums">
+              <span class="ata-val">2,0</span>
+              <span class="block text-[10px] font-medium opacity-75">10m00s</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 5 separate tidsfelter -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
+          <!-- Felt 1: Indstigningstid før start -->
+          <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
+            <label for="entryDelayInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight">Indstigningstid før start</label>
+            <div class="flex items-center gap-1.5">
+              <button type="button" data-step-target="entryDelaySec" data-step-delta="-30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="-30 sek" aria-label="Sænk indstigningstid 30 sekunder">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <input type="text" id="entryDelayInput" inputmode="numeric" maxlength="5" value="02:30" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Indstigningstid i minutter og sekunder" />
+              <button type="button" data-step-target="entryDelaySec" data-step-delta="30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+30 sek" aria-label="Øg indstigningstid 30 sekunder">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Felt 2: Tryksætningstid -->
+          <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
+            <label for="pressurizeInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-rl-lightblue border border-rl-darkblue/40 shrink-0"></span>
+              Tryksætningstid
+            </label>
+            <div class="flex items-center gap-1.5">
+              <button type="button" data-step-target="pressurizeSec" data-step-delta="-30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="-30 sek" aria-label="Sænk tryksætningstid 30 sekunder">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <input type="text" id="pressurizeInput" inputmode="numeric" maxlength="5" value="05:00" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Tryksætningstid i minutter og sekunder" />
+              <button type="button" data-step-target="pressurizeSec" data-step-delta="30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+30 sek" aria-label="Øg tryksætningstid 30 sekunder">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Felt 3: Ilt-interval (10–30 min) -->
+          <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
+            <label for="oxygenBlockInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-rl-lightblue border border-rl-darkblue/40 shrink-0"></span>
+              Ilt pr. blok (10–30 min)
+            </label>
+            <div class="flex items-center gap-1.5">
+              <button type="button" data-step-target="oxygenBlockSec" data-step-delta="-60" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="-1 min" aria-label="Sænk ilttid 1 minut">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <input type="text" id="oxygenBlockInput" inputmode="numeric" maxlength="5" value="20:00" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Ilttid pr. blok i minutter og sekunder" />
+              <button type="button" data-step-target="oxygenBlockSec" data-step-delta="60" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+1 min" aria-label="Øg ilttid 1 minut">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Felt 4: Luftpause (5–7 min, afhængigt af VO2max) -->
+          <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
+            <label for="pauseInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400 border border-amber-600/40 shrink-0"></span>
+              Luftpause (5–7 min · VO₂max)
+            </label>
+            <div class="flex items-center gap-1.5">
+              <button type="button" data-step-target="pauseSec" data-step-delta="-30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="-30 sek" aria-label="Sænk luftpause 30 sekunder">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <input type="text" id="pauseInput" inputmode="numeric" maxlength="5" value="05:00" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Luftpause i minutter og sekunder" />
+              <button type="button" data-step-target="pauseSec" data-step-delta="30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+30 sek" aria-label="Øg luftpause 30 sekunder">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Felt 5: Tryksænkningstid -->
+          <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
+            <label for="depressurizeInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#7A94A3] shrink-0"></span>
+              Tryksænkningstid
+            </label>
+            <div class="flex items-center gap-1.5">
+              <button type="button" data-step-target="depressurizeSec" data-step-delta="-30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="-30 sek" aria-label="Sænk tryksænkningstid 30 sekunder">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <input type="text" id="depressurizeInput" inputmode="numeric" maxlength="5" value="05:00" class="w-full h-10 rounded-xl bg-white border border-rl-lightbg text-rl-black text-center font-bold text-base tabular-nums focus:outline-none focus:ring-2 focus:ring-rl-darkblue/40 focus:border-rl-darkblue" aria-label="Tryksænkningstid i minutter og sekunder" />
+              <button type="button" data-step-target="depressurizeSec" data-step-delta="30" class="time-step-btn w-10 h-10 rounded-xl bg-white border border-rl-lightbg hover:bg-rl-lightbg/40 active:scale-95 text-rl-darkblue flex items-center justify-center shrink-0 transition cursor-pointer" title="+30 sek" aria-label="Øg tryksænkningstid 30 sekunder">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tilvalg: Guidance i de forskellige faser -->
+        <div class="pt-3 border-t border-rl-lightbg/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <label for="chamberGuidanceCheckbox" class="inline-flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-heading text-rl-darkblue cursor-pointer select-none">
+              <input type="checkbox" id="chamberGuidanceCheckbox" checked class="w-4 h-4 accent-rl-darkblue rounded cursor-pointer" />
+              <span>Vis trin-for-trin guidance undervejs i sessionen</span>
+            </label>
+            <p class="text-[11px] text-muted text-rl-taupe mt-0.5 pl-6">
+              Guider i lynlåse, trykudligning, udluftningsventil, maske på og af under iltpauser samt tjek af 0 på trykmåleren ved afslutning.
+            </p>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-muted text-rl-taupe">
+          Indstigning: 0–10 min &middot; Tryksætning og sænkning: 1–20 min &middot; Ilt pr. blok: 10–30 min &middot; Luftpause: 5–7 min (justeres efter VO₂max). Brug pilene eller tast direkte i formatet <span class="font-semibold">MM:SS</span>.
+        </p>
+      </section>
+
+      <!-- KORT 2: VÆLG PROGRAM (PAUSER) + TRYKKURVE + ILTENHEDER -->
+      <section class="surface-card bg-white rounded-3xl border border-rl-lightbg p-5 sm:p-6 shadow-sm space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-rl-taupe block">Trin 2</span>
+            <h2 class="font-serif text-2xl text-heading text-rl-darkblue">Ilt-sekvens og trykkurve</h2>
+          </div>
+          <span id="totalDurationBadge" class="inline-flex items-center px-3.5 py-1 rounded-full bg-rl-lightbg/70 text-rl-darkblue text-xs font-bold tabular-nums">
+            Behandling: 55 min
+          </span>
+        </div>
+
+        <!-- 4 program-knapper -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="presetButtons">
+          <button type="button" data-preset="0" class="preset-btn p-3.5 rounded-2xl border-2 text-left transition-all cursor-pointer">
+            <span class="font-bold text-sm block">Ingen pause</span>
+            <span id="presetSub0" class="text-xs opacity-75 block mt-0.5">20 min ilt</span>
+          </button>
+          <button type="button" data-preset="1" class="preset-btn p-3.5 rounded-2xl border-2 text-left transition-all cursor-pointer">
+            <span class="font-bold text-sm block">1 pause</span>
+            <span id="presetSub1" class="text-xs opacity-75 block mt-0.5">20 / 5 / 20 min</span>
+          </button>
+          <button type="button" data-preset="2" class="preset-btn p-3.5 rounded-2xl border-2 text-left transition-all cursor-pointer">
+            <span class="font-bold text-sm block">2 pauser</span>
+            <span id="presetSub2" class="text-xs opacity-75 block mt-0.5">3 × 20 + 2 × 5</span>
+          </button>
+          <button type="button" data-preset="3" class="preset-btn p-3.5 rounded-2xl border-2 text-left transition-all cursor-pointer">
+            <span class="font-bold text-sm block">3 pauser</span>
+            <span id="presetSub3" class="text-xs opacity-75 block mt-0.5">4 × 20 + 3 × 5</span>
+          </button>
+        </div>
+
+        <!-- Kombineret SVG Trykkurve -->
+        <div class="pt-3 border-t border-rl-lightbg/70">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span id="chartProfileLabel" class="text-xs font-semibold uppercase tracking-[0.15em] text-rl-taupe">Trykprofil (ATA over tid)</span>
+            <span id="totalWithEntryBadge" class="text-xs font-medium text-muted text-rl-black/70 tabular-nums">Inkl. indstigning: 57 min 30 sek</span>
+          </div>
+
+          <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-2.5 sm:p-3">
+            <svg id="setupPressureSvg" viewBox="0 0 640 205" class="w-full h-auto block overflow-visible" role="img" aria-label="Trykkurve over tid"></svg>
+          </div>
+
+          <div id="timelineLegend" class="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3 text-xs text-muted text-rl-black/75">
+            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rl-taupe"></span>Indstigning</span>
+            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rl-lightblue border border-rl-darkblue/40"></span><span id="legendOxygenLabel">Tryksætning og ilt (20 min)</span></span>
+            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-amber-400"></span><span id="legendPauseLabel">Luftpause (5 min)</span></span>
+            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-[#7A94A3]"></span>Tryksænkning</span>
+          </div>
+        </div>
+
+        <!-- Iltenheder (OTU / UPTD) beregning -->
+        <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-4 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-heading text-rl-darkblue">Beregning af iltenheder (OTU / UPTD)</span>
+              <p class="text-[11px] text-muted text-rl-taupe mt-0.5">Anbefalet grænse: maks. 360 iltenheder pr. dag (Lambertsen-formlen).</p>
+            </div>
+            <div class="inline-flex rounded-full bg-rl-lightbg/70 p-0.5 border border-rl-lightbg text-xs font-semibold">
+              <button type="button" data-fio2="0.95" class="fio2-btn px-3 py-1 rounded-full transition cursor-pointer">95% (Koncentrator)</button>
+              <button type="button" data-fio2="1.0" class="fio2-btn px-3 py-1 rounded-full transition cursor-pointer">100% (Ren ilt)</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2.5 text-center">
+            <div class="surface-card bg-white border border-rl-lightbg rounded-xl p-2.5">
+              <span class="text-[11px] text-muted text-rl-taupe block">Iltenheder</span>
+              <span id="otuValue" class="font-serif text-2xl text-heading text-rl-darkblue tabular-nums">66 OTU</span>
+            </div>
+            <div class="surface-card bg-white border border-rl-lightbg rounded-xl p-2.5">
+              <span class="text-[11px] text-muted text-rl-taupe block">Iltpartialtryk (pO₂)</span>
+              <span id="po2Value" class="font-serif text-2xl text-heading text-rl-darkblue tabular-nums">1,43 ATA</span>
+            </div>
+            <div class="surface-card bg-white border border-rl-lightbg rounded-xl p-2.5">
+              <span class="text-[11px] text-muted text-rl-taupe block">Samlet ilttid</span>
+              <span id="oxygenTimeValue" class="font-serif text-2xl text-heading text-rl-darkblue tabular-nums">40 min</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KORT 3: LYSFORHOLD & LYDSIGNAL -->
+      <section class="surface-card bg-white rounded-3xl border border-rl-lightbg p-5 sm:p-6 shadow-sm space-y-5">
+        <div>
+          <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-rl-taupe block">Trin 3</span>
+          <h2 class="font-serif text-2xl text-heading text-rl-darkblue">Skærmtilstand og lydsignal</h2>
+        </div>
+
+        <!-- Dagslys vs. Aften/Mørke -->
+        <div class="space-y-2">
+          <div class="grid grid-cols-2 gap-2.5">
+            <button type="button" data-theme="day" class="theme-btn p-3.5 rounded-2xl border-2 flex items-center justify-center gap-2 font-semibold text-sm transition cursor-pointer">
+              <span>☀️</span>
+              <span>Dagslys</span>
+            </button>
+            <button type="button" data-theme="night" class="theme-btn p-3.5 rounded-2xl border-2 flex items-center justify-center gap-2 font-semibold text-sm transition cursor-pointer">
+              <span>🌙</span>
+              <span>Aften og mørke</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Lydvalg, gentagelser, egen lydfil & lydstyrke -->
+        <div class="pt-4 border-t border-rl-lightbg/70 space-y-3.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <label for="soundSelect" class="text-xs font-semibold uppercase tracking-wider text-muted text-rl-taupe">Lydsignal ved faseskift</label>
+            <button type="button" id="testSoundBtn" class="inline-flex items-center gap-1.5 text-xs font-semibold bg-rl-darkblue hover:bg-rl-black text-white px-4 py-1.5 rounded-full transition cursor-pointer">
+              <span>🔊</span>
+              <span>Test lyd</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <select id="soundSelect" class="w-full rounded-2xl border border-rl-lightbg bg-[#FAF9F6] px-3.5 py-2.5 text-sm font-medium text-rl-black focus:outline-none focus:ring-2 focus:ring-rl-darkblue/30 focus:border-rl-darkblue">
+              <option value="yoga_pling">Yoga Pling (5 sek. udtone – standard)</option>
+              <option value="singing_bowl">Tibetansk syngeskål (varm og rolig)</option>
+              <option value="soft_harp">Blød harpe-akkord</option>
+              <option value="wind_chimes">Krystal vindspil</option>
+              <option value="zen_gong">Dyb zen-gong</option>
+              <option value="kalimba">Blød kalimba</option>
+              <option value="crystal_chime">Krystal-klokke</option>
+              <option value="warm_marimba">Varm marimba</option>
+              <option value="ocean_swell">Blid havbølge og grundtone</option>
+              <option value="flute_breath">Rolig fløjte-klang</option>
+              <option value="soft_bell">Blød tempeltone</option>
+              <option value="beep">Klar dobbelt-bip (støjsikker)</option>
+              <option value="custom" id="customSoundOption" disabled>Egen lydfil (ingen valgt)</option>
+            </select>
+
+            <div class="flex items-center gap-2">
+              <label for="customAudioInput" class="flex-1 text-center rounded-2xl border border-dashed border-rl-taupe/60 hover:border-rl-darkblue px-3.5 py-2.5 text-xs font-semibold text-muted text-rl-darkblue cursor-pointer transition truncate">
+                <span id="customAudioLabel">+ Vælg egen .mp3 eller .wav</span>
+              </label>
+              <input type="file" id="customAudioInput" accept="audio/*" class="hidden" />
+              <button type="button" id="clearCustomAudioBtn" class="hidden px-3 py-2.5 rounded-2xl bg-rose-100 text-rose-700 hover:bg-rose-200 text-xs font-bold cursor-pointer transition" title="Fjern egen lydfil">✕</button>
+            </div>
+          </div>
+
+          <audio id="customAudioPlayer" preload="auto" class="hidden"></audio>
+
+          <!-- Gentagelser inden for 5 sekunder -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <span class="text-xs font-semibold text-muted text-rl-taupe">Gentag lyd inden for 5 sek.</span>
+            <div class="inline-flex items-center rounded-full bg-rl-lightbg/70 p-0.5 border border-rl-lightbg text-xs font-semibold" id="soundRepeatButtons" role="group" aria-label="Antal gentagelser af lydsignal">
+              <button type="button" data-repeat="1" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">1×</button>
+              <button type="button" data-repeat="2" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">2×</button>
+              <button type="button" data-repeat="3" class="repeat-btn px-3 py-1 rounded-full transition cursor-pointer">3×</button>
+            </div>
+          </div>
+
+          <!-- Lydstyrke -->
+          <div class="flex items-center gap-3 pt-1">
+            <span class="text-xs font-semibold text-muted text-rl-taupe w-20 shrink-0">Lydniveau</span>
+            <input type="range" id="volumeSlider" min="0" max="100" value="85" class="flex-1 cursor-pointer" aria-label="Lydniveau" />
+            <span id="volumeValue" class="text-xs font-bold tabular-nums text-heading text-rl-darkblue w-10 text-right">85%</span>
+          </div>
+          <p class="text-[11px] text-muted text-rl-taupe">
+            På iPhone: Slå lydløs-knappen på siden fra og skru op for medier og lydstyrke, hvis lyden ikke høres.
+          </p>
+        </div>
+      </section>
+
+      <!-- START-KNAP & DEL OPSÆTNING -->
+      <div class="pt-1 pb-4 space-y-3">
+        <button
+          type="button"
+          id="startBtn"
+          class="w-full py-4 sm:py-5 rounded-full bg-rl-darkblue hover:bg-rl-black active:scale-[0.99] text-white font-serif text-xl sm:text-2xl tracking-wider shadow-xl transition cursor-pointer flex items-center justify-center gap-3"
+        >
+          <span>Start HBOT-behandling</span>
+          <span class="text-rl-lightblue text-xl">→</span>
+        </button>
+
+        <div class="flex flex-col items-center gap-1.5">
+          <button
+            type="button"
+            id="shareSetupBtn"
+            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-rl-darkblue/30 bg-white/80 hover:bg-rl-lightblue/30 text-rl-darkblue text-xs sm:text-sm font-semibold transition cursor-pointer"
+          >
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            <span>Del denne HBOT-opsætning</span>
+          </button>
+          <span id="shareFeedback" class="text-xs font-medium text-rl-darkblue min-h-[1.1rem]" aria-live="polite"></span>
+        </div>
+      </div>
+    </main>
+
+    <!-- FAST BUNDBJÆLKE: GEM SOM APP / DESKTOP -->
+    <div class="fixed bottom-0 inset-x-0 z-30 bg-[#012E40] border-t border-white/15 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.18)]">
+      <div class="container mx-auto max-w-4xl flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-9 h-9 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0 text-rl-lightblue">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-white font-semibold text-xs sm:text-sm truncate">Brug timeren som en rigtig app i fuld skærm</p>
+            <p class="text-rl-lightblue/80 text-[11px] truncate">Gem genvej på iPhone, Android eller computer</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            id="openFeedbackModalBtn"
+            class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-xs uppercase tracking-wider px-3.5 py-2.5 rounded-full transition cursor-pointer"
+          >
+            Giv feedback
+          </button>
+          <button
+            type="button"
+            id="openInstallModalBtn"
+            class="bg-white hover:bg-rl-lightblue text-rl-darkblue font-semibold text-xs uppercase tracking-wider px-4 py-2.5 rounded-full transition cursor-pointer"
+          >
+            Gem som app
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 
 <section id="timerScreen" class="hidden fixed inset-0 z-30 flex-col justify-between select-none transition-colors duration-300 overflow-hidden">
 
-        <!-- Topbjælke: Klokkeslæt øverst til venstre · Nedtonet "Skærm vågen" · Fuldskærm længst til højre -->
-        <div class="timer-top-safe w-full flex items-center justify-between gap-2 z-10 min-w-0">
-            <div class="flex items-center gap-2 min-w-0">
-                <span id="currentClockBadge" class="timer-pill inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold tabular-nums shrink-0" aria-label="Aktuelt klokkeslæt">
-                    --:--
-                </span>
-                <span id="wakeLockBadge" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium opacity-60 shrink-0">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500/80"></span>
-                    <span>Skærm vågen</span>
-                </span>
-            </div>
+    <!-- Topbjælke: Klokkeslæt øverst til venstre · Nedtonet "Skærm vågen" · Fuldskærm længst til højre -->
+    <div class="timer-top-safe w-full flex items-center justify-between gap-2 z-10 min-w-0">
+      <div class="flex items-center gap-2 min-w-0">
+        <span id="currentClockBadge" class="timer-pill inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold tabular-nums shrink-0" aria-label="Aktuelt klokkeslæt">
+          --:--
+        </span>
+        <span id="wakeLockBadge" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium opacity-60 shrink-0">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500/80"></span>
+          <span>Skærm vågen</span>
+        </span>
+      </div>
 
-            <div class="flex items-center gap-2 ml-auto shrink-0">
-                <span id="stepBadge" class="sr-only">Trin 1 af 5 · 1,5 ATA</span>
-                <button
-                    type="button"
-                    id="fullscreenBtn"
-                    class="timer-pill inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold opacity-85 hover:opacity-100 transition cursor-pointer shrink-0"
-                    title="Skift fuldskærm"
-                    aria-label="Skift fuldskærm"
-                >
-                    <svg id="fullscreenIcon" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="15 3 21 3 21 9"></polyline>
-                        <polyline points="9 21 3 21 3 15"></polyline>
-                        <line x1="21" y1="3" x2="14" y2="10"></line>
-                        <line x1="3" y1="21" x2="10" y2="14"></line>
-                    </svg>
-                    <span id="fullscreenLabel" class="hidden sm:inline">Fuldskærm</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Center: Forvarsel, samt horisontal række: (Titel + Trin + Næste) til venstre · Timer i midten · Guidance til højre -->
-        <div class="flex-1 flex flex-col items-center justify-center px-3 sm:px-4 text-center z-10 min-h-0">
-            <div id="preWarnBanner" class="hidden mb-2 sm:mb-3 px-4 py-1.5 rounded-full bg-amber-500 text-rl-black font-black text-xs sm:text-base tracking-wide shadow-lg animate-pulse">
-                <span id="preWarnLabel">Gør klar: Maske af om</span> <span id="preWarnSec" class="tabular-nums">15</span> sek.
-            </div>
-
-            <div class="timer-center-row w-full my-1.5 sm:my-3">
-                <div class="timer-left-info">
-                    <h2 id="phaseTitle" class="timer-phase-title font-black uppercase tracking-wider">
-                        MASKE PÅ – ILT
-                    </h2>
-                    <p id="nextPhaseText" class="text-xs sm:text-base font-bold opacity-85 leading-snug mt-0.5">
-                        Trin 1 af 5<br>Næste: Pause (5 min)
-                    </p>
-                </div>
-
-                <div id="timerClock" class="timer-clock-text font-black tabular-nums my-1">
-                    20:00
-                </div>
-
-                <p id="phaseHint" class="hidden timer-pill px-3.5 py-1.5 rounded-2xl text-xs sm:text-sm font-semibold tracking-wide max-w-2xl mx-auto leading-snug"></p>
-            </div>
-
-            <div id="pausedBadge" class="hidden mt-2 px-3.5 py-1 rounded-full bg-current/15 font-bold text-xs uppercase tracking-widest">
-                Sat på pause
-            </div>
-        </div>
-        <!-- Bundsektion -->
-        <div class="timer-bottom-safe w-full flex flex-col gap-2 z-10">
-            <div class="w-full max-w-5xl mx-auto">
-                <div id="liveChartBox" class="relative w-full rounded-2xl border border-current/20 px-3 py-2 backdrop-blur-sm shadow-sm overflow-hidden">
-                    <div class="flex items-center justify-between text-[11px] font-bold opacity-75 mb-1 tabular-nums">
-                        <span id="chartTopAtaLabel">1,5 ATA</span>
-                    </div>
-                    <svg id="livePressureSvg" viewBox="0 0 640 120" preserveAspectRatio="none" class="w-full h-24 sm:h-32 block" role="img" aria-label="Live trykkurve"></svg>
-                    <div class="flex items-center justify-between text-[10.5px] font-semibold opacity-70 mt-1 tabular-nums">
-                        <span id="chartStartMinLabel">0 min</span>
-                        <span id="chartMidMinLabel">29 min</span>
-                        <span id="chartEndMinLabel">58 min</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="w-full max-w-5xl mx-auto flex items-center gap-3">
-                <span id="elapsedTimeLabel" class="text-xs font-bold tabular-nums opacity-85 w-11 text-left">00:00</span>
-                <input type="range" id="seekSlider" min="0" max="100" value="0" step="1" class="seek-slider flex-1 cursor-pointer" aria-label="Spol i behandlingen" />
-                <span id="totalTimeLabel" class="text-xs font-bold tabular-nums opacity-85 w-11 text-right">55:00</span>
-            </div>
-
-            <div class="w-full max-w-5xl mx-auto">
-                <div class="w-full h-1.5 rounded-full bg-current/20 overflow-hidden">
-                    <div id="phaseProgressBar" class="h-full rounded-full bg-current transition-[width] duration-200 ease-linear" style="width: 0%;"></div>
-                </div>
-            </div>
-
-            <div class="w-full max-w-5xl mx-auto grid grid-cols-4 gap-2 pt-0.5">
-                <button type="button" id="toggleThemeActiveBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
-                    <span id="toggleThemeActiveIcon">🌙</span>
-                    <span id="toggleThemeActiveLabel" class="truncate">Skift til Aften</span>
-                </button>
-
-                <button type="button" id="pauseResumeBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
-                    <span id="pauseResumeLabel" class="truncate">Pause</span>
-                </button>
-
-                <button type="button" id="skipPhaseBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
-                    <span class="truncate">Næste →</span>
-                </button>
-
-                <button type="button" id="stopTimerBtn" class="flex items-center justify-center gap-1 py-2 px-2 rounded-xl bg-rose-600/90 hover:bg-rose-600 active:scale-95 border border-white/20 text-white text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
-                    <span class="truncate">Stop</span>
-                </button>
-            </div>
-        </div>
-    </section>
-    <!-- ===================================================================== -->
-    <!-- MODAL: BEKRÆFT STOP AF BEHANDLING                                      -->
-    <!-- ===================================================================== -->
-    <div id="stopConfirmModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-sm p-4">
-        <div class="bg-[#FAF9F6] text-rl-black w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-rl-lightbg space-y-4 text-center">
-            <h3 class="font-serif text-2xl text-rl-darkblue">Afslut behandlingen?</h3>
-            <p class="text-sm text-rl-black/75">Timeren nulstilles, og du vender tilbage til opsætningsskærmen.</p>
-            <div class="grid grid-cols-2 gap-3 pt-2">
-                <button type="button" id="cancelStopBtn" class="py-3 rounded-full border border-rl-lightbg bg-white hover:bg-rl-lightbg/40 font-semibold text-sm text-rl-darkblue transition cursor-pointer">
-                    Fortsæt
-                </button>
-                <button type="button" id="confirmStopBtn" class="py-3 rounded-full bg-rose-600 hover:bg-rose-700 font-semibold text-sm text-white transition cursor-pointer">
-                    Ja, stop
-                </button>
-            </div>
-        </div>
+      <div class="flex items-center gap-2 ml-auto shrink-0">
+        <span id="stepBadge" class="sr-only">Trin 1 af 5 · 1,5 ATA</span>
+        <button
+          type="button"
+          id="fullscreenBtn"
+          class="timer-pill inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold opacity-85 hover:opacity-100 transition cursor-pointer shrink-0"
+          title="Skift fuldskærm"
+          aria-label="Skift fuldskærm"
+        >
+          <svg id="fullscreenIcon" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+          <span id="fullscreenLabel" class="hidden sm:inline">Fuldskærm</span>
+        </button>
+      </div>
     </div>
 
-    <!-- ===================================================================== -->
-    <!-- MODAL: GEM SOM APP / DESKTOP                                          -->
-    <!-- ===================================================================== -->
-    <div id="installModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-sm p-4 overflow-y-auto">
-        <div class="bg-[#FAF9F6] text-rl-black w-full max-w-lg rounded-3xl shadow-2xl border border-rl-lightbg overflow-hidden my-auto">
-            <div class="bg-rl-darkblue text-white px-6 py-5 flex items-center justify-between">
-                <div>
-                    <span class="text-[10px] uppercase tracking-[0.2em] text-rl-lightblue block">RecoveryExpressen</span>
-                    <h3 class="font-serif text-2xl">Gem timeren på din skærm</h3>
-                </div>
-                <button type="button" id="closeInstallModalBtn" class="text-white/70 hover:text-white transition cursor-pointer p-1" aria-label="Luk">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
+    <!-- Center: Forvarsel, samt horisontal række: (Titel + Trin + Næste) til venstre · Timer i midten · Guidance til højre -->
+    <div class="flex-1 flex flex-col items-center justify-center px-3 sm:px-4 text-center z-10 min-h-0">
+      <div id="preWarnBanner" class="hidden mb-2 sm:mb-3 px-4 py-1.5 rounded-full bg-amber-500 text-rl-black font-black text-xs sm:text-base tracking-wide shadow-lg animate-pulse">
+        <span id="preWarnLabel">Gør klar: Maske af om</span> <span id="preWarnSec" class="tabular-nums">15</span> sek.
+      </div>
 
-            <div class="p-6 space-y-5">
-                <div id="nativeInstallWrapper" class="hidden bg-rl-lightblue/30 border border-rl-lightblue rounded-2xl p-4 flex items-center justify-between gap-3">
-                    <p class="text-xs font-medium text-rl-darkblue">Din browser understøtter hurtig 1-kliks installation.</p>
-                    <button type="button" id="nativeInstallBtn" class="shrink-0 bg-rl-darkblue text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-rl-black transition cursor-pointer">
-                        Installér nu
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-3 gap-2 bg-rl-lightbg/60 p-1 rounded-2xl">
-                    <button type="button" data-tab="ios" class="install-tab py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-white text-rl-darkblue shadow-sm">iPhone og iPad</button>
-                    <button type="button" data-tab="android" class="install-tab py-2 rounded-xl text-xs font-bold transition cursor-pointer text-rl-black/70">Android</button>
-                    <button type="button" data-tab="desktop" class="install-tab py-2 rounded-xl text-xs font-bold transition cursor-pointer text-rl-black/70">Computer</button>
-                </div>
-
-                <div data-panel="ios" class="install-tab-panel space-y-3">
-                    <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
-                        <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
-                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                                <polyline points="16 6 12 2 8 6"></polyline>
-                                <line x1="12" y1="2" x2="12" y2="15"></line>
-                            </svg>
-                        </div>
-                        <p class="text-xs text-rl-black/80 leading-relaxed"><strong>1.</strong> Åbn siden i <strong>Safari</strong> og tryk på <strong>Del-ikonet</strong> (firkanten med pil opad) i bunden af skærmen.</p>
-                    </div>
-                    <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
-                        <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
-                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="4"></rect>
-                                <line x1="12" y1="8" x2="12" y2="16"></line>
-                                <line x1="8" y1="12" x2="16" y2="12"></line>
-                            </svg>
-                        </div>
-                        <p class="text-xs text-rl-black/80 leading-relaxed"><strong>2.</strong> Rul ned og tryk på <strong>"Føj til hjemmeskærm"</strong>, og tryk derefter på <strong>Tilføj</strong> øverst til højre.</p>
-                    </div>
-                </div>
-
-                <div data-panel="android" class="install-tab-panel hidden space-y-3">
-                    <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
-                        <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
-                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                                <circle cx="12" cy="5" r="2"></circle>
-                                <circle cx="12" cy="12" r="2"></circle>
-                                <circle cx="12" cy="19" r="2"></circle>
-                            </svg>
-                        </div>
-                        <p class="text-xs text-rl-black/80 leading-relaxed"><strong>1.</strong> Åbn siden i <strong>Chrome</strong> og tryk på de <strong>tre prikker (⋮)</strong> i øverste højre hjørne.</p>
-                    </div>
-                    <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
-                        <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
-                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="5" y="2" width="14" height="20" rx="2"></rect>
-                                <line x1="12" y1="18" x2="12.01" y2="18"></line>
-                            </svg>
-                        </div>
-                        <p class="text-xs text-rl-black/80 leading-relaxed"><strong>2.</strong> Vælg <strong>"Føj til startskærm"</strong> og bekræft for at oprette genvejen med dit logo.</p>
-                    </div>
-                </div>
-
-                <div data-panel="desktop" class="install-tab-panel hidden space-y-3">
-                    <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
-                        <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
-                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="2" y="3" width="20" height="14" rx="2"></rect>
-                                <line x1="8" y1="21" x2="16" y2="21"></line>
-                                <line x1="12" y1="17" x2="12" y2="21"></line>
-                            </svg>
-                        </div>
-                        <p class="text-xs text-rl-black/80 leading-relaxed"><strong>1.</strong> I <strong>Chrome</strong> eller <strong>Edge</strong>: klik på <strong>installér-ikonet</strong> til højre i adresselinjen (eller menuen ⋮ → <em>Gem og del</em> → <em>Opret genvej</em>).</p>
-                    </div>
-                    <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
-                        <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
-                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                            </svg>
-                        </div>
-                        <p class="text-xs text-rl-black/80 leading-relaxed"><strong>2.</strong> I <strong>Safari på Mac</strong>: vælg <em>Arkiv → Føj til Dock</em>, så timeren åbner som et selvstændigt vindue.</p>
-                    </div>
-                </div>
-
-                <button type="button" id="closeInstallModalFooterBtn" class="w-full py-3 rounded-full bg-rl-darkblue hover:bg-rl-black text-white text-sm font-semibold transition cursor-pointer">
-                    Forstået
-                </button>
-            </div>
+      <div class="timer-center-row w-full my-1.5 sm:my-3">
+        <div class="timer-left-info">
+          <h2 id="phaseTitle" class="timer-phase-title font-black uppercase tracking-wider">
+            MASKE PÅ – ILT
+          </h2>
+          <p id="nextPhaseText" class="text-xs sm:text-base font-bold opacity-85 leading-snug mt-0.5">
+            Trin 1 af 5<br>Næste: Pause (5 min)
+          </p>
         </div>
-    </div>
 
-    <!-- ===================================================================== -->
-    <!-- MODAL: DISKRET FEEDBACK-FORMULAR (AJAX FORMSPREE)                      -->
-    <!-- ===================================================================== -->
-    <div id="feedback-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm p-4">
-        <div id="feedback-modal-content" class="bg-[#FAF9F6] text-rl-black w-full max-w-md p-7 sm:p-9 relative shadow-2xl rounded-3xl border border-rl-lightbg transform scale-95 transition-transform duration-300">
-            <button type="button" id="close-feedback-modal" class="absolute top-5 right-5 text-rl-black/50 hover:text-rl-black transition-colors cursor-pointer" aria-label="Luk">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-
-            <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe block mb-2">HBOT Timer</span>
-            <h3 class="font-serif text-3xl text-rl-darkblue mb-2">Giv feedback</h3>
-            <p class="text-sm text-rl-black/70 mb-6">Mangler du en funktion, en protokol eller har du ris og ros til timeren? Skriv endelig.</p>
-
-            <form action="https://formspree.io/f/xkjjldqw" method="POST" id="timer-feedback-form" class="space-y-5">
-                <input type="hidden" name="_subject" value="Feedback: HBOT Timer (DK)">
-                <input type="hidden" name="Side_Kilde" id="feedback-page-source" value="HBOT Timer (DK)">
-
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1.5">Navn (valgfrit)</label>
-                    <input type="text" name="Navn" maxlength="100" class="w-full bg-transparent border-b border-rl-lightbg pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue transition-colors">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1.5">E-mail (hvis du ønsker svar)</label>
-                    <input type="email" name="Email" maxlength="100" class="w-full bg-transparent border-b border-rl-lightbg pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue transition-colors">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1.5">Din feedback *</label>
-                    <textarea name="Kommentar" rows="4" maxlength="1000" required placeholder="Skriv din idé eller oplevelse her..." class="w-full bg-transparent border-b border-rl-lightbg pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue transition-colors resize-none text-sm"></textarea>
-                </div>
-
-                <button type="submit" class="w-full bg-rl-darkblue hover:bg-rl-black text-white font-serif text-sm uppercase tracking-widest py-4 rounded-full transition-colors duration-300 cursor-pointer">
-                    Send feedback
-                </button>
-            </form>
+        <div id="timerClock" class="timer-clock-text font-black tabular-nums my-1">
+          20:00
         </div>
+
+        <p id="phaseHint" class="hidden timer-pill px-3.5 py-1.5 rounded-2xl text-xs sm:text-sm font-semibold tracking-wide max-w-2xl mx-auto leading-snug"></p>
+      </div>
+
+      <div id="pausedBadge" class="hidden mt-2 px-3.5 py-1 rounded-full bg-current/15 font-bold text-xs uppercase tracking-widest">
+        Sat på pause
+      </div>
     </div>
+    <!-- Bundsektion -->
+    <div class="timer-bottom-safe w-full flex flex-col gap-2 z-10">
+      <div class="w-full max-w-5xl mx-auto">
+        <div id="liveChartBox" class="relative w-full rounded-2xl border border-current/20 px-3 py-2 backdrop-blur-sm shadow-sm overflow-hidden">
+          <div class="flex items-center justify-between text-[11px] font-bold opacity-75 mb-1 tabular-nums">
+            <span id="chartTopAtaLabel">1,5 ATA</span>
+          </div>
+          <svg id="livePressureSvg" viewBox="0 0 640 120" preserveAspectRatio="none" class="w-full h-24 sm:h-32 block" role="img" aria-label="Live trykkurve"></svg>
+          <div class="flex items-center justify-between text-[10.5px] font-semibold opacity-70 mt-1 tabular-nums">
+            <span id="chartStartMinLabel">0 min</span>
+            <span id="chartMidMinLabel">29 min</span>
+            <span id="chartEndMinLabel">58 min</span>
+          </div>
+        </div>
+      </div>
 
-    <!-- ===================================================================== -->
-    <!-- JAVASCRIPT: LOGIK, TRYKKURVE, OTU, WEB AUDIO, WAKE LOCK & COOKIE       -->
-    <!-- ===================================================================== -->
-    <script>
-        (function () {
-            'use strict';
+      <div class="w-full max-w-5xl mx-auto flex items-center gap-3">
+        <span id="elapsedTimeLabel" class="text-xs font-bold tabular-nums opacity-85 w-11 text-left">00:00</span>
+        <input type="range" id="seekSlider" min="0" max="100" value="0" step="1" class="seek-slider flex-1 cursor-pointer" aria-label="Spol i behandlingen" />
+        <span id="totalTimeLabel" class="text-xs font-bold tabular-nums opacity-85 w-11 text-right">55:00</span>
+      </div>
 
-            const STORAGE_KEY = 'recoveryexpressen_hbot_prefs_v3';
-            const UNIT_COOKIE_NAME = 're_hbot_pressure_unit';
+      <div class="w-full max-w-5xl mx-auto">
+        <div class="w-full h-1.5 rounded-full bg-current/20 overflow-hidden">
+          <div id="phaseProgressBar" class="h-full rounded-full bg-current transition-[width] duration-200 ease-linear" style="width: 0%;"></div>
+        </div>
+      </div>
 
-            const PRESSURE_DEFAULTS = {
-                1.3: 180,
-                1.5: 300,
-                1.6: 360,
-                1.75: 450,
-                2.0: 600
-            };
+      <div class="w-full max-w-5xl mx-auto grid grid-cols-4 gap-2 pt-0.5">
+        <button type="button" id="toggleThemeActiveBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+          <span id="toggleThemeActiveIcon">🌙</span>
+          <span id="toggleThemeActiveLabel" class="truncate">Skift til Aften</span>
+        </button>
 
-            const VALID_SOUNDS = [
-                'yoga_pling', 'singing_bowl', 'soft_harp', 'wind_chimes', 'zen_gong',
-                'kalimba', 'crystal_chime', 'warm_marimba', 'ocean_swell', 'flute_breath',
-                'soft_bell', 'beep'
-            ];
+        <button type="button" id="pauseResumeBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+          <span id="pauseResumeLabel" class="truncate">Pause</span>
+        </button>
 
-            const state = {
-                pressureAta: 1.5,
-                pressureUnit: 'ATA',
-                entryDelaySec: 150,
-                pressurizeSec: 300,
-                oxygenBlockSec: 1200,
-                pauseSec: 300,
-                depressurizeSec: 300,
-                preset: 1,
-                fiO2: 0.95,
-                theme: 'day',
-                soundType: 'yoga_pling',
-                soundRepeats: 1,
-                volume: 85,
-                chamberGuidance: true,
-                customAudioUrl: null,
-                customAudioName: null,
-                currentPhaseTitle: '',
-                currentPhaseSec: 0,
-                currentPhaseSecTotal: 0,
-                isRunning: false,
-                isPaused: false,
-                isScrubbing: false,
-                phases: [],
-                totalSessionSec: 0,
-                currentPhaseIndex: 0,
-                phaseEndTime: 0,
-                phaseDurationMs: 0,
-                remainingMsWhenPaused: 0,
-                rafId: null,
-                intervalId: null,
-                clockIntervalId: null,
-                wakeLock: null,
-                deferredInstallPrompt: null,
-                isOvertime: false,
-                overtimeStartTime: 0,
-                overtimeElapsedMsWhenPaused: 0
-            };
+        <button type="button" id="skipPhaseBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+          <span class="truncate">Næste →</span>
+        </button>
 
-            let audioCtx = null;
-            let activeSoundTimers = [];
-            let lastPreWarnMode = null;
-            let lastLiveChartUpdate = 0;
+        <button type="button" id="stopTimerBtn" class="flex items-center justify-center gap-1 py-2 px-2 rounded-xl bg-rose-600/90 hover:bg-rose-600 active:scale-95 border border-white/20 text-white text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+          <span class="truncate">Stop</span>
+        </button>
+      </div>
+    </div>
+  </section>
+  <!-- ===================================================================== -->
+  <!-- MODAL: BEKRÆFT STOP AF BEHANDLING -->
+  <!-- ===================================================================== -->
+  <div id="stopConfirmModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-sm p-4">
+    <div class="bg-[#FAF9F6] text-rl-black w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-rl-lightbg space-y-4 text-center">
+      <h3 class="font-serif text-2xl text-rl-darkblue">Afslut behandlingen?</h3>
+      <p class="text-sm text-rl-black/75">Timeren nulstilles, og du vender tilbage til opsætningsskærmen.</p>
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <button type="button" id="cancelStopBtn" class="py-3 rounded-full border border-rl-lightbg bg-white hover:bg-rl-lightbg/40 font-semibold text-sm text-rl-darkblue transition cursor-pointer">
+          Fortsæt
+        </button>
+        <button type="button" id="confirmStopBtn" class="py-3 rounded-full bg-rose-600 hover:bg-rose-700 font-semibold text-sm text-white transition cursor-pointer">
+          Ja, stop
+        </button>
+      </div>
+    </div>
+  </div>
 
-            const el = {
-                setupScreen: document.getElementById('setupScreen'),
-                timerScreen: document.getElementById('timerScreen'),
-                metaThemeColor: document.getElementById('metaThemeColor'),
-                brandLogoImg: document.getElementById('brandLogoImg'),
-                brandLogoFallback: document.getElementById('brandLogoFallback'),
+  <!-- ===================================================================== -->
+  <!-- MODAL: GEM SOM APP / DESKTOP -->
+  <!-- ===================================================================== -->
+  <div id="installModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="bg-[#FAF9F6] text-rl-black w-full max-w-lg rounded-3xl shadow-2xl border border-rl-lightbg overflow-hidden my-auto">
+      <div class="bg-rl-darkblue text-white px-6 py-5 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] uppercase tracking-[0.2em] text-rl-lightblue block">RecoveryExpressen</span>
+          <h3 class="font-serif text-2xl">Gem timeren på din skærm</h3>
+        </div>
+        <button type="button" id="closeInstallModalBtn" class="text-white/70 hover:text-white transition cursor-pointer p-1" aria-label="Luk">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
 
-                headerThemeToggleBtn: document.getElementById('headerThemeToggleBtn'),
-                headerThemeIcon: document.getElementById('headerThemeIcon'),
-                headerThemeText: document.getElementById('headerThemeText'),
+      <div class="p-6 space-y-5">
+        <div id="nativeInstallWrapper" class="hidden bg-rl-lightblue/30 border border-rl-lightblue rounded-2xl p-4 flex items-center justify-between gap-3">
+          <p class="text-xs font-medium text-rl-darkblue">Din browser understøtter hurtig 1-kliks installation.</p>
+          <button type="button" id="nativeInstallBtn" class="shrink-0 bg-rl-darkblue text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-rl-black transition cursor-pointer">
+            Installér nu
+          </button>
+        </div>
 
-                unitBtns: document.querySelectorAll('.unit-btn'),
-                ataBtns: document.querySelectorAll('.ata-btn'),
-                selectedAtaBadge: document.getElementById('selectedAtaBadge'),
-                chartProfileLabel: document.getElementById('chartProfileLabel'),
-                entryDelayInput: document.getElementById('entryDelayInput'),
-                pressurizeInput: document.getElementById('pressurizeInput'),
-                oxygenBlockInput: document.getElementById('oxygenBlockInput'),
-                pauseInput: document.getElementById('pauseInput'),
-                depressurizeInput: document.getElementById('depressurizeInput'),
-                timeStepBtns: document.querySelectorAll('.time-step-btn'),
-                chamberGuidanceCheckbox: document.getElementById('chamberGuidanceCheckbox'),
+        <div class="grid grid-cols-3 gap-2 bg-rl-lightbg/60 p-1 rounded-2xl">
+          <button type="button" data-tab="ios" class="install-tab py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-white text-rl-darkblue shadow-sm">iPhone og iPad</button>
+          <button type="button" data-tab="android" class="install-tab py-2 rounded-xl text-xs font-bold transition cursor-pointer text-rl-black/70">Android</button>
+          <button type="button" data-tab="desktop" class="install-tab py-2 rounded-xl text-xs font-bold transition cursor-pointer text-rl-black/70">Computer</button>
+        </div>
 
-                presetBtns: document.querySelectorAll('.preset-btn'),
-                presetSub0: document.getElementById('presetSub0'),
-                presetSub1: document.getElementById('presetSub1'),
-                presetSub2: document.getElementById('presetSub2'),
-                presetSub3: document.getElementById('presetSub3'),
-                legendOxygenLabel: document.getElementById('legendOxygenLabel'),
-                legendPauseLabel: document.getElementById('legendPauseLabel'),
-                themeBtns: document.querySelectorAll('.theme-btn'),
+        <div data-panel="ios" class="install-tab-panel space-y-3">
+          <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
+            <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                <polyline points="16 6 12 2 8 6"></polyline>
+                <line x1="12" y1="2" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <p class="text-xs text-rl-black/80 leading-relaxed"><strong>1.</strong> Åbn siden i <strong>Safari</strong> og tryk på <strong>Del-ikonet</strong> (firkanten med pil opad) i bunden af skærmen.</p>
+          </div>
+          <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
+            <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+            </div>
+            <p class="text-xs text-rl-black/80 leading-relaxed"><strong>2.</strong> Rul ned og tryk på <strong>"Føj til hjemmeskærm"</strong>, og tryk derefter på <strong>Tilføj</strong> øverst til højre.</p>
+          </div>
+        </div>
 
-                totalDurationBadge: document.getElementById('totalDurationBadge'),
-                totalWithEntryBadge: document.getElementById('totalWithEntryBadge'),
-                setupPressureSvg: document.getElementById('setupPressureSvg'),
+        <div data-panel="android" class="install-tab-panel hidden space-y-3">
+          <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
+            <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="5" r="2"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+                <circle cx="12" cy="19" r="2"></circle>
+              </svg>
+            </div>
+            <p class="text-xs text-rl-black/80 leading-relaxed"><strong>1.</strong> Åbn siden i <strong>Chrome</strong> og tryk på de <strong>tre prikker (⋮)</strong> i øverste højre hjørne.</p>
+          </div>
+          <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
+            <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="2"></rect>
+                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+              </svg>
+            </div>
+            <p class="text-xs text-rl-black/80 leading-relaxed"><strong>2.</strong> Vælg <strong>"Føj til startskærm"</strong> og bekræft for at oprette genvejen med dit logo.</p>
+          </div>
+        </div>
 
-                fio2Btns: document.querySelectorAll('.fio2-btn'),
-                otuValue: document.getElementById('otuValue'),
-                po2Value: document.getElementById('po2Value'),
-                oxygenTimeValue: document.getElementById('oxygenTimeValue'),
+        <div data-panel="desktop" class="install-tab-panel hidden space-y-3">
+          <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
+            <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <p class="text-xs text-rl-black/80 leading-relaxed"><strong>1.</strong> I <strong>Chrome</strong> eller <strong>Edge</strong>: klik på <strong>installér-ikonet</strong> til højre i adresselinjen (eller menuen ⋮ → <em>Gem og del</em> → <em>Opret genvej</em>).</p>
+          </div>
+          <div class="flex items-center gap-3.5 bg-white p-3.5 rounded-2xl border border-rl-lightbg">
+            <div class="w-11 h-11 rounded-xl bg-rl-lightblue/35 text-rl-darkblue flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <p class="text-xs text-rl-black/80 leading-relaxed"><strong>2.</strong> I <strong>Safari på Mac</strong>: vælg <em>Arkiv → Føj til Dock</em>, så timeren åbner som et selvstændigt vindue.</p>
+          </div>
+        </div>
 
-                soundSelect: document.getElementById('soundSelect'),
-                repeatBtns: document.querySelectorAll('.repeat-btn'),
-                customSoundOption: document.getElementById('customSoundOption'),
-                customAudioInput: document.getElementById('customAudioInput'),
-                customAudioLabel: document.getElementById('customAudioLabel'),
-                clearCustomAudioBtn: document.getElementById('clearCustomAudioBtn'),
-                customAudioPlayer: document.getElementById('customAudioPlayer'),
-                volumeSlider: document.getElementById('volumeSlider'),
-                volumeValue: document.getElementById('volumeValue'),
-                testSoundBtn: document.getElementById('testSoundBtn'),
-                startBtn: document.getElementById('startBtn'),
+        <button type="button" id="closeInstallModalFooterBtn" class="w-full py-3 rounded-full bg-rl-darkblue hover:bg-rl-black text-white text-sm font-semibold transition cursor-pointer">
+          Forstået
+        </button>
+      </div>
+    </div>
+  </div>
 
-                // Aktiv skærm
-                stepBadge: document.getElementById('stepBadge'),
-                chartStepCenter: document.getElementById('chartStepCenter'),
-                currentClockBadge: document.getElementById('currentClockBadge'),
-                fullscreenBtn: document.getElementById('fullscreenBtn'),
-                fullscreenLabel: document.getElementById('fullscreenLabel'),
-                wakeLockBadge: document.getElementById('wakeLockBadge'),
-                preWarnBanner: document.getElementById('preWarnBanner'),
-                preWarnLabel: document.getElementById('preWarnLabel'),
-                preWarnSec: document.getElementById('preWarnSec'),
-                phaseTitle: document.getElementById('phaseTitle'),
-                phaseHint: document.getElementById('phaseHint'),
-                timerClock: document.getElementById('timerClock'),
-                nextPhaseText: document.getElementById('nextPhaseText'),
-                pausedBadge: document.getElementById('pausedBadge'),
-                liveChartBox: document.getElementById('liveChartBox'),
-                livePressureSvg: document.getElementById('livePressureSvg'),
-                elapsedTimeLabel: document.getElementById('elapsedTimeLabel'),
-                seekSlider: document.getElementById('seekSlider'),
-                totalTimeLabel: document.getElementById('totalTimeLabel'),
-                phaseProgressBar: document.getElementById('phaseProgressBar'),
+  <!-- ===================================================================== -->
+  <!-- MODAL: DISKRET FEEDBACK-FORMULAR (AJAX FORMSPREE) -->
+  <!-- ===================================================================== -->
+  <div id="feedback-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm p-4">
+    <div id="feedback-modal-content" class="bg-[#FAF9F6] text-rl-black w-full max-w-md p-7 sm:p-9 relative shadow-2xl rounded-3xl border border-rl-lightbg transform scale-95 transition-transform duration-300">
+      <button type="button" id="close-feedback-modal" class="absolute top-5 right-5 text-rl-black/50 hover:text-rl-black transition-colors cursor-pointer" aria-label="Luk">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
 
-                toggleThemeActiveBtn: document.getElementById('toggleThemeActiveBtn'),
-                toggleThemeActiveIcon: document.getElementById('toggleThemeActiveIcon'),
-                toggleThemeActiveLabel: document.getElementById('toggleThemeActiveLabel'),
-                pauseResumeBtn: document.getElementById('pauseResumeBtn'),
-                pauseResumeLabel: document.getElementById('pauseResumeLabel'),
-                skipPhaseBtn: document.getElementById('skipPhaseBtn'),
-                stopTimerBtn: document.getElementById('stopTimerBtn'),
-                timerPills: document.querySelectorAll('.timer-pill'),
-                timerCtrlBtns: document.querySelectorAll('.timer-ctrl-btn'),
+      <span class="text-xs font-semibold uppercase tracking-[0.2em] text-rl-taupe block mb-2">HBOT Timer</span>
+      <h3 class="font-serif text-3xl text-rl-darkblue mb-2">Giv feedback</h3>
+      <p class="text-sm text-rl-black/70 mb-6">Mangler du en funktion, en protokol eller har du ris og ros til timeren? Skriv endelig.</p>
 
-                // Stop-bekræftelse
-                stopConfirmModal: document.getElementById('stopConfirmModal'),
-                cancelStopBtn: document.getElementById('cancelStopBtn'),
-                confirmStopBtn: document.getElementById('confirmStopBtn'),
+      <form action="https://formspree.io/f/xkjjldqw" method="POST" id="timer-feedback-form" class="space-y-5">
+        <input type="hidden" name="_subject" value="Feedback: HBOT Timer (DK)">
+        <input type="hidden" name="Side_Kilde" id="feedback-page-source" value="HBOT Timer (DK)">
 
-                // Install-modal
-                openInstallModalBtn: document.getElementById('openInstallModalBtn'),
-                installModal: document.getElementById('installModal'),
-                closeInstallModalBtn: document.getElementById('closeInstallModalBtn'),
-                closeInstallModalFooterBtn: document.getElementById('closeInstallModalFooterBtn'),
-                nativeInstallWrapper: document.getElementById('nativeInstallWrapper'),
-                nativeInstallBtn: document.getElementById('nativeInstallBtn'),
-                installTabs: document.querySelectorAll('.install-tab'),
-                installPanels: document.querySelectorAll('.install-tab-panel')
-            };
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1.5">Navn (valgfrit)</label>
+          <input type="text" name="Navn" maxlength="100" class="w-full bg-transparent border-b border-rl-lightbg pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue transition-colors">
+        </div>
 
-            if (el.brandLogoImg) {
-                el.brandLogoImg.addEventListener('error', function () {
-                    el.brandLogoImg.classList.add('hidden');
-                    if (el.brandLogoFallback) {
-                        el.brandLogoFallback.classList.remove('hidden');
-                        el.brandLogoFallback.classList.add('flex');
-                    }
-                });
-            }
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1.5">E-mail (hvis du ønsker svar)</label>
+          <input type="email" name="Email" maxlength="100" class="w-full bg-transparent border-b border-rl-lightbg pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue transition-colors">
+        </div>
 
-            function updateClockBadge() {
-                if (!el.currentClockBadge) return;
-                const now = new Date();
-                const hh = String(now.getHours()).padStart(2, '0');
-                const mm = String(now.getMinutes()).padStart(2, '0');
-                el.currentClockBadge.textContent = hh + ':' + mm;
-            }
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-rl-black/60 mb-1.5">Din feedback *</label>
+          <textarea name="Kommentar" rows="4" maxlength="1000" required placeholder="Skriv din idé eller oplevelse her..." class="w-full bg-transparent border-b border-rl-lightbg pb-2 text-rl-black focus:outline-none focus:border-rl-darkblue transition-colors resize-none text-sm"></textarea>
+        </div>
 
+        <button type="submit" class="w-full bg-rl-darkblue hover:bg-rl-black text-white font-serif text-sm uppercase tracking-widest py-4 rounded-full transition-colors duration-300 cursor-pointer">
+          Send feedback
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT: LOGIK, TRYKKURVE, OTU, WEB AUDIO, WAKE LOCK & COOKIE -->
+  <!-- ===================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      const STORAGE_KEY = 'recoveryexpressen_hbot_prefs_v3';
+      const UNIT_COOKIE_NAME = 're_hbot_pressure_unit';
+
+      const PRESSURE_DEFAULTS = {
+        1.3: 180,
+        1.5: 300,
+        1.6: 360,
+        1.75: 450,
+        2.0: 600
+      };
+
+      const VALID_SOUNDS = [
+        'yoga_pling', 'singing_bowl', 'soft_harp', 'wind_chimes', 'zen_gong',
+        'kalimba', 'crystal_chime', 'warm_marimba', 'ocean_swell', 'flute_breath',
+        'soft_bell', 'beep'
+      ];
+
+      const state = {
+        pressureAta: 1.5,
+        pressureUnit: 'ATA',
+        entryDelaySec: 150,
+        pressurizeSec: 300,
+        oxygenBlockSec: 1200,
+        pauseSec: 300,
+        depressurizeSec: 300,
+        preset: 1,
+        fiO2: 0.95,
+        theme: 'day',
+        soundType: 'yoga_pling',
+        soundRepeats: 1,
+        volume: 85,
+        chamberGuidance: true,
+        customAudioUrl: null,
+        customAudioName: null,
+        currentPhaseTitle: '',
+        currentPhaseSec: 0,
+        currentPhaseSecTotal: 0,
+        isRunning: false,
+        isPaused: false,
+        isScrubbing: false,
+        phases: [],
+        totalSessionSec: 0,
+        currentPhaseIndex: 0,
+        phaseEndTime: 0,
+        phaseDurationMs: 0,
+        remainingMsWhenPaused: 0,
+        rafId: null,
+        intervalId: null,
+        clockIntervalId: null,
+        wakeLock: null,
+        deferredInstallPrompt: null,
+        isOvertime: false,
+        overtimeStartTime: 0,
+        overtimeElapsedMsWhenPaused: 0
+      };
+
+      let audioCtx = null;
+      let activeSoundTimers = [];
+      let lastPreWarnMode = null;
+      let lastLiveChartUpdate = 0;
+
+      const el = {
+        setupScreen: document.getElementById('setupScreen'),
+        timerScreen: document.getElementById('timerScreen'),
+        metaThemeColor: document.getElementById('metaThemeColor'),
+        brandLogoImg: document.getElementById('brandLogoImg'),
+        brandLogoFallback: document.getElementById('brandLogoFallback'),
+        sharedProtocolBanner: document.getElementById('sharedProtocolBanner'),
+        shareSetupBtn: document.getElementById('shareSetupBtn'),
+        shareFeedback: document.getElementById('shareFeedback'),
+
+        headerThemeToggleBtn: document.getElementById('headerThemeToggleBtn'),
+        headerThemeIcon: document.getElementById('headerThemeIcon'),
+        headerThemeText: document.getElementById('headerThemeText'),
+
+        unitBtns: document.querySelectorAll('.unit-btn'),
+        ataBtns: document.querySelectorAll('.ata-btn'),
+        selectedAtaBadge: document.getElementById('selectedAtaBadge'),
+        chartProfileLabel: document.getElementById('chartProfileLabel'),
+        entryDelayInput: document.getElementById('entryDelayInput'),
+        pressurizeInput: document.getElementById('pressurizeInput'),
+        oxygenBlockInput: document.getElementById('oxygenBlockInput'),
+        pauseInput: document.getElementById('pauseInput'),
+        depressurizeInput: document.getElementById('depressurizeInput'),
+        timeStepBtns: document.querySelectorAll('.time-step-btn'),
+        chamberGuidanceCheckbox: document.getElementById('chamberGuidanceCheckbox'),
+
+        presetBtns: document.querySelectorAll('.preset-btn'),
+        presetSub0: document.getElementById('presetSub0'),
+        presetSub1: document.getElementById('presetSub1'),
+        presetSub2: document.getElementById('presetSub2'),
+        presetSub3: document.getElementById('presetSub3'),
+        legendOxygenLabel: document.getElementById('legendOxygenLabel'),
+        legendPauseLabel: document.getElementById('legendPauseLabel'),
+        themeBtns: document.querySelectorAll('.theme-btn'),
+
+        totalDurationBadge: document.getElementById('totalDurationBadge'),
+        totalWithEntryBadge: document.getElementById('totalWithEntryBadge'),
+        setupPressureSvg: document.getElementById('setupPressureSvg'),
+
+        fio2Btns: document.querySelectorAll('.fio2-btn'),
+        otuValue: document.getElementById('otuValue'),
+        po2Value: document.getElementById('po2Value'),
+        oxygenTimeValue: document.getElementById('oxygenTimeValue'),
+
+        soundSelect: document.getElementById('soundSelect'),
+        repeatBtns: document.querySelectorAll('.repeat-btn'),
+        customSoundOption: document.getElementById('customSoundOption'),
+        customAudioInput: document.getElementById('customAudioInput'),
+        customAudioLabel: document.getElementById('customAudioLabel'),
+        clearCustomAudioBtn: document.getElementById('clearCustomAudioBtn'),
+        customAudioPlayer: document.getElementById('customAudioPlayer'),
+        volumeSlider: document.getElementById('volumeSlider'),
+        volumeValue: document.getElementById('volumeValue'),
+        testSoundBtn: document.getElementById('testSoundBtn'),
+        startBtn: document.getElementById('startBtn'),
+
+        // Aktiv skærm
+        stepBadge: document.getElementById('stepBadge'),
+        chartStepCenter: document.getElementById('chartStepCenter'),
+        currentClockBadge: document.getElementById('currentClockBadge'),
+        fullscreenBtn: document.getElementById('fullscreenBtn'),
+        fullscreenLabel: document.getElementById('fullscreenLabel'),
+        wakeLockBadge: document.getElementById('wakeLockBadge'),
+        preWarnBanner: document.getElementById('preWarnBanner'),
+        preWarnLabel: document.getElementById('preWarnLabel'),
+        preWarnSec: document.getElementById('preWarnSec'),
+        phaseTitle: document.getElementById('phaseTitle'),
+        phaseHint: document.getElementById('phaseHint'),
+        timerClock: document.getElementById('timerClock'),
+        nextPhaseText: document.getElementById('nextPhaseText'),
+        pausedBadge: document.getElementById('pausedBadge'),
+        liveChartBox: document.getElementById('liveChartBox'),
+        livePressureSvg: document.getElementById('livePressureSvg'),
+        elapsedTimeLabel: document.getElementById('elapsedTimeLabel'),
+        seekSlider: document.getElementById('seekSlider'),
+        totalTimeLabel: document.getElementById('totalTimeLabel'),
+        phaseProgressBar: document.getElementById('phaseProgressBar'),
+
+        toggleThemeActiveBtn: document.getElementById('toggleThemeActiveBtn'),
+        toggleThemeActiveIcon: document.getElementById('toggleThemeActiveIcon'),
+        toggleThemeActiveLabel: document.getElementById('toggleThemeActiveLabel'),
+        pauseResumeBtn: document.getElementById('pauseResumeBtn'),
+        pauseResumeLabel: document.getElementById('pauseResumeLabel'),
+        skipPhaseBtn: document.getElementById('skipPhaseBtn'),
+        stopTimerBtn: document.getElementById('stopTimerBtn'),
+        timerPills: document.querySelectorAll('.timer-pill'),
+        timerCtrlBtns: document.querySelectorAll('.timer-ctrl-btn'),
+
+        // Stop-bekræftelse
+        stopConfirmModal: document.getElementById('stopConfirmModal'),
+        cancelStopBtn: document.getElementById('cancelStopBtn'),
+        confirmStopBtn: document.getElementById('confirmStopBtn'),
+
+        // Install-modal
+        openInstallModalBtn: document.getElementById('openInstallModalBtn'),
+        installModal: document.getElementById('installModal'),
+        closeInstallModalBtn: document.getElementById('closeInstallModalBtn'),
+        closeInstallModalFooterBtn: document.getElementById('closeInstallModalFooterBtn'),
+        nativeInstallWrapper: document.getElementById('nativeInstallWrapper'),
+        nativeInstallBtn: document.getElementById('nativeInstallBtn'),
+        installTabs: document.querySelectorAll('.install-tab'),
+        installPanels: document.querySelectorAll('.install-tab-panel')
+      };
+
+      if (el.brandLogoImg) {
+        el.brandLogoImg.addEventListener('error', function () {
+          el.brandLogoImg.classList.add('hidden');
+          if (el.brandLogoFallback) {
+            el.brandLogoFallback.classList.remove('hidden');
+            el.brandLogoFallback.classList.add('flex');
+          }
+        });
+      }
+
+      function updateClockBadge() {
+        if (!el.currentClockBadge) return;
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        el.currentClockBadge.textContent = hh + ':' + mm;
+      }
 
       function startClockBadgeLoop() {
         updateClockBadge();
@@ -1425,7 +1389,7 @@
       }
 
       /* -------------------------------------------------------------------
-       * 4. INDLÆS / GEM BRUGERPRÆFERENCER
+       * 4. INDLÆS / GEM BRUGERPRÆFERENCER + URL-DELINGSPROTOKOL
        * ------------------------------------------------------------------- */
       function loadPreferences() {
         const cookieUnit = getCookie(UNIT_COOKIE_NAME);
@@ -1435,25 +1399,112 @@
 
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return;
-          const saved = JSON.parse(raw);
-          if (!saved) return;
-
-          if ([1.3, 1.5, 1.6, 1.75, 2.0].includes(saved.pressureAta)) state.pressureAta = saved.pressureAta;
-          if (!cookieUnit && ['ATA', 'PSI', 'kPa'].includes(saved.pressureUnit)) state.pressureUnit = saved.pressureUnit;
-          if (typeof saved.entryDelaySec === 'number' && saved.entryDelaySec >= 0 && saved.entryDelaySec <= 600) state.entryDelaySec = saved.entryDelaySec;
-          if (typeof saved.pressurizeSec === 'number' && saved.pressurizeSec >= 60 && saved.pressurizeSec <= 1200) state.pressurizeSec = saved.pressurizeSec;
-          if (typeof saved.oxygenBlockSec === 'number' && saved.oxygenBlockSec >= 600 && saved.oxygenBlockSec <= 1800) state.oxygenBlockSec = saved.oxygenBlockSec;
-          if (typeof saved.pauseSec === 'number' && saved.pauseSec >= 300 && saved.pauseSec <= 420) state.pauseSec = saved.pauseSec;
-          if (typeof saved.depressurizeSec === 'number' && saved.depressurizeSec >= 60 && saved.depressurizeSec <= 1200) state.depressurizeSec = saved.depressurizeSec;
-          if ([0, 1, 2, 3].includes(saved.preset)) state.preset = saved.preset;
-          if ([0.95, 1.0].includes(saved.fiO2)) state.fiO2 = saved.fiO2;
-          if (['day', 'night'].includes(saved.theme)) state.theme = saved.theme;
-          if (VALID_SOUNDS.includes(saved.soundType)) state.soundType = saved.soundType;
-          if ([1, 2, 3].includes(saved.soundRepeats)) state.soundRepeats = saved.soundRepeats;
-          if (typeof saved.volume === 'number' && saved.volume >= 0 && saved.volume <= 100) state.volume = saved.volume;
-          if (typeof saved.chamberGuidance === 'boolean') state.chamberGuidance = saved.chamberGuidance;
+          if (raw) {
+            const saved = JSON.parse(raw);
+            if (saved) {
+              if ([1.3, 1.5, 1.6, 1.75, 2.0].includes(saved.pressureAta)) state.pressureAta = saved.pressureAta;
+              if (!cookieUnit && ['ATA', 'PSI', 'kPa'].includes(saved.pressureUnit)) state.pressureUnit = saved.pressureUnit;
+              if (typeof saved.entryDelaySec === 'number' && saved.entryDelaySec >= 0 && saved.entryDelaySec <= 600) state.entryDelaySec = saved.entryDelaySec;
+              if (typeof saved.pressurizeSec === 'number' && saved.pressurizeSec >= 60 && saved.pressurizeSec <= 1200) state.pressurizeSec = saved.pressurizeSec;
+              if (typeof saved.oxygenBlockSec === 'number' && saved.oxygenBlockSec >= 600 && saved.oxygenBlockSec <= 1800) state.oxygenBlockSec = saved.oxygenBlockSec;
+              if (typeof saved.pauseSec === 'number' && saved.pauseSec >= 300 && saved.pauseSec <= 420) state.pauseSec = saved.pauseSec;
+              if (typeof saved.depressurizeSec === 'number' && saved.depressurizeSec >= 60 && saved.depressurizeSec <= 1200) state.depressurizeSec = saved.depressurizeSec;
+              if ([0, 1, 2, 3].includes(saved.preset)) state.preset = saved.preset;
+              if ([0.95, 1.0].includes(saved.fiO2)) state.fiO2 = saved.fiO2;
+              if (['day', 'night'].includes(saved.theme)) state.theme = saved.theme;
+              if (VALID_SOUNDS.includes(saved.soundType)) state.soundType = saved.soundType;
+              if ([1, 2, 3].includes(saved.soundRepeats)) state.soundRepeats = saved.soundRepeats;
+              if (typeof saved.volume === 'number' && saved.volume >= 0 && saved.volume <= 100) state.volume = saved.volume;
+              if (typeof saved.chamberGuidance === 'boolean') state.chamberGuidance = saved.chamberGuidance;
+            }
+          }
         } catch (err) {}
+      }
+
+      function applySharedUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        let hasSharedProtocol = false;
+
+        if (params.has('ata')) {
+          const ataVal = parseFloat(params.get('ata').replace(',', '.'));
+          if ([1.3, 1.5, 1.6, 1.75, 2.0].includes(ataVal)) {
+            state.pressureAta = ataVal;
+            hasSharedProtocol = true;
+          }
+        }
+        if (params.has('unit')) {
+          const u = params.get('unit');
+          if (['ATA', 'PSI', 'kPa'].includes(u)) {
+            state.pressureUnit = u;
+          }
+        }
+        if (params.has('entry')) {
+          const entryVal = parseInt(params.get('entry'), 10);
+          if (!isNaN(entryVal) && entryVal >= 0 && entryVal <= 600) {
+            state.entryDelaySec = entryVal;
+            hasSharedProtocol = true;
+          }
+        }
+        if (params.has('press')) {
+          const pressVal = parseInt(params.get('press'), 10);
+          if (!isNaN(pressVal) && pressVal >= 60 && pressVal <= 1200) {
+            state.pressurizeSec = pressVal;
+            hasSharedProtocol = true;
+          }
+        }
+        if (params.has('oxy')) {
+          const oxyVal = parseInt(params.get('oxy'), 10);
+          if (!isNaN(oxyVal) && oxyVal >= 600 && oxyVal <= 1800) {
+            state.oxygenBlockSec = oxyVal;
+            hasSharedProtocol = true;
+          }
+        }
+        if (params.has('pause')) {
+          const pauseVal = parseInt(params.get('pause'), 10);
+          if (!isNaN(pauseVal) && pauseVal >= 300 && pauseVal <= 420) {
+            state.pauseSec = pauseVal;
+            hasSharedProtocol = true;
+          }
+        }
+        if (params.has('breaks')) {
+          const breaksVal = parseInt(params.get('breaks'), 10);
+          if ([0, 1, 2, 3].includes(breaksVal)) {
+            state.preset = breaksVal;
+            hasSharedProtocol = true;
+          }
+        }
+        if (params.has('decomp')) {
+          const decompVal = parseInt(params.get('decomp'), 10);
+          if (!isNaN(decompVal) && decompVal >= 60 && decompVal <= 1200) {
+            state.depressurizeSec = decompVal;
+            hasSharedProtocol = true;
+          }
+        }
+        if (params.has('fio2')) {
+          const fio2Val = parseFloat(params.get('fio2').replace(',', '.'));
+          if ([0.95, 1.0].includes(fio2Val)) {
+            state.fiO2 = fio2Val;
+            hasSharedProtocol = true;
+          }
+        }
+
+        if ((hasSharedProtocol || params.get('shared') === '1') && el.sharedProtocolBanner) {
+          el.sharedProtocolBanner.classList.remove('hidden');
+        }
+      }
+
+      function buildShareUrl() {
+        const shareUrl = new URL(window.location.origin + window.location.pathname);
+        shareUrl.searchParams.set('ata', String(state.pressureAta));
+        shareUrl.searchParams.set('entry', String(state.entryDelaySec));
+        shareUrl.searchParams.set('press', String(state.pressurizeSec));
+        shareUrl.searchParams.set('oxy', String(state.oxygenBlockSec));
+        shareUrl.searchParams.set('pause', String(state.pauseSec));
+        shareUrl.searchParams.set('breaks', String(state.preset));
+        shareUrl.searchParams.set('decomp', String(state.depressurizeSec));
+        shareUrl.searchParams.set('fio2', String(state.fiO2));
+        shareUrl.searchParams.set('shared', '1');
+        return shareUrl.toString();
       }
 
       function savePreferences() {
@@ -1680,9 +1731,9 @@
           const y2 = yOf(p.endAta);
 
           const points = x1.toFixed(1) + ',' + baseY.toFixed(1) + ' ' +
-            x1.toFixed(1) + ',' + y1.toFixed(1) + ' ' +
-            x2.toFixed(1) + ',' + y2.toFixed(1) + ' ' +
-            x2.toFixed(1) + ',' + baseY.toFixed(1);
+                         x1.toFixed(1) + ',' + y1.toFixed(1) + ' ' +
+                         x2.toFixed(1) + ',' + y2.toFixed(1) + ' ' +
+                         x2.toFixed(1) + ',' + baseY.toFixed(1);
 
           html += '<polygon points="' + points + '" fill="' + p.fillColor + '" />';
           html += '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="' + p.strokeColor + '" stroke-width="3" stroke-linecap="round" />';
@@ -1715,86 +1766,85 @@
       }
 
       function renderLivePressureChart(elapsedSec) {
-          const svg = el.livePressureSvg;
-          const phases = state.phases;
-          if (!svg || !phases.length) return;
+        const svg = el.livePressureSvg;
+        const phases = state.phases;
+        if (!svg || !phases.length) return;
 
-          const totalSec = state.totalSessionSec || 1;
-          const targetAta = state.pressureAta;
-          const isNight = state.theme === 'night';
-          const markerColor = isNight ? '#FAF9F6' : '#151F28';
+        const totalSec = state.totalSessionSec || 1;
+        const targetAta = state.pressureAta;
+        const isNight = state.theme === 'night';
+        const markerColor = isNight ? '#FAF9F6' : '#151F28';
 
-          const W = 640;
-          const H = 120;
-          const padL = 6;
-          const padR = 6;
-          const padT = 8;
-          const padB = 8;
-          const plotW = W - padL - padR;
-          const plotH = H - padT - padB;
+        const W = 640;
+        const H = 120;
+        const padL = 6;
+        const padR = 6;
+        const padT = 8;
+        const padB = 8;
+        const plotW = W - padL - padR;
+        const plotH = H - padT - padB;
 
-          const minAta = 1.0;
-          const ataSpan = Math.max(0.2, targetAta - minAta);
+        const minAta = 1.0;
+        const ataSpan = Math.max(0.2, targetAta - minAta);
 
-          function xOf(sec) {
-              return padL + (Math.min(totalSec, Math.max(0, sec)) / totalSec) * plotW;
-          }
-          function yOf(ata) {
-              return padT + plotH - ((ata - minAta) / ataSpan) * plotH;
-          }
+        function xOf(sec) {
+          return padL + (Math.min(totalSec, Math.max(0, sec)) / totalSec) * plotW;
+        }
+        function yOf(ata) {
+          return padT + plotH - ((ata - minAta) / ataSpan) * plotH;
+        }
 
-          const baseY = yOf(minAta);
-          const topY = yOf(targetAta);
-          let html = '';
+        const baseY = yOf(minAta);
+        const topY = yOf(targetAta);
+        let html = '';
 
-          // Top- og bundlinje i selve kurven
-          html += '<line x1="' + padL + '" y1="' + topY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + topY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.18" stroke-width="1.2" stroke-dasharray="4 4" />';
-          html += '<line x1="' + padL + '" y1="' + baseY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + baseY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.32" stroke-width="1.5" />';
+        // Top- og bundlinje i selve kurven
+        html += '<line x1="' + padL + '" y1="' + topY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + topY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.18" stroke-width="1.2" stroke-dasharray="4 4" />';
+        html += '<line x1="' + padL + '" y1="' + baseY.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + baseY.toFixed(1) + '" stroke="currentColor" stroke-opacity="0.32" stroke-width="1.5" />';
 
-          // Faseflader og kurvelinjer (uden tekst inde i SVG)
-          phases.forEach(function (p, idx) {
-              const x1 = xOf(p.startSec);
-              const x2 = xOf(p.endSec);
-              const y1 = yOf(p.startAta);
-              const y2 = yOf(p.endAta);
-              const isCurrent = state.isRunning && idx === state.currentPhaseIndex;
+        // Faseflader og kurvelinjer (uden tekst inde i SVG)
+        phases.forEach(function (p, idx) {
+          const x1 = xOf(p.startSec);
+          const x2 = xOf(p.endSec);
+          const y1 = yOf(p.startAta);
+          const y2 = yOf(p.endAta);
+          const isCurrent = state.isRunning && idx === state.currentPhaseIndex;
 
-              const points = x1.toFixed(1) + ',' + baseY.toFixed(1) + ' ' +
-                  x1.toFixed(1) + ',' + y1.toFixed(1) + ' ' +
-                  x2.toFixed(1) + ',' + y2.toFixed(1) + ' ' +
-                  x2.toFixed(1) + ',' + baseY.toFixed(1);
+          const points = x1.toFixed(1) + ',' + baseY.toFixed(1) + ' ' +
+                         x1.toFixed(1) + ',' + y1.toFixed(1) + ' ' +
+                         x2.toFixed(1) + ',' + y2.toFixed(1) + ' ' +
+                         x2.toFixed(1) + ',' + baseY.toFixed(1);
 
-              html += '<polygon points="' + points + '" fill="' + p.strokeColor + '" fill-opacity="' + (isCurrent ? '0.46' : '0.26') + '" />';
-              html += '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="' + p.strokeColor + '" stroke-width="' + (isCurrent ? '4.5' : '3') + '" stroke-linecap="round" />';
-          });
+          html += '<polygon points="' + points + '" fill="' + p.strokeColor + '" fill-opacity="' + (isCurrent ? '0.46' : '0.26') + '" />';
+          html += '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="' + p.strokeColor + '" stroke-width="' + (isCurrent ? '4.5' : '3') + '" stroke-linecap="round" />';
+        });
 
-          // Live tidsmarkør
-          const clampedSec = Math.min(totalSec, Math.max(0, elapsedSec));
-          const curX = xOf(clampedSec);
-          const curAta = getAtaAtElapsed(phases, clampedSec);
-          const curY = yOf(curAta);
+        // Live tidsmarkør
+        const clampedSec = Math.min(totalSec, Math.max(0, elapsedSec));
+        const curX = xOf(clampedSec);
+        const curAta = getAtaAtElapsed(phases, clampedSec);
+        const curY = yOf(curAta);
 
-          html += '<line x1="' + curX.toFixed(1) + '" y1="' + padT + '" x2="' + curX.toFixed(1) + '" y2="' + baseY.toFixed(1) + '" stroke="' + markerColor + '" stroke-opacity="0.9" stroke-width="2.2" stroke-dasharray="4 3" />';
-          html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="8" fill="' + markerColor + '" fill-opacity="0.22" />';
-          html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="4.5" fill="' + markerColor + '" />';
+        html += '<line x1="' + curX.toFixed(1) + '" y1="' + padT + '" x2="' + curX.toFixed(1) + '" y2="' + baseY.toFixed(1) + '" stroke="' + markerColor + '" stroke-opacity="0.9" stroke-width="2.2" stroke-dasharray="4 3" />';
+        html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="8" fill="' + markerColor + '" fill-opacity="0.22" />';
+        html += '<circle cx="' + curX.toFixed(1) + '" cy="' + curY.toFixed(1) + '" r="4.5" fill="' + markerColor + '" />';
 
-          svg.innerHTML = html;
+        svg.innerHTML = html;
 
-          // Skarp HTML-tekst uden for SVG'en (ingen strækning)
-          const topAtaEl = document.getElementById('chartTopAtaLabel');
-          const curBadgeEl = document.getElementById('chartCurAtaBadge');
-          const startMinEl = document.getElementById('chartStartMinLabel');
-          const midMinEl = document.getElementById('chartMidMinLabel');
-          const endMinEl = document.getElementById('chartEndMinLabel');
-          const totalMin = totalSec / 60;
+        // Skarp HTML-tekst uden for SVG'en (ingen strækning)
+        const topAtaEl = document.getElementById('chartTopAtaLabel');
+        const curBadgeEl = document.getElementById('chartCurAtaBadge');
+        const startMinEl = document.getElementById('chartStartMinLabel');
+        const midMinEl = document.getElementById('chartMidMinLabel');
+        const endMinEl = document.getElementById('chartEndMinLabel');
+        const totalMin = totalSec / 60;
 
-          if (topAtaEl) topAtaEl.textContent = formatPressureValue(targetAta, state.pressureUnit, true);
-          if (curBadgeEl) curBadgeEl.textContent = formatPressureValue(curAta, state.pressureUnit, true);
-          if (startMinEl) startMinEl.textContent = '0 min';
-          if (midMinEl) midMinEl.textContent = formatDaNumber(totalMin / 2, 0) + ' min';
-          if (endMinEl) endMinEl.textContent = formatDaNumber(totalMin, 0) + ' min';
+        if (topAtaEl) topAtaEl.textContent = formatPressureValue(targetAta, state.pressureUnit, true);
+        if (curBadgeEl) curBadgeEl.textContent = formatPressureValue(curAta, state.pressureUnit, true);
+        if (startMinEl) startMinEl.textContent = '0 min';
+        if (midMinEl) midMinEl.textContent = formatDaNumber(totalMin / 2, 0) + ' min';
+        if (endMinEl) endMinEl.textContent = formatDaNumber(totalMin, 0) + ' min';
       }
-
 
       /* -------------------------------------------------------------------
        * 8. OPDATÉR OPSÆTNINGSSKÆRMENS UI
@@ -1877,7 +1927,7 @@
         if (el.presetSub1) el.presetSub1.textContent = oxyMinShort + ' / ' + pauseMinShort + ' / ' + oxyMinShort + ' min';
         if (el.presetSub2) el.presetSub2.textContent = '3 × ' + oxyMinShort + ' + 2 × ' + pauseMinShort;
         if (el.presetSub3) el.presetSub3.textContent = '4 × ' + oxyMinShort + ' + 3 × ' + pauseMinShort;
-        if (el.legendOxygenLabel) el.legendOxygenLabel.textContent = 'Tryksætning & Ilt (' + oxyMinShort + ' min)';
+        if (el.legendOxygenLabel) el.legendOxygenLabel.textContent = 'Tryksætning og ilt (' + oxyMinShort + ' min)';
         if (el.legendPauseLabel) el.legendPauseLabel.textContent = 'Luftpause (' + pauseLegendText + ')';
 
         el.presetBtns.forEach(function (btn) {
@@ -2189,7 +2239,7 @@
       });
 
       /* -------------------------------------------------------------------
-       * 11. AKTIV TIMER-SKÆRM: FARVETEMA (FIX AF iOS FARVE/ANIMATION), SPOLE & TID
+       * 11. AKTIV TIMER-SKÆRM: FARVETEMA, SPOLE & TID
        * ------------------------------------------------------------------- */
       function getPreWarnInfo(phaseIndex, remainingSec) {
         if (remainingSec <= 0 || remainingSec > 15) return null;
@@ -2233,7 +2283,6 @@
         const screen = el.timerScreen;
         const isNight = state.theme === 'night';
 
-        // Fjern eksplicit alle mulige baggrunds-, tekst- og animationsklasser (forhindrer iOS Safari i at hænge i gul pausefarve)
         screen.style.animation = 'none';
         screen.classList.remove(
           'timer-night',
@@ -2287,7 +2336,6 @@
           el.toggleThemeActiveLabel.textContent = 'Skift til Dagslys';
         }
 
-        // Gør pills og graf-boks helt neutrale (uden gul tint på iOS Safari)
         const pillBg = isNight ? 'bg-white/10' : 'bg-rl-black/10';
         const ctrlBg = isNight ? 'bg-white/10 hover:bg-white/20' : 'bg-rl-black/10 hover:bg-rl-black/20';
 
@@ -2366,18 +2414,19 @@
         startTickLoop();
         if (window.trackTimerEvent) window.trackTimerEvent('timer_start', { pressure_ata: state.pressureAta, total_minutes: Math.round(state.totalSessionSec / 60), air_breaks: state.preset, theme: state.theme });
       }
-      function setPhaseHint(text) {
-            if (!el.phaseHint) return;
-            if (state.chamberGuidance && text) {
-                el.phaseHint.textContent = text;
-                el.phaseHint.classList.remove('hidden');
-            } else {
-                el.phaseHint.textContent = '';
-                el.phaseHint.classList.add('hidden');
-            }
-        }
 
-        function enterPhase(index, shouldPlaySound, customRemainingMs) {
+      function setPhaseHint(text) {
+        if (!el.phaseHint) return;
+        if (state.chamberGuidance && text) {
+          el.phaseHint.textContent = text;
+          el.phaseHint.classList.remove('hidden');
+        } else {
+          el.phaseHint.textContent = '';
+          el.phaseHint.classList.add('hidden');
+        }
+      }
+
+      function enterPhase(index, shouldPlaySound, customRemainingMs) {
         state.currentPhaseIndex = index;
 
         if (index >= state.phases.length) {
@@ -2437,7 +2486,7 @@
         }
       }
 
-        function finishTreatment() {
+      function finishTreatment() {
         const wasAlreadyOvertime = state.isOvertime;
         state.isRunning = true;
         state.isOvertime = true;
@@ -2481,36 +2530,36 @@
       }
 
       function seekToElapsedSec(targetSec) {
-            if (!state.phases.length) return;
-            const clamped = Math.min(state.totalSessionSec, Math.max(0, Number(targetSec) || 0));
+        if (!state.phases.length) return;
+        const clamped = Math.min(state.totalSessionSec, Math.max(0, Number(targetSec) || 0));
 
-            if (clamped >= state.totalSessionSec) {
-                el.elapsedTimeLabel.textContent = formatSecondsToMMSS(state.totalSessionSec);
-                finishTreatment();
-                return;
-            }
-
-            if (!state.isRunning) {
-                state.isRunning = true;
-                state.isPaused = true;
-                el.pauseResumeBtn.classList.remove('hidden');
-                el.skipPhaseBtn.classList.remove('hidden');
-                el.pausedBadge.classList.remove('hidden');
-                el.pauseResumeLabel.textContent = 'Genoptag';
-            }
-
-            let targetIdx = 0;
-            for (let i = 0; i < state.phases.length; i++) {
-                if (clamped < state.phases[i].endSec || i === state.phases.length - 1) {
-                    targetIdx = i;
-                    break;
-                }
-            }
-
-            const phase = state.phases[targetIdx];
-            const remainingInPhaseSec = Math.max(0.5, phase.endSec - clamped);
-            enterPhase(targetIdx, false, remainingInPhaseSec * 1000);
+        if (clamped >= state.totalSessionSec) {
+          el.elapsedTimeLabel.textContent = formatSecondsToMMSS(state.totalSessionSec);
+          finishTreatment();
+          return;
         }
+
+        if (!state.isRunning) {
+          state.isRunning = true;
+          state.isPaused = true;
+          el.pauseResumeBtn.classList.remove('hidden');
+          el.skipPhaseBtn.classList.remove('hidden');
+          el.pausedBadge.classList.remove('hidden');
+          el.pauseResumeLabel.textContent = 'Genoptag';
+        }
+
+        let targetIdx = 0;
+        for (let i = 0; i < state.phases.length; i++) {
+          if (clamped < state.phases[i].endSec || i === state.phases.length - 1) {
+            targetIdx = i;
+            break;
+          }
+        }
+
+        const phase = state.phases[targetIdx];
+        const remainingInPhaseSec = Math.max(0.5, phase.endSec - clamped);
+        enterPhase(targetIdx, false, remainingInPhaseSec * 1000);
+      }
 
       function tick() {
         if (!state.isRunning || state.isPaused || state.isScrubbing) return;
@@ -2582,9 +2631,36 @@
         el.setupScreen.classList.remove('hidden');
         renderSetupUI();
       }
+
       /* -------------------------------------------------------------------
        * 12. EVENT LISTENERS
        * ------------------------------------------------------------------- */
+
+      if (el.shareSetupBtn) {
+        el.shareSetupBtn.addEventListener('click', async function () {
+          const finalLink = buildShareUrl();
+          try {
+            await navigator.clipboard.writeText(finalLink);
+            if (el.shareFeedback) {
+              el.shareFeedback.textContent = 'Link kopieret – klar til at indsætte i SMS eller besked!';
+            }
+            if (window.trackTimerEvent) {
+              window.trackTimerEvent('timer_share_protocol', {
+                pressure_ata: state.pressureAta,
+                air_breaks: state.preset
+              });
+            }
+          } catch (err) {
+            window.prompt('Kopiér dette protokol-link:', finalLink);
+          }
+
+          if (el.shareFeedback) {
+            setTimeout(function () {
+              el.shareFeedback.textContent = '';
+            }, 4000);
+          }
+        });
+      }
 
       el.headerThemeToggleBtn.addEventListener('click', function () {
         state.theme = state.theme === 'day' ? 'night' : 'day';
@@ -2827,7 +2903,7 @@
         state.customAudioName = null;
         el.customAudioInput.value = '';
         el.customAudioPlayer.removeAttribute('src');
-        el.customAudioLabel.textContent = '+ Vælg egen .mp3 / .wav';
+        el.customAudioLabel.textContent = '+ Vælg egen .mp3 eller .wav';
         el.clearCustomAudioBtn.classList.add('hidden');
         el.customSoundOption.disabled = true;
         el.customSoundOption.textContent = 'Egen lydfil (ingen valgt)';
@@ -2895,6 +2971,7 @@
           startTickLoop();
         }
       });
+
       el.skipPhaseBtn.addEventListener('click', function () {
         if (!state.isRunning) return;
         lastPreWarnMode = null;
@@ -2991,6 +3068,7 @@
       updateClockBadge();
       syncFullscreenUi();
       loadPreferences();
+      applySharedUrlParams();
       renderSetupUI();
     })();
   </script>
@@ -3075,81 +3153,6 @@
         });
       }
     })();
-    document.addEventListener("DOMContentLoaded", () => {
-    // 1. Kortlæg dine inputfelters HTML-id'er til korte URL-parametre
-    const TIMER_FIELDS = {
-      ata: "pressureInput",       // Tryk (ATA)
-      entry: "entryTimeInput",    // Indstigningstid
-      press: "pressTimeInput",    // Tryksætningstid
-      oxy: "oxyTimeInput",        // Iltfase varighed
-      breaks: "breaksInput",      // Antal iltpauser
-      decomp: "decompTimeInput"   // Dekompressionstid
-    };
-
-    const isEnglish = document.documentElement.lang.toLowerCase().startsWith("en");
-    const params = new URLSearchParams(window.location.search);
-
-    // 2. Indlæs værdier fra URL'en, hvis linket indeholder en delt protokol
-    let isSharedProtocol = false;
-
-    Object.entries(TIMER_FIELDS).forEach(([paramKey, elementId]) => {
-      if (params.has(paramKey)) {
-        const el = document.getElementById(elementId);
-        if (el) {
-          el.value = params.get(paramKey);
-          // Udløs 'change' og 'input', så din SVG-trykkurve og OTU-beregning opdateres automatisk
-          el.dispatchEvent(new Event("input", { bubbles: true }));
-          el.dispatchEvent(new Event("change", { bubbles: true }));
-          isSharedProtocol = true;
-        }
-      }
-    });
-
-    // Vis banneret, hvis brugeren åbner et link med parametre (eller ?shared=1)
-    if (isSharedProtocol || params.get("shared") === "1") {
-      const banner = document.getElementById("sharedProtocolBanner");
-      if (banner) {
-        banner.style.display = "block";
-      }
-    }
-
-    // 3. Generér og kopiér linket, når der trykkes på "Share this HBOT setup"
-    const shareBtn = document.getElementById("shareSetupBtn");
-    const feedbackEl = document.getElementById("shareFeedback");
-
-    if (shareBtn) {
-      shareBtn.addEventListener("click", async () => {
-        const shareUrl = new URL(window.location.origin + window.location.pathname);
-
-        Object.entries(TIMER_FIELDS).forEach(([paramKey, elementId]) => {
-          const el = document.getElementById(elementId);
-          if (el && el.value !== "") {
-            shareUrl.searchParams.set(paramKey, el.value);
-          }
-        });
-
-        shareUrl.searchParams.set("shared", "1");
-        const finalLink = shareUrl.toString();
-
-        try {
-          await navigator.clipboard.writeText(finalLink);
-          feedbackEl.textContent = isEnglish
-            ? "Link copied – ready to paste in SMS or chat!"
-            : "Link kopieret – klar til at indsætte i SMS eller besked!";
-        } catch (err) {
-          // Fallback hvis udklipsholder blokeres i en ældre browser
-          window.prompt(
-            isEnglish ? "Copy this protocol link:" : "Kopiér dette protokol-link:",
-            finalLink
-          );
-        }
-
-        setTimeout(() => {
-          feedbackEl.textContent = "";
-        }, 4000);
-      });
-    }
-  });
   </script>
 </body>
 </html>
