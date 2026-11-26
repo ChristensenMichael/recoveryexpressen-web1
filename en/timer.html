@@ -1097,19 +1097,17 @@
                 preset: 1,
                 fiO2: 0.95,
                 theme: 'day',
-                brightness: 120,
-                useDeviceDefaultBrightness: false,
                 soundType: 'yoga_pling',
                 soundRepeats: 1,
                 volume: 85,
                 chamberGuidance: true,
                 customAudioUrl: null,
                 customAudioName: null,
+                currentPhaseTitle: '',
+                currentPhaseSec: 0,
+                currentPhaseSecTotal: 0,
                 isRunning: false,
                 isPaused: false,
-                isOvertime: false,
-                overtimeStartTime: 0,
-                overtimeElapsedMsWhenPaused: 0,
                 isScrubbing: false,
                 phases: [],
                 totalSessionSec: 0,
@@ -1121,7 +1119,10 @@
                 intervalId: null,
                 clockIntervalId: null,
                 wakeLock: null,
-                deferredInstallPrompt: null
+                deferredInstallPrompt: null,
+                isOvertime: false,
+                overtimeStartTime: 0,
+                overtimeElapsedMsWhenPaused: 0
             };
 
             let audioCtx = null;
@@ -1160,10 +1161,6 @@
                 legendOxygenLabel: document.getElementById('legendOxygenLabel'),
                 legendPauseLabel: document.getElementById('legendPauseLabel'),
                 themeBtns: document.querySelectorAll('.theme-btn'),
-                brightnessSlider: document.getElementById('brightnessSlider'),
-                brightnessValue: document.getElementById('brightnessValue'),
-                useDeviceDefaultCheckbox: document.getElementById('useDeviceDefaultCheckbox'),
-                brightnessControlRow: document.getElementById('brightnessControlRow'),
 
                 totalDurationBadge: document.getElementById('totalDurationBadge'),
                 totalWithEntryBadge: document.getElementById('totalWithEntryBadge'),
@@ -1188,6 +1185,7 @@
 
                 // Active screen
                 stepBadge: document.getElementById('stepBadge'),
+                chartStepCenter: document.getElementById('chartStepCenter'),
                 currentClockBadge: document.getElementById('currentClockBadge'),
                 fullscreenBtn: document.getElementById('fullscreenBtn'),
                 fullscreenLabel: document.getElementById('fullscreenLabel'),
@@ -1393,27 +1391,6 @@
                 return Math.min(maxSec, Math.max(minSec, sec));
             }
 
-            function setPhaseHint(text) {
-                if (!el.phaseHint) return;
-                if (state.chamberGuidance && text) {
-                    el.phaseHint.textContent = text;
-                    el.phaseHint.classList.remove('hidden');
-                } else {
-                    el.phaseHint.textContent = '';
-                    el.phaseHint.classList.add('hidden');
-                }
-            }
-
-            function applyBrightnessFilter() {
-                if (!el.timerScreen) return;
-                if (state.useDeviceDefaultBrightness) {
-                    el.timerScreen.style.filter = 'none';
-                } else {
-                    const b = Math.min(140, Math.max(30, state.brightness || 120));
-                    el.timerScreen.style.filter = 'brightness(' + (b / 100).toFixed(2) + ')';
-                }
-            }
-
             /* -------------------------------------------------------------------
              * 4. LOAD / SAVE USER PREFERENCES
              * ------------------------------------------------------------------- */
@@ -1439,8 +1416,6 @@
                     if ([0, 1, 2, 3].includes(saved.preset)) state.preset = saved.preset;
                     if ([0.95, 1.0].includes(saved.fiO2)) state.fiO2 = saved.fiO2;
                     if (['day', 'night'].includes(saved.theme)) state.theme = saved.theme;
-                    if (typeof saved.brightness === 'number' && saved.brightness >= 30 && saved.brightness <= 140) state.brightness = saved.brightness;
-                    if (typeof saved.useDeviceDefaultBrightness === 'boolean') state.useDeviceDefaultBrightness = saved.useDeviceDefaultBrightness;
                     if (VALID_SOUNDS.includes(saved.soundType)) state.soundType = saved.soundType;
                     if ([1, 2, 3].includes(saved.soundRepeats)) state.soundRepeats = saved.soundRepeats;
                     if (typeof saved.volume === 'number' && saved.volume >= 0 && saved.volume <= 100) state.volume = saved.volume;
@@ -1462,8 +1437,6 @@
                         preset: state.preset,
                         fiO2: state.fiO2,
                         theme: state.theme,
-                        brightness: state.brightness,
-                        useDeviceDefaultBrightness: state.useDeviceDefaultBrightness,
                         soundType: state.soundType === 'custom' ? 'yoga_pling' : state.soundType,
                         soundRepeats: state.soundRepeats,
                         volume: state.volume,
@@ -1772,12 +1745,14 @@
                 svg.innerHTML = html;
 
                 const topAtaEl = document.getElementById('chartTopAtaLabel');
+                const curBadgeEl = document.getElementById('chartCurAtaBadge');
                 const startMinEl = document.getElementById('chartStartMinLabel');
                 const midMinEl = document.getElementById('chartMidMinLabel');
                 const endMinEl = document.getElementById('chartEndMinLabel');
                 const totalMin = totalSec / 60;
 
                 if (topAtaEl) topAtaEl.textContent = formatPressureValue(targetAta, state.pressureUnit, true);
+                if (curBadgeEl) curBadgeEl.textContent = formatPressureValue(curAta, state.pressureUnit, true);
                 if (startMinEl) startMinEl.textContent = '0 min';
                 if (midMinEl) midMinEl.textContent = formatEnNumber(totalMin / 2, 0) + ' min';
                 if (endMinEl) endMinEl.textContent = formatEnNumber(totalMin, 0) + ' min';
@@ -1797,20 +1772,6 @@
 
                 if (el.chamberGuidanceCheckbox) {
                     el.chamberGuidanceCheckbox.checked = state.chamberGuidance;
-                }
-
-                if (el.useDeviceDefaultCheckbox) {
-                    el.useDeviceDefaultCheckbox.checked = state.useDeviceDefaultBrightness;
-                }
-                if (el.brightnessSlider) {
-                    el.brightnessSlider.value = String(state.brightness);
-                    el.brightnessSlider.disabled = state.useDeviceDefaultBrightness;
-                }
-                if (el.brightnessValue) {
-                    el.brightnessValue.textContent = state.useDeviceDefaultBrightness ? 'Auto' : (state.brightness + '%');
-                }
-                if (el.brightnessControlRow) {
-                    el.brightnessControlRow.style.opacity = state.useDeviceDefaultBrightness ? '0.45' : '1';
                 }
 
                 el.unitBtns.forEach(function (btn) {
@@ -2155,14 +2116,14 @@
             async function requestWakeLock() {
                 if (!('wakeLock' in navigator)) {
                     if (el.wakeLockBadge) {
-                        el.wakeLockBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>Keep screen on</span>';
+                        el.wakeLockBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400"></span><span>Keep screen on</span>';
                     }
                     return;
                 }
                 try {
                     state.wakeLock = await navigator.wakeLock.request('screen');
                     if (el.wakeLockBadge) {
-                        el.wakeLockBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500/80"></span><span>Screen awake</span>';
+                        el.wakeLockBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span><span>Screen awake</span>';
                     }
                     state.wakeLock.addEventListener('release', function () {
                         if (state.isRunning && document.visibilityState === 'visible') {
@@ -2171,7 +2132,7 @@
                     });
                 } catch (err) {
                     if (el.wakeLockBadge) {
-                        el.wakeLockBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>Screen lock inactive</span>';
+                        el.wakeLockBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400"></span><span>Screen lock inactive</span>';
                     }
                 }
             }
@@ -2287,8 +2248,6 @@
                     el.toggleThemeActiveLabel.textContent = 'Switch to Daylight';
                 }
 
-                applyBrightnessFilter();
-
                 const pillBg = isNight ? 'bg-white/10' : 'bg-rl-black/10';
                 const ctrlBg = isNight ? 'bg-white/10 hover:bg-white/20' : 'bg-rl-black/10 hover:bg-rl-black/20';
 
@@ -2366,6 +2325,17 @@
                 enterPhase(0, false);
                 startTickLoop();
                 if (window.trackTimerEvent) window.trackTimerEvent('timer_start', { pressure_ata: state.pressureAta, total_minutes: Math.round(state.totalSessionSec / 60), air_breaks: state.preset, theme: state.theme });
+            }
+
+            function setPhaseHint(text) {
+                if (!el.phaseHint) return;
+                if (state.chamberGuidance && text) {
+                    el.phaseHint.textContent = text;
+                    el.phaseHint.classList.remove('hidden');
+                } else {
+                    el.phaseHint.textContent = '';
+                    el.phaseHint.classList.add('hidden');
+                }
             }
 
             function enterPhase(index, shouldPlaySound, customRemainingMs) {
@@ -2587,22 +2557,6 @@
                 el.chamberGuidanceCheckbox.addEventListener('change', function () {
                     state.chamberGuidance = el.chamberGuidanceCheckbox.checked;
                     savePreferences();
-                });
-            }
-
-            if (el.useDeviceDefaultCheckbox) {
-                el.useDeviceDefaultCheckbox.addEventListener('change', function () {
-                    state.useDeviceDefaultBrightness = el.useDeviceDefaultCheckbox.checked;
-                    savePreferences();
-                    renderSetupUI();
-                });
-            }
-
-            if (el.brightnessSlider) {
-                el.brightnessSlider.addEventListener('input', function () {
-                    state.brightness = Number(el.brightnessSlider.value);
-                    savePreferences();
-                    renderSetupUI();
                 });
             }
 
