@@ -62,62 +62,71 @@
       line-height: 1.08;
     }
 
-    /* Ekstra luft for frontkamera / notch / statusbar i lodret visning */
-    .timer-top-safe {
-      padding-top: calc(env(safe-area-inset-top, 0px) + 2.5rem);
-      padding-left: calc(env(safe-area-inset-left, 0px) + 1rem);
-      padding-right: calc(env(safe-area-inset-right, 0px) + 1rem);
-    }
+/* Ekstra luft for frontkamera / notch / statusbar i lodret visning */
+        .timer-top-safe {
+            padding-top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
+            padding-left: calc(env(safe-area-inset-left, 0px) + 0.85rem);
+            padding-right: calc(env(safe-area-inset-right, 0px) + 0.85rem);
+        }
 
-    .timer-bottom-safe {
-      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.85rem);
-      padding-left: calc(env(safe-area-inset-left, 0px) + 1rem);
-      padding-right: calc(env(safe-area-inset-right, 0px) + 1rem);
-    }
+        .timer-bottom-safe {
+            padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.65rem);
+            padding-left: calc(env(safe-area-inset-left, 0px) + 0.85rem);
+            padding-right: calc(env(safe-area-inset-right, 0px) + 0.85rem);
+        }
 
-    /* Kompakt layout når skærmen vendes på siden (landskab / lav højde) */
-    @media (orientation: landscape) and (max-height: 540px) {
-      .timer-top-safe {
-        padding-top: calc(env(safe-area-inset-top, 0px) + 0.55rem);
-      }
-      .timer-clock-text {
-        font-size: clamp(2.8rem, 23dvh, 6.2rem);
-        margin-top: 0.15rem;
-        margin-bottom: 0.15rem;
-      }
-      .timer-phase-title {
-        font-size: clamp(1.05rem, 6.2dvh, 2rem);
-      }
-      #preWarnBanner {
-        margin-bottom: 0.35rem;
-        padding-top: 0.25rem;
-        padding-bottom: 0.25rem;
-        font-size: 0.8rem;
-      }
-      #phaseHint {
-        margin-top: 0.25rem;
-        padding-top: 0.25rem;
-        padding-bottom: 0.25rem;
-        font-size: 0.72rem;
-      }
-      #nextPhaseText {
-        font-size: 0.85rem;
-      }
-      #liveChartBox svg {
-        height: 26dvh;
-        max-height: 7.5rem;
-      }
-      .timer-bottom-safe {
-        gap: 0.35rem;
-        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.45rem);
-      }
-      .timer-ctrl-btn, #stopTimerBtn {
-        padding-top: 0.45rem;
-        padding-bottom: 0.45rem;
-        font-size: 0.75rem;
-      }
-    }
+        .timer-ctrl-btn,
+        #stopTimerBtn {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            min-height: 2.25rem;
+        }
 
+        @media (orientation: landscape) and (max-height: 540px) {
+        .timer-top-safe {
+            padding-top: calc(env(safe-area-inset-top, 0px) + 0.35rem);
+        }
+        .timer-clock-text {
+            font-size: clamp(2.35rem, 19dvh, 4.75rem);
+            margin-top: 0.1rem;
+            margin-bottom: 0.1rem;
+        }
+        .timer-phase-title {
+            font-size: clamp(0.95rem, 5dvh, 1.65rem);
+        }
+        #preWarnBanner {
+            margin-bottom: 0.25rem;
+            padding-top: 0.2rem;
+            padding-bottom: 0.2rem;
+            font-size: 0.75rem;
+        }
+        #phaseHint {
+            margin-top: 0.2rem;
+            padding-top: 0.2rem;
+            padding-bottom: 0.2rem;
+            max-height: 2.6rem;
+            overflow: hidden;
+            font-size: 0.7rem;
+        }
+        #nextPhaseText {
+            font-size: 0.78rem;
+        }
+        #liveChartBox svg {
+            height: 21dvh;
+            max-height: 5.5rem;
+        }
+        .timer-bottom-safe {
+            gap: 0.25rem;
+            padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.3rem);
+        }
+        .timer-ctrl-btn,
+        #stopTimerBtn {
+            padding-top: 0.35rem;
+            padding-bottom: 0.35rem;
+            min-height: 1.95rem;
+            font-size: 0.72rem;
+        }
+    }
     /* Diskret 15-sekunders forvarsel (Dagslys) */
     @keyframes prewarnDayPulse {
       0%, 100% {
@@ -728,84 +737,176 @@
   </div>
 
   <!-- ===================================================================== -->
-  <!-- AKTIV TIMER-SKÆRM (FULD SKÆRM TIL KOØJET)                             -->
+  <!-- AKTIV TIMER-SKÆRM (FULD SKÆRM TIL KOØJET)                              -->
   <!-- ===================================================================== -->
   <section id="timerScreen" class="hidden fixed inset-0 z-30 flex-col justify-between select-none transition-colors duration-300 overflow-hidden">
+      <!-- Topbjælke: Klokkeslæt øverst til venstre · Nedtonet "Skærm vågen" · Fuldskærm længst til højre -->
+      <div class="timer-top-safe w-full flex items-center justify-between gap-2 z-10 min-w-0">
+          <div class="flex items-center gap-2 min-w-0">
+              <span id="currentClockBadge" class="timer-pill inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold tabular-nums shrink-0" aria-label="Aktuelt klokkeslæt">
+                  --:--
+              </span>
+              <span id="wakeLockBadge" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium opacity-60 shrink-0">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500/80"></span>
+                  <span>Skærm vågen</span>
+              </span>
+          </div>
 
-    <!-- Topbjælke: Trin-indikator, diskret klokkeslæt, fuldskærm-knap & Wake Lock badge -->
-    <div class="timer-top-safe w-full flex flex-wrap items-center justify-between gap-2 z-10">
-      <span id="stepBadge" class="timer-pill inline-flex items-center px-3.5 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs sm:text-sm font-bold tracking-wide">
-        Trin 1 af 5 · 1,5 ATA
-      </span>
-
-      <div class="flex items-center gap-2 ml-auto">
-        <span id="currentClockBadge" class="timer-pill inline-flex items-center px-3 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs font-semibold opacity-80 tabular-nums" aria-label="Aktuelt klokkeslæt">
-          --:--
-        </span>
-
-        <button
-          type="button"
-          id="fullscreenBtn"
-          class="timer-pill inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-rl-black/10 hover:bg-rl-black/20 backdrop-blur-sm text-xs font-semibold opacity-85 transition cursor-pointer"
-          title="Skift fuldskærm"
-          aria-label="Skift fuldskærm"
-        >
-          <svg id="fullscreenIcon" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <polyline points="9 21 3 21 3 15"></polyline>
-            <line x1="21" y1="3" x2="14" y2="10"></line>
-            <line x1="3" y1="21" x2="10" y2="14"></line>
-          </svg>
-          <span id="fullscreenLabel" class="hidden sm:inline">Fuldskærm</span>
-        </button>
-
-        <span id="wakeLockBadge" class="timer-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rl-black/10 backdrop-blur-sm text-xs font-semibold opacity-90">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span>Skærm vågen</span>
-        </span>
-      </div>
-    </div>
-
-    <!-- Center: Forvarsel, Fase-navn, Guidance, Kæmpe Ur, Næste fase -->
-    <div class="flex-1 flex flex-col items-center justify-center px-4 text-center z-10 min-h-0">
-      <!-- 15 sekunders forvarsel-banner -->
-      <div id="preWarnBanner" class="hidden mb-3 sm:mb-4 px-5 py-2 rounded-full bg-amber-500 text-rl-black font-black text-sm sm:text-lg tracking-wide shadow-lg animate-pulse">
-        <span id="preWarnLabel">Gør klar: Maske af om</span> <span id="preWarnSec" class="tabular-nums">15</span> sek.
+          <div class="flex items-center gap-2 ml-auto shrink-0">
+              <span id="stepBadge" class="sr-only">Trin 1 af 5 · 1,5 ATA</span>
+              <button
+                  type="button"
+                  id="fullscreenBtn"
+                  class="timer-pill inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold opacity-85 hover:opacity-100 transition cursor-pointer shrink-0"
+                  title="Skift fuldskærm"
+                  aria-label="Skift fuldskærm"
+              >
+                  <svg id="fullscreenIcon" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <polyline points="9 21 3 21 3 15"></polyline>
+                      <line x1="21" y1="3" x2="14" y2="10"></line>
+                      <line x1="3" y1="21" x2="10" y2="14"></line>
+                  </svg>
+                  <span id="fullscreenLabel" class="hidden sm:inline">Fuldskærm</span>
+              </button>
+          </div>
       </div>
 
-      <!-- Fase-overskrift -->
+      <!-- Center: Forvarsel, Fase-navn, Guidance, Kæmpe Ur, Næste fase -->
+      <div class="flex-1 flex flex-col items-center justify-center px-3 sm:px-4 text-center z-10 min-h-0">
+          <div id="preWarnBanner" class="hidden mb-2 sm:mb-3 px-4 py-1.5 rounded-full bg-amber-500 text-rl-black font-black text-xs sm:text-base tracking-wide shadow-lg animate-pulse">
+              <span id="preWarnLabel">Gør klar: Maske af om</span> <span id="preWarnSec" class="tabular-nums">15</span> sek.
+          </div>
+
+          <h2 id="phaseTitle" class="timer-phase-title font-black uppercase tracking-wider">
+              MASKE PÅ – ILT
+          </h2>
+
+          <p id="phaseHint" class="hidden timer-pill mt-1.5 sm:mt-2.5 px-3.5 py-1.5 rounded-2xl text-xs sm:text-sm font-semibold tracking-wide max-w-2xl leading-snug"></p>
+
+          <div id="timerClock" class="timer-clock-text font-black tabular-nums my-1.5 sm:my-3">
+              20:00
+          </div>
+
+          <p id="nextPhaseText" class="text-xs sm:text-lg font-bold opacity-85">
+              Næste: Pause (5 min)
+          </p>
+
+          <div id="pausedBadge" class="hidden mt-2 px-3.5 py-1 rounded-full bg-current/15 font-bold text-xs uppercase tracking-widest">
+              Sat på pause
+          </div>
+      </div>
+
+      <!-- Bundsektion: Trykkurve fra kant til kant med "Trin x af y" i midten + spole-slider + lavere knapper -->
+      <div class="timer-bottom-safe w-full flex flex-col gap-2 z-10">
+          <div class="w-full max-w-5xl mx-auto">
+              <div id="liveChartBox" class="relative w-full rounded-2xl border border-current/20 px-2 py-1.5 backdrop-blur-sm shadow-sm overflow-hidden">
+                  <span id="chartStepCenter" class="pointer-events-none absolute inset-0 flex items-center justify-center z-10 text-xs sm:text-sm font-extrabold tracking-wide opacity-80">
+                      Trin 1 af 5
+                  </span>
+                  <svg id="livePressureSvg" viewBox="0 0 640 165" preserveAspectRatio="none" class="w-full h-[26dvh] sm:h-[30dvh] max-h-48 block" role="img" aria-label="Live trykkurve"></svg>
+              </div>
+          </div>
+
+          <div class="w-full max-w-5xl mx-auto flex items-center gap-3">
+              <span id="elapsedTimeLabel" class="text-xs font-bold tabular-nums opacity-85 w-11 text-left">00:00</span>
+              <input type="range" id="seekSlider" min="0" max="100" value="0" step="1" class="seek-slider flex-1 cursor-pointer" aria-label="Spol i behandlingen" />
+              <span id="totalTimeLabel" class="text-xs font-bold tabular-nums opacity-85 w-11 text-right">55:00</span>
+          </div>
+
+          <div class="w-full max-w-5xl mx-auto">
+              <div class="w-full h-1.5 rounded-full bg-current/20 overflow-hidden">
+                  <div id="phaseProgressBar" class="h-full rounded-full bg-current transition-[width] duration-200 ease-linear" style="width: 0%;"></div>
+              </div>
+          </div>
+
+          <div class="w-full max-w-5xl mx-auto grid grid-cols-4 gap-2 pt-0.5">
+              <button type="button" id="toggleThemeActiveBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+                  <span id="toggleThemeActiveIcon">🌙</span>
+                  <span id="toggleThemeActiveLabel" class="truncate">Skift til Aften</span>
+              </button>
+
+              <button type="button" id="pauseResumeBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+                  <span id="pauseResumeLabel" class="truncate">Pause</span>
+              </button>
+
+              <button type="button" id="skipPhaseBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+                  <span class="truncate">Næste →</span>
+              </button>
+
+              <button type="button" id="stopTimerBtn" class="flex items-center justify-center gap-1 py-2 px-2 rounded-xl bg-rose-600/90 hover:bg-rose-600 active:scale-95 border border-white/20 text-white text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+                  <span class="truncate">Stop</span>
+              </button>
+          </div>
+      </div>
+  </section>
+  <!-- Center: Forvarsel, Fase-navn, Guidance, Kæmpe Ur, Næste fase -->
+  <div class="flex-1 flex flex-col items-center justify-center px-3 sm:px-4 text-center z-10 min-h-0">
+      <div id="preWarnBanner" class="hidden mb-2 sm:mb-3 px-4 py-1.5 rounded-full bg-amber-500 text-rl-black font-black text-xs sm:text-base tracking-wide shadow-lg animate-pulse">
+          <span id="preWarnLabel">Gør klar: Maske af om</span> <span id="preWarnSec" class="tabular-nums">15</span> sek.
+      </div>
+
       <h2 id="phaseTitle" class="timer-phase-title font-black uppercase tracking-wider">
-        MASKE PÅ – ILT
+          MASKE PÅ – ILT
       </h2>
 
-      <!-- Kontekstuel guidance for den aktuelle fase -->
-      <p id="phaseHint" class="hidden timer-pill mt-2 sm:mt-3 px-4 py-2 rounded-2xl bg-rl-black/10 backdrop-blur-sm text-xs sm:text-base font-bold tracking-wide max-w-2xl leading-snug"></p>
+      <p id="phaseHint" class="hidden timer-pill mt-1.5 sm:mt-2.5 px-3.5 py-1.5 rounded-2xl text-xs sm:text-sm font-semibold tracking-wide max-w-2xl leading-snug"></p>
 
-      <!-- Kæmpe nedtællingsur -->
-      <div id="timerClock" class="timer-clock-text font-black tabular-nums my-2 sm:my-4">
-        20:00
+      <div id="timerClock" class="timer-clock-text font-black tabular-nums my-1.5 sm:my-3">
+          20:00
       </div>
 
-      <!-- Næste fase -->
-      <p id="nextPhaseText" class="text-sm sm:text-xl font-bold opacity-85">
-        Næste: Pause (5 min)
+      <p id="nextPhaseText" class="text-xs sm:text-lg font-bold opacity-85">
+          Næste: Pause (5 min)
       </p>
 
-      <!-- Pause-indikator -->
-      <div id="pausedBadge" class="hidden mt-3 px-4 py-1.5 rounded-full bg-current/15 font-bold text-xs sm:text-sm uppercase tracking-widest">
-        Sat på pause
+      <div id="pausedBadge" class="hidden mt-2 px-3.5 py-1 rounded-full bg-current/15 font-bold text-xs uppercase tracking-widest">
+          Sat på pause
       </div>
-    </div>
+  </div>
 
-    <!-- Bundsektion: Kompakt live-trykkurve (1/3 af den nederste del) + spole-slider + fremdriftsbjælke + knapper -->
-    <div class="timer-bottom-safe w-full flex flex-col gap-2.5 z-10">
-      <!-- Stor og tydelig live-trykkurve (~1/3 af skærmhøjden) -->
-      <div class="w-full max-w-4xl mx-auto">
-        <div id="liveChartBox" class="w-full rounded-2xl border border-current/20 px-3 py-2 backdrop-blur-sm shadow-sm">
-          <svg id="livePressureSvg" viewBox="0 0 640 165" class="w-full h-[28dvh] sm:h-[32dvh] max-h-56 block overflow-visible" role="img" aria-label="Live trykkurve"></svg>
-        </div>
+  <!-- Bundsektion: Trykkurve fra kant til kant med "Trin x af y" i midten + spole-slider + lavere knapper -->
+  <div class="timer-bottom-safe w-full flex flex-col gap-2 z-10">
+      <div class="w-full max-w-5xl mx-auto">
+          <div id="liveChartBox" class="relative w-full rounded-2xl border border-current/20 px-2 py-1.5 backdrop-blur-sm shadow-sm overflow-hidden">
+              <span id="chartStepCenter" class="pointer-events-none absolute inset-0 flex items-center justify-center z-10 text-xs sm:text-sm font-extrabold tracking-wide opacity-80">
+                  Trin 1 af 5
+              </span>
+              <svg id="livePressureSvg" viewBox="0 0 640 165" preserveAspectRatio="none" class="w-full h-[26dvh] sm:h-[30dvh] max-h-48 block" role="img" aria-label="Live trykkurve"></svg>
+          </div>
       </div>
 
+      <div class="w-full max-w-5xl mx-auto flex items-center gap-3">
+          <span id="elapsedTimeLabel" class="text-xs font-bold tabular-nums opacity-85 w-11 text-left">00:00</span>
+          <input type="range" id="seekSlider" min="0" max="100" value="0" step="1" class="seek-slider flex-1 cursor-pointer" aria-label="Spol i behandlingen" />
+          <span id="totalTimeLabel" class="text-xs font-bold tabular-nums opacity-85 w-11 text-right">55:00</span>
+      </div>
+
+      <div class="w-full max-w-5xl mx-auto">
+          <div class="w-full h-1.5 rounded-full bg-current/20 overflow-hidden">
+              <div id="phaseProgressBar" class="h-full rounded-full bg-current transition-[width] duration-200 ease-linear" style="width: 0%;"></div>
+          </div>
+      </div>
+
+      <div class="w-full max-w-5xl mx-auto grid grid-cols-4 gap-2 pt-0.5">
+          <button type="button" id="toggleThemeActiveBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+              <span id="toggleThemeActiveIcon">🌙</span>
+              <span id="toggleThemeActiveLabel" class="truncate">Skift til Aften</span>
+          </button>
+
+          <button type="button" id="pauseResumeBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+              <span id="pauseResumeLabel" class="truncate">Pause</span>
+          </button>
+
+          <button type="button" id="skipPhaseBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+              <span class="truncate">Næste →</span>
+          </button>
+
+          <button type="button" id="stopTimerBtn" class="flex items-center justify-center gap-1 py-2 px-2 rounded-xl bg-rose-600/90 hover:bg-rose-600 active:scale-95 border border-white/20 text-white text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+              <span class="truncate">Stop</span>
+          </button>
+      </div>
+  
       <!-- Spole-slider til at hoppe til et specifikt tidspunkt -->
       <div class="w-full max-w-4xl mx-auto flex items-center gap-3">
         <span id="elapsedTimeLabel" class="text-xs font-bold tabular-nums opacity-85 w-11 text-left">00:00</span>
@@ -2297,64 +2398,105 @@
       }
 
       function enterPhase(index, shouldPlaySound, customRemainingMs) {
-        state.currentPhaseIndex = index;
+      state.currentPhaseIndex = index;
 
-        if (index >= state.phases.length) {
+      if (index >= state.phases.length) {
           finishTreatment();
           return;
-        }
-
-        const phase = state.phases[index];
-        state.phaseDurationMs = phase.durationSec * 1000;
-        const remMs = typeof customRemainingMs === 'number'
-          ? Math.min(state.phaseDurationMs, Math.max(0, customRemainingMs))
-          : state.phaseDurationMs;
-        state.phaseEndTime = Date.now() + remMs;
-        if (state.isPaused) {
-          state.remainingMsWhenPaused = remMs;
-        }
-
-        el.stepBadge.textContent = 'Trin ' + (index + 1) + ' af ' + state.phases.length + ' · ' + formatPressureValue(state.pressureAta, state.pressureUnit, true);
-        el.phaseTitle.textContent = phase.title;
-        if (phase.hint) {
-          el.phaseHint.textContent = phase.hint;
-          el.phaseHint.classList.remove('hidden');
-        } else {
-          el.phaseHint.textContent = '';
-          el.phaseHint.classList.add('hidden');
-        }
-        el.timerClock.textContent = formatMMSS(remMs);
-
-        const elapsedInPhaseMs = Math.max(0, state.phaseDurationMs - remMs);
-        const progress = state.phaseDurationMs > 0 ? Math.min(100, (elapsedInPhaseMs / state.phaseDurationMs) * 100) : 0;
-        el.phaseProgressBar.style.width = progress.toFixed(2) + '%';
-
-        const nextPhase = state.phases[index + 1];
-        if (nextPhase) {
-          el.nextPhaseText.textContent = 'Næste: ' + nextPhase.shortLabel;
-        } else {
-          el.nextPhaseText.textContent = 'Sidste trin – derefter færdig';
-        }
-
-        const remainingSec = Math.ceil(remMs / 1000);
-        const preWarnInfo = getPreWarnInfo(index, remainingSec);
-        const preWarnMode = preWarnInfo ? preWarnInfo.mode : null;
-        lastPreWarnMode = preWarnMode;
-        updatePreWarnBanner(preWarnInfo, remainingSec);
-
-        applyTimerTheme(phase.type, preWarnMode);
-        const totalElapsedSec = phase.startSec + elapsedInPhaseMs / 1000;
-        renderLivePressureChart(totalElapsedSec);
-        el.elapsedTimeLabel.textContent = formatSecondsToMMSS(totalElapsedSec);
-        if (!state.isScrubbing) {
-          el.seekSlider.value = String(Math.round(totalElapsedSec));
-        }
-
-        if (shouldPlaySound) {
-          playSignalSound(false);
-        }
       }
 
+      const phase = state.phases[index];
+      state.phaseDurationMs = phase.durationSec * 1000;
+      const remMs = typeof customRemainingMs === 'number'
+          ? Math.min(state.phaseDurationMs, Math.max(0, customRemainingMs))
+          : state.phaseDurationMs;
+      state.phaseEndTime = Date.now() + remMs;
+      if (state.isPaused) {
+          state.remainingMsWhenPaused = remMs;
+      }
+
+      const stepOnlyText = 'Trin ' + (index + 1) + ' af ' + state.phases.length;
+      el.stepBadge.textContent = stepOnlyText + ' · ' + formatPressureValue(state.pressureAta, state.pressureUnit, true);
+      if (el.chartStepCenter) {
+          el.chartStepCenter.textContent = stepOnlyText;
+      }
+      el.phaseTitle.textContent = phase.title;
+      if (phase.hint) {
+          el.phaseHint.textContent = phase.hint;
+          el.phaseHint.classList.remove('hidden');
+      } else {
+          el.phaseHint.textContent = '';
+          el.phaseHint.classList.add('hidden');
+      }
+      el.timerClock.textContent = formatMMSS(remMs);
+
+      const elapsedInPhaseMs = Math.max(0, state.phaseDurationMs - remMs);
+      const progress = state.phaseDurationMs > 0 ? Math.min(100, (elapsedInPhaseMs / state.phaseDurationMs) * 100) : 0;
+      el.phaseProgressBar.style.width = progress.toFixed(2) + '%';
+
+      const nextPhase = state.phases[index + 1];
+      if (nextPhase) {
+          el.nextPhaseText.textContent = 'Næste: ' + nextPhase.shortLabel;
+      } else {
+          el.nextPhaseText.textContent = 'Sidste trin – derefter færdig';
+      }
+
+      const remainingSec = Math.ceil(remMs / 1000);
+      const preWarnInfo = getPreWarnInfo(index, remainingSec);
+      const preWarnMode = preWarnInfo ? preWarnInfo.mode : null;
+      lastPreWarnMode = preWarnMode;
+      updatePreWarnBanner(preWarnInfo, remainingSec);
+
+      applyTimerTheme(phase.type, preWarnMode);
+      const totalElapsedSec = phase.startSec + elapsedInPhaseMs / 1000;
+      renderLivePressureChart(totalElapsedSec);
+      el.elapsedTimeLabel.textContent = formatSecondsToMMSS(totalElapsedSec);
+      if (!state.isScrubbing) {
+          el.seekSlider.value = String(Math.round(totalElapsedSec));
+      }
+
+      if (shouldPlaySound) {
+          playSignalSound(false);
+      }
+    }
+
+    function finishTreatment() {
+        stopTickLoop();
+        state.isRunning = false;
+        state.isPaused = false;
+        releaseWakeLock();
+
+        const zeroLabel = formatZeroGauge(state.pressureUnit);
+        el.stepBadge.textContent = 'Gennemført';
+        if (el.chartStepCenter) {
+            el.chartStepCenter.textContent = 'Gennemført';
+        }
+        el.phaseTitle.textContent = 'BEHANDLING FÆRDIG';
+        if (state.chamberGuidance) {
+            el.phaseHint.textContent = 'Sikr dig, at trykmåleren viser ' + zeroLabel + ', inden du lyner op – tag herefter masken af og forlad kammeret.';
+            el.phaseHint.classList.remove('hidden');
+        } else {
+            el.phaseHint.textContent = '';
+            el.phaseHint.classList.add('hidden');
+        }
+        el.timerClock.textContent = '00:00';
+        el.nextPhaseText.textContent = 'Tjek at trykmåleren viser ' + zeroLabel + ', før du lyner op';
+        el.phaseProgressBar.style.width = '100%';
+        el.elapsedTimeLabel.textContent = formatSecondsToMMSS(state.totalSessionSec);
+        el.seekSlider.value = String(state.totalSessionSec);
+        el.preWarnBanner.classList.add('hidden');
+        el.pausedBadge.classList.add('hidden');
+        lastPreWarnMode = null;
+
+        el.pauseResumeBtn.classList.add('hidden');
+        el.skipPhaseBtn.classList.add('hidden');
+
+        applyTimerTheme('done', null);
+        renderLivePressureChart(state.totalSessionSec);
+        playSignalSound(true);
+        if (window.trackTimerEvent) window.trackTimerEvent('timer_complete', { pressure_ata: state.pressureAta, total_minutes: Math.round(state.totalSessionSec / 60) });
+    }
+    
       function seekToElapsedSec(targetSec) {
         if (!state.phases.length) return;
         const clamped = Math.min(state.totalSessionSec, Math.max(0, Number(targetSec) || 0));
