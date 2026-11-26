@@ -1113,7 +1113,10 @@
                 intervalId: null,
                 clockIntervalId: null,
                 wakeLock: null,
-                deferredInstallPrompt: null
+                deferredInstallPrompt: null,
+                isOvertime: false,
+                overtimeStartTime: 0,
+                overtimeElapsedMsWhenPaused: 0
             };
 
             let audioCtx = null;
@@ -2299,6 +2302,9 @@
         state.currentPhaseIndex = 0;
         state.isRunning = true;
         state.isPaused = false;
+        state.isOvertime = false;
+        state.overtimeStartTime = 0;
+        state.overtimeElapsedMsWhenPaused = 0;
         state.isScrubbing = false;
         lastPreWarnMode = null;
         lastLiveChartUpdate = 0;
@@ -2322,8 +2328,7 @@
         startTickLoop();
         if (window.trackTimerEvent) window.trackTimerEvent('timer_start', { pressure_ata: state.pressureAta, total_minutes: Math.round(state.totalSessionSec / 60), air_breaks: state.preset, theme: state.theme });
       }
-
-function setPhaseHint(text) {
+      function setPhaseHint(text) {
             if (!el.phaseHint) return;
             if (state.chamberGuidance && text) {
                 el.phaseHint.textContent = text;
@@ -2335,92 +2340,107 @@ function setPhaseHint(text) {
         }
 
         function enterPhase(index, shouldPlaySound, customRemainingMs) {
-            state.currentPhaseIndex = index;
+        state.currentPhaseIndex = index;
 
-            if (index >= state.phases.length) {
-                finishTreatment();
-                return;
-            }
-
-            const phase = state.phases[index];
-            state.phaseDurationMs = phase.durationSec * 1000;
-            const remMs = typeof customRemainingMs === 'number'
-                ? Math.min(state.phaseDurationMs, Math.max(0, customRemainingMs))
-                : state.phaseDurationMs;
-            state.phaseEndTime = Date.now() + remMs;
-            if (state.isPaused) {
-                state.remainingMsWhenPaused = remMs;
-            }
-
-            const stepOnlyText = 'Trin ' + (index + 1) + ' af ' + state.phases.length;
-            el.stepBadge.textContent = stepOnlyText + ' · ' + formatPressureValue(state.pressureAta, state.pressureUnit, true);
-
-            el.phaseTitle.textContent = phase.title;
-            setPhaseHint(phase.hint);
-            el.timerClock.textContent = formatMMSS(remMs);
-
-            const elapsedInPhaseMs = Math.max(0, state.phaseDurationMs - remMs);
-            const progress = state.phaseDurationMs > 0 ? Math.min(100, (elapsedInPhaseMs / state.phaseDurationMs) * 100) : 0;
-            el.phaseProgressBar.style.width = progress.toFixed(2) + '%';
-
-            const nextPhase = state.phases[index + 1];
-            if (nextPhase) {
-                el.nextPhaseText.innerHTML = stepOnlyText + '<br>Næste: ' + nextPhase.shortLabel;
-            } else {
-                el.nextPhaseText.innerHTML = stepOnlyText + '<br>Sidste trin – derefter færdig';
-            }
-
-            const remainingSec = Math.ceil(remMs / 1000);
-            const preWarnInfo = getPreWarnInfo(index, remainingSec);
-            const preWarnMode = preWarnInfo ? preWarnInfo.mode : null;
-            lastPreWarnMode = preWarnMode;
-            updatePreWarnBanner(preWarnInfo, remainingSec);
-
-            applyTimerTheme(phase.type, preWarnMode);
-            const totalElapsedSec = phase.startSec + elapsedInPhaseMs / 1000;
-            renderLivePressureChart(totalElapsedSec);
-            el.elapsedTimeLabel.textContent = formatSecondsToMMSS(totalElapsedSec);
-            if (!state.isScrubbing) {
-                el.seekSlider.value = String(Math.round(totalElapsedSec));
-            }
-
-            if (shouldPlaySound) {
-                playSignalSound(false);
-            }
+        if (index >= state.phases.length) {
+          finishTreatment();
+          return;
         }
+
+        state.isOvertime = false;
+        state.overtimeStartTime = 0;
+        state.overtimeElapsedMsWhenPaused = 0;
+        el.skipPhaseBtn.classList.remove('hidden');
+
+        const phase = state.phases[index];
+        state.phaseDurationMs = phase.durationSec * 1000;
+        const remMs = typeof customRemainingMs === 'number'
+          ? Math.min(state.phaseDurationMs, Math.max(0, customRemainingMs))
+          : state.phaseDurationMs;
+        state.phaseEndTime = Date.now() + remMs;
+        if (state.isPaused) {
+          state.remainingMsWhenPaused = remMs;
+        }
+
+        const stepOnlyText = 'Trin ' + (index + 1) + ' af ' + state.phases.length;
+        el.stepBadge.textContent = stepOnlyText + ' · ' + formatPressureValue(state.pressureAta, state.pressureUnit, true);
+
+        el.phaseTitle.textContent = phase.title;
+        setPhaseHint(phase.hint);
+        el.timerClock.textContent = formatMMSS(remMs);
+
+        const elapsedInPhaseMs = Math.max(0, state.phaseDurationMs - remMs);
+        const progress = state.phaseDurationMs > 0 ? Math.min(100, (elapsedInPhaseMs / state.phaseDurationMs) * 100) : 0;
+        el.phaseProgressBar.style.width = progress.toFixed(2) + '%';
+
+        const nextPhase = state.phases[index + 1];
+        if (nextPhase) {
+          el.nextPhaseText.innerHTML = stepOnlyText + '<br>Næste: ' + nextPhase.shortLabel;
+        } else {
+          el.nextPhaseText.innerHTML = stepOnlyText + '<br>Sidste trin – derefter færdig';
+        }
+
+        const remainingSec = Math.ceil(remMs / 1000);
+        const preWarnInfo = getPreWarnInfo(index, remainingSec);
+        const preWarnMode = preWarnInfo ? preWarnInfo.mode : null;
+        lastPreWarnMode = preWarnMode;
+        updatePreWarnBanner(preWarnInfo, remainingSec);
+
+        applyTimerTheme(phase.type, preWarnMode);
+        const totalElapsedSec = phase.startSec + elapsedInPhaseMs / 1000;
+        renderLivePressureChart(totalElapsedSec);
+        el.elapsedTimeLabel.textContent = formatSecondsToMMSS(totalElapsedSec);
+        if (!state.isScrubbing) {
+          el.seekSlider.value = String(Math.round(totalElapsedSec));
+        }
+
+        if (shouldPlaySound) {
+          playSignalSound(false);
+        }
+      }
 
         function finishTreatment() {
-            stopTickLoop();
-            state.isRunning = false;
-            state.isPaused = false;
-            releaseWakeLock();
+        const wasAlreadyOvertime = state.isOvertime;
+        state.isRunning = true;
+        state.isOvertime = true;
 
-            const zeroLabel = formatZeroGauge(state.pressureUnit);
-            el.stepBadge.textContent = 'Gennemført';
-            el.phaseTitle.textContent = 'BEHANDLING FÆRDIG';
-            setPhaseHint(
-                state.chamberGuidance
-                    ? 'Sikr dig, at trykmåleren viser ' + zeroLabel + ', inden du lyner op – tag herefter masken af og forlad kammeret.'
-                    : ''
-            );
-            el.timerClock.textContent = '00:00';
-            el.nextPhaseText.innerHTML = 'Gennemført<br>Tjek at trykmåleren viser ' + zeroLabel + ', før du lyner op';
-            el.phaseProgressBar.style.width = '100%';
-            el.elapsedTimeLabel.textContent = formatSecondsToMMSS(state.totalSessionSec);
-            el.seekSlider.value = String(state.totalSessionSec);
-            el.preWarnBanner.classList.add('hidden');
-            el.pausedBadge.classList.add('hidden');
-            lastPreWarnMode = null;
-
-            el.pauseResumeBtn.classList.add('hidden');
-            el.skipPhaseBtn.classList.add('hidden');
-
-            applyTimerTheme('done', null);
-            renderLivePressureChart(state.totalSessionSec);
-            playSignalSound(true);
-            if (window.trackTimerEvent) window.trackTimerEvent('timer_complete', { pressure_ata: state.pressureAta, total_minutes: Math.round(state.totalSessionSec / 60) });
+        if (!wasAlreadyOvertime) {
+          state.overtimeStartTime = Date.now();
+          state.overtimeElapsedMsWhenPaused = 0;
         }
 
+        const zeroLabel = formatZeroGauge(state.pressureUnit);
+        el.stepBadge.textContent = 'Gennemført';
+        el.phaseTitle.textContent = 'BEHANDLING FÆRDIG';
+        setPhaseHint(
+          state.chamberGuidance
+            ? 'Sikr dig, at trykmåleren viser ' + zeroLabel + ', inden du lyner op – tag herefter masken af og forlad kammeret.'
+            : ''
+        );
+
+        const overtimeSec = Math.floor(
+          (state.isPaused ? state.overtimeElapsedMsWhenPaused : Math.max(0, Date.now() - state.overtimeStartTime)) / 1000
+        );
+        el.timerClock.textContent = '+' + formatSecondsToMMSS(overtimeSec);
+        el.nextPhaseText.innerHTML = 'Gennemført<br>Tæller opad – tryk Stop for at afslutte';
+        el.phaseProgressBar.style.width = '100%';
+        el.elapsedTimeLabel.textContent = formatSecondsToMMSS(state.totalSessionSec + overtimeSec);
+        el.seekSlider.value = String(state.totalSessionSec);
+        el.preWarnBanner.classList.add('hidden');
+        lastPreWarnMode = null;
+
+        el.pauseResumeBtn.classList.remove('hidden');
+        el.skipPhaseBtn.classList.add('hidden');
+
+        applyTimerTheme('done', null);
+        renderLivePressureChart(state.totalSessionSec);
+
+        if (!wasAlreadyOvertime) {
+          startTickLoop();
+          playSignalSound(true);
+          if (window.trackTimerEvent) window.trackTimerEvent('timer_complete', { pressure_ata: state.pressureAta, total_minutes: Math.round(state.totalSessionSec / 60) });
+        }
+      }
 
       function seekToElapsedSec(targetSec) {
             if (!state.phases.length) return;
@@ -2458,6 +2478,15 @@ function setPhaseHint(text) {
         if (!state.isRunning || state.isPaused || state.isScrubbing) return;
 
         const now = Date.now();
+
+        if (state.isOvertime) {
+          const overtimeMs = Math.max(0, now - state.overtimeStartTime);
+          const overtimeSec = Math.floor(overtimeMs / 1000);
+          el.timerClock.textContent = '+' + formatSecondsToMMSS(overtimeSec);
+          el.elapsedTimeLabel.textContent = formatSecondsToMMSS(state.totalSessionSec + overtimeSec);
+          return;
+        }
+
         const remainingMs = state.phaseEndTime - now;
 
         if (remainingMs <= 0) {
@@ -2503,6 +2532,9 @@ function setPhaseHint(text) {
         }
         state.isRunning = false;
         state.isPaused = false;
+        state.isOvertime = false;
+        state.overtimeStartTime = 0;
+        state.overtimeElapsedMsWhenPaused = 0;
         state.isScrubbing = false;
         releaseWakeLock();
 
@@ -2512,7 +2544,6 @@ function setPhaseHint(text) {
         el.setupScreen.classList.remove('hidden');
         renderSetupUI();
       }
-
       /* -------------------------------------------------------------------
        * 12. EVENT LISTENERS
        * ------------------------------------------------------------------- */
@@ -2807,18 +2838,25 @@ function setPhaseHint(text) {
         if (!state.isRunning) return;
         if (!state.isPaused) {
           state.isPaused = true;
-          state.remainingMsWhenPaused = Math.max(0, state.phaseEndTime - Date.now());
+          if (state.isOvertime) {
+            state.overtimeElapsedMsWhenPaused = Math.max(0, Date.now() - state.overtimeStartTime);
+          } else {
+            state.remainingMsWhenPaused = Math.max(0, state.phaseEndTime - Date.now());
+          }
           el.pauseResumeLabel.textContent = 'Genoptag';
           el.pausedBadge.classList.remove('hidden');
         } else {
           state.isPaused = false;
-          state.phaseEndTime = Date.now() + state.remainingMsWhenPaused;
+          if (state.isOvertime) {
+            state.overtimeStartTime = Date.now() - state.overtimeElapsedMsWhenPaused;
+          } else {
+            state.phaseEndTime = Date.now() + state.remainingMsWhenPaused;
+          }
           el.pauseResumeLabel.textContent = 'Pause';
           el.pausedBadge.classList.add('hidden');
           startTickLoop();
         }
       });
-
       el.skipPhaseBtn.addEventListener('click', function () {
         if (!state.isRunning) return;
         lastPreWarnMode = null;
