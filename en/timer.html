@@ -12,7 +12,7 @@
     <meta name="theme-color" id="metaThemeColor" content="#013F58" />
     <link rel="icon" href="../favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="../favicon.png" />
-    <link rel="manifest" id="pwaManifestLink" href='data:application/manifest+json,{"name":"RecoveryExpressen HBOT Timer","short_name":"HBOT Timer","start_url":"./timer.html","display":"standalone","background_color":"#013F58","theme_color":"#013F58","icons":[{"src":"../favicon.png","sizes":"192x192","type":"image/png"},{"src":"../favicon.png","sizes":"512x512","type":"image/png"}]}' />
+    <link rel="manifest" id="pwaManifestLink" href='data:application/manifest+json,{"name":"RecoveryExpressen HBOT Timer","short_name":"HBOT Timer","start_url":"./timer.html","scope":"./timer.html","display":"standalone","background_color":"#013F58","theme_color":"#013F58","icons":[{"src":"../favicon.png","sizes":"192x192","type":"image/png"},{"src":"../favicon.png","sizes":"512x512","type":"image/png"}]}' />
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -353,53 +353,43 @@
     <div id="setupScreen" class="min-h-[100dvh] flex flex-col pb-24">
 
         <!-- HEADER -->
-    <header class="bg-rl-darkblue shadow-md sticky top-0 z-40 border-b border-white/10 min-h-20 flex items-center py-2">
-        <nav class="container mx-auto px-4 sm:px-6 max-w-6xl flex items-center justify-between w-full gap-3">
-            <!-- Left: Logo and brand -->
-            <a href="index.html" class="flex items-center gap-2.5 group py-1 shrink-0">
-                <img
-                    src="../pictures/Recharge%20Life_Large_Transparent_Variant%201.png"
-                    alt="RechargeLife"
-                    class="h-10 sm:h-12 w-auto object-contain shrink-0 transition-transform duration-300 group-hover:scale-105"
-                />
-                <div class="border-l border-white/25 pl-2.5">
-                    <span class="font-serif text-base sm:text-xl text-white tracking-wide block leading-none whitespace-nowrap">RecoveryExpressen</span>
-                    <span class="text-[9px] uppercase tracking-[0.18em] text-rl-lightblue block mt-1 whitespace-nowrap">by RechargeLife</span>
+        <header class="bg-rl-darkblue shadow-md sticky top-0 z-40 border-b border-white/10 min-h-20 flex items-center py-2">
+            <nav class="container mx-auto px-4 sm:px-6 max-w-6xl flex items-center justify-between w-full gap-3">
+                <a href="index.html" class="flex items-center gap-2.5 group py-1 shrink-0">
+                    <img
+                        id="brandLogoImg"
+                        src="../pictures/Recharge%20Life_Large_Transparent_Variant%201.png"
+                        alt="RechargeLife"
+                        class="h-10 sm:h-12 w-auto object-contain shrink-0 transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div id="brandLogoFallback" class="hidden w-11 h-11 rounded-full bg-white/10 border border-white/20 items-center justify-center shrink-0">
+                        <svg class="w-6 h-6 text-rl-lightblue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <polyline points="12 7 12 12 15.5 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="border-l border-white/25 pl-2.5">
+                        <span class="font-serif text-base sm:text-xl text-white tracking-wide block leading-none whitespace-nowrap">RecoveryExpressen</span>
+                        <span class="text-[9px] uppercase tracking-[0.18em] text-rl-lightblue block mt-1 whitespace-nowrap">HBOT Timer &middot; by RechargeLife</span>
+                    </div>
+                </a>
+
+                <div class="flex items-center flex-wrap justify-end gap-2 shrink-0">
+                    <a href="index.html" class="hidden md:inline-block text-xs font-medium text-white/80 hover:text-white transition px-2 py-1">
+                        ← Home
+                    </a>
+                    <a href="../timer.html" class="text-xs font-semibold text-white/85 hover:text-white border border-white/25 hover:bg-white/10 px-2.5 py-1.5 rounded-full transition whitespace-nowrap" title="Skift til dansk">DA</a>
+                    <button
+                        type="button"
+                        id="headerThemeToggleBtn"
+                        class="inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/20 px-3 py-1.5 rounded-full transition cursor-pointer whitespace-nowrap"
+                    >
+                        <span id="headerThemeIcon">🌙</span>
+                        <span id="headerThemeText">Switch to Night</span>
+                    </button>
                 </div>
-            </a>
-
-            <!-- Center: Visible from md upwards, wraps cleanly without overlapping logo -->
-            <div class="hidden md:flex items-center justify-center flex-wrap gap-x-3 lg:gap-x-5 gap-y-1 text-xs lg:text-sm font-medium text-white/90 min-w-0">
-                <a href="#who-its-for" class="hover:text-rl-lightblue transition whitespace-nowrap">Who it's for</a>
-                <a href="#how-it-works" class="hover:text-rl-lightblue transition whitespace-nowrap">How it works</a>
-                <a href="#rental-process" class="hover:text-rl-lightblue transition whitespace-nowrap">Rental process</a>
-                <a href="#pricing" class="hover:text-rl-lightblue transition whitespace-nowrap">Pricing</a>
-                <a href="#safety" class="hover:text-rl-lightblue transition whitespace-nowrap">Requirements &amp; safety</a>
-                <a href="#faq" class="hover:text-rl-lightblue transition whitespace-nowrap">FAQ</a>
-                <a href="timer.html" class="hover:text-rl-lightblue transition whitespace-nowrap">HBOT timer</a>
-            </div>
-
-            <!-- Right: Primary CTA, language switch, and burger menu on small screens -->
-            <div class="flex items-center gap-2 shrink-0">
-                <a href="#booking" class="hidden sm:inline-flex items-center bg-white hover:bg-rl-lightblue text-rl-darkblue font-bold text-[11px] uppercase tracking-wider px-3.5 py-2 rounded-full transition whitespace-nowrap">
-                    Book for home
-                </a>
-                <a href="../index.html" class="text-xs font-semibold text-white/85 hover:text-white border border-white/25 hover:bg-white/10 px-2.5 py-1.5 rounded-full transition whitespace-nowrap" title="Skift til dansk">
-                    DA
-                </a>
-                <button
-                    type="button"
-                    id="mobileMenuBtn"
-                    class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 transition cursor-pointer"
-                    aria-label="Open menu"
-                >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
 
         <!-- MAIN CONTENT -->
         <main class="container mx-auto px-4 sm:px-6 max-w-4xl pt-6 sm:pt-8 space-y-5 flex-1">
@@ -464,7 +454,6 @@
 
                 <!-- 5 separate time fields -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
-                    <!-- Field 1: Entry time before start -->
                     <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
                         <label for="entryDelayInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight">Entry time before start</label>
                         <div class="flex items-center gap-1.5">
@@ -478,7 +467,6 @@
                         </div>
                     </div>
 
-                    <!-- Field 2: Pressurization time -->
                     <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
                         <label for="pressurizeInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-rl-lightblue border border-rl-darkblue/40 shrink-0"></span>
@@ -495,7 +483,6 @@
                         </div>
                     </div>
 
-                    <!-- Field 3: Oxygen interval (10–30 min) -->
                     <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
                         <label for="oxygenBlockInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-rl-lightblue border border-rl-darkblue/40 shrink-0"></span>
@@ -512,7 +499,6 @@
                         </div>
                     </div>
 
-                    <!-- Field 4: Air break (5–7 min, depending on VO2max) -->
                     <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
                         <label for="pauseInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 border border-amber-600/40 shrink-0"></span>
@@ -529,7 +515,6 @@
                         </div>
                     </div>
 
-                    <!-- Field 5: Depressurization time -->
                     <div class="surface-subtle bg-[#FAF9F6] border border-rl-lightbg rounded-2xl p-3 flex flex-col justify-between gap-2">
                         <label for="depressurizeInput" class="text-xs font-semibold text-muted text-rl-black/75 leading-tight flex items-center gap-1.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-[#7A94A3] shrink-0"></span>
@@ -547,7 +532,7 @@
                     </div>
                 </div>
 
-                <!-- Optional: Step-by-step guidance during phases -->
+                <!-- Optional: Guidance during phases -->
                 <div class="pt-3 border-t border-rl-lightbg/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                         <label for="chamberGuidanceCheckbox" class="inline-flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-heading text-rl-darkblue cursor-pointer select-none">
@@ -765,7 +750,7 @@
 
         <!-- FIXED BOTTOM BAR: SAVE AS APP / DESKTOP -->
         <div class="fixed bottom-0 inset-x-0 z-30 bg-[#012E40] border-t border-white/15 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.18)]">
-            <div class="container mx-auto max-w-4xl flex items-center justify-between gap-3">
+            <div class="container mx-auto max-w-4xl flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-3 min-w-0">
                     <div class="w-9 h-9 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0 text-rl-lightblue">
                         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -779,7 +764,7 @@
                         <p class="text-rl-lightblue/80 text-[11px] truncate">Save shortcut on iPhone, Android, or computer</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2 shrink-0">
+                <div class="flex items-center flex-wrap gap-2 shrink-0">
                     <button
                         type="button"
                         id="openFeedbackModalBtn"
@@ -892,21 +877,21 @@
                 </div>
             </div>
 
-            <div class="w-full max-w-5xl mx-auto grid grid-cols-4 gap-2 pt-0.5">
-                <button type="button" id="toggleThemeActiveBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+            <div class="w-full max-w-5xl mx-auto flex flex-wrap sm:grid sm:grid-cols-4 gap-2 pt-0.5">
+                <button type="button" id="toggleThemeActiveBtn" class="timer-ctrl-btn flex-1 sm:flex-initial flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-[7.5rem]">
                     <span id="toggleThemeActiveIcon">🌙</span>
                     <span id="toggleThemeActiveLabel" class="truncate">Switch to Night</span>
                 </button>
 
-                <button type="button" id="pauseResumeBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+                <button type="button" id="pauseResumeBtn" class="timer-ctrl-btn flex-1 sm:flex-initial flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-[6rem]">
                     <span id="pauseResumeLabel" class="truncate">Pause</span>
                 </button>
 
-                <button type="button" id="skipPhaseBtn" class="timer-ctrl-btn flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+                <button type="button" id="skipPhaseBtn" class="timer-ctrl-btn flex-1 sm:flex-initial flex items-center justify-center gap-1 py-2 px-2 rounded-xl border border-current/20 text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-[6rem]">
                     <span class="truncate">Next →</span>
                 </button>
 
-                <button type="button" id="stopTimerBtn" class="flex items-center justify-center gap-1 py-2 px-2 rounded-xl bg-rose-600/90 hover:bg-rose-600 active:scale-95 border border-white/20 text-white text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-0">
+                <button type="button" id="stopTimerBtn" class="flex-1 sm:flex-initial flex items-center justify-center gap-1 py-2 px-2 rounded-xl bg-rose-600/90 hover:bg-rose-600 active:scale-95 border border-white/20 text-white text-xs font-bold backdrop-blur-sm transition cursor-pointer min-w-[6rem]">
                     <span class="truncate">Stop</span>
                 </button>
             </div>
@@ -1107,6 +1092,8 @@
                 preset: 1,
                 fiO2: 0.95,
                 theme: 'day',
+                brightness: 120,
+                useDeviceDefaultBrightness: false,
                 soundType: 'yoga_pling',
                 soundRepeats: 1,
                 volume: 85,
@@ -1171,6 +1158,10 @@
                 legendOxygenLabel: document.getElementById('legendOxygenLabel'),
                 legendPauseLabel: document.getElementById('legendPauseLabel'),
                 themeBtns: document.querySelectorAll('.theme-btn'),
+                brightnessSlider: document.getElementById('brightnessSlider'),
+                brightnessValue: document.getElementById('brightnessValue'),
+                useDeviceDefaultCheckbox: document.getElementById('useDeviceDefaultCheckbox'),
+                brightnessControlRow: document.getElementById('brightnessControlRow'),
 
                 totalDurationBadge: document.getElementById('totalDurationBadge'),
                 totalWithEntryBadge: document.getElementById('totalWithEntryBadge'),
@@ -1401,6 +1392,16 @@
                 return Math.min(maxSec, Math.max(minSec, sec));
             }
 
+            function applyBrightnessFilter() {
+                if (!el.timerScreen) return;
+                if (state.useDeviceDefaultBrightness) {
+                    el.timerScreen.style.filter = 'none';
+                } else {
+                    const b = Math.min(140, Math.max(30, state.brightness || 120));
+                    el.timerScreen.style.filter = 'brightness(' + (b / 100).toFixed(2) + ')';
+                }
+            }
+
             /* -------------------------------------------------------------------
              * 4. LOAD / SAVE USER PREFERENCES
              * ------------------------------------------------------------------- */
@@ -1426,6 +1427,8 @@
                     if ([0, 1, 2, 3].includes(saved.preset)) state.preset = saved.preset;
                     if ([0.95, 1.0].includes(saved.fiO2)) state.fiO2 = saved.fiO2;
                     if (['day', 'night'].includes(saved.theme)) state.theme = saved.theme;
+                    if (typeof saved.brightness === 'number' && saved.brightness >= 30 && saved.brightness <= 140) state.brightness = saved.brightness;
+                    if (typeof saved.useDeviceDefaultBrightness === 'boolean') state.useDeviceDefaultBrightness = saved.useDeviceDefaultBrightness;
                     if (VALID_SOUNDS.includes(saved.soundType)) state.soundType = saved.soundType;
                     if ([1, 2, 3].includes(saved.soundRepeats)) state.soundRepeats = saved.soundRepeats;
                     if (typeof saved.volume === 'number' && saved.volume >= 0 && saved.volume <= 100) state.volume = saved.volume;
@@ -1447,6 +1450,8 @@
                         preset: state.preset,
                         fiO2: state.fiO2,
                         theme: state.theme,
+                        brightness: state.brightness,
+                        useDeviceDefaultBrightness: state.useDeviceDefaultBrightness,
                         soundType: state.soundType === 'custom' ? 'yoga_pling' : state.soundType,
                         soundRepeats: state.soundRepeats,
                         volume: state.volume,
@@ -1755,14 +1760,12 @@
                 svg.innerHTML = html;
 
                 const topAtaEl = document.getElementById('chartTopAtaLabel');
-                const curBadgeEl = document.getElementById('chartCurAtaBadge');
                 const startMinEl = document.getElementById('chartStartMinLabel');
                 const midMinEl = document.getElementById('chartMidMinLabel');
                 const endMinEl = document.getElementById('chartEndMinLabel');
                 const totalMin = totalSec / 60;
 
                 if (topAtaEl) topAtaEl.textContent = formatPressureValue(targetAta, state.pressureUnit, true);
-                if (curBadgeEl) curBadgeEl.textContent = formatPressureValue(curAta, state.pressureUnit, true);
                 if (startMinEl) startMinEl.textContent = '0 min';
                 if (midMinEl) midMinEl.textContent = formatEnNumber(totalMin / 2, 0) + ' min';
                 if (endMinEl) endMinEl.textContent = formatEnNumber(totalMin, 0) + ' min';
@@ -1782,6 +1785,20 @@
 
                 if (el.chamberGuidanceCheckbox) {
                     el.chamberGuidanceCheckbox.checked = state.chamberGuidance;
+                }
+
+                if (el.useDeviceDefaultCheckbox) {
+                    el.useDeviceDefaultCheckbox.checked = state.useDeviceDefaultBrightness;
+                }
+                if (el.brightnessSlider) {
+                    el.brightnessSlider.value = String(state.brightness);
+                    el.brightnessSlider.disabled = state.useDeviceDefaultBrightness;
+                }
+                if (el.brightnessValue) {
+                    el.brightnessValue.textContent = state.useDeviceDefaultBrightness ? 'Auto' : (state.brightness + '%');
+                }
+                if (el.brightnessControlRow) {
+                    el.brightnessControlRow.style.opacity = state.useDeviceDefaultBrightness ? '0.45' : '1';
                 }
 
                 el.unitBtns.forEach(function (btn) {
@@ -2126,14 +2143,14 @@
             async function requestWakeLock() {
                 if (!('wakeLock' in navigator)) {
                     if (el.wakeLockBadge) {
-                        el.wakeLockBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400"></span><span>Keep screen on</span>';
+                        el.wakeLockBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>Keep screen on</span>';
                     }
                     return;
                 }
                 try {
                     state.wakeLock = await navigator.wakeLock.request('screen');
                     if (el.wakeLockBadge) {
-                        el.wakeLockBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span><span>Screen awake</span>';
+                        el.wakeLockBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500/80"></span><span>Screen awake</span>';
                     }
                     state.wakeLock.addEventListener('release', function () {
                         if (state.isRunning && document.visibilityState === 'visible') {
@@ -2142,7 +2159,7 @@
                     });
                 } catch (err) {
                     if (el.wakeLockBadge) {
-                        el.wakeLockBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400"></span><span>Screen lock inactive</span>';
+                        el.wakeLockBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>Screen lock inactive</span>';
                     }
                 }
             }
@@ -2257,6 +2274,8 @@
                     el.toggleThemeActiveIcon.textContent = '☀️';
                     el.toggleThemeActiveLabel.textContent = 'Switch to Daylight';
                 }
+
+                applyBrightnessFilter();
 
                 const pillBg = isNight ? 'bg-white/10' : 'bg-rl-black/10';
                 const ctrlBg = isNight ? 'bg-white/10 hover:bg-white/20' : 'bg-rl-black/10 hover:bg-rl-black/20';
@@ -2567,6 +2586,22 @@
                 el.chamberGuidanceCheckbox.addEventListener('change', function () {
                     state.chamberGuidance = el.chamberGuidanceCheckbox.checked;
                     savePreferences();
+                });
+            }
+
+            if (el.useDeviceDefaultCheckbox) {
+                el.useDeviceDefaultCheckbox.addEventListener('change', function () {
+                    state.useDeviceDefaultBrightness = el.useDeviceDefaultCheckbox.checked;
+                    savePreferences();
+                    renderSetupUI();
+                });
+            }
+
+            if (el.brightnessSlider) {
+                el.brightnessSlider.addEventListener('input', function () {
+                    state.brightness = Number(el.brightnessSlider.value);
+                    savePreferences();
+                    renderSetupUI();
                 });
             }
 
@@ -2949,6 +2984,7 @@
                         name: 'RecoveryExpressen HBOT Timer',
                         short_name: 'HBOT Timer',
                         start_url: window.location.pathname || './timer.html',
+                        scope: window.location.pathname || './timer.html',
                         display: 'standalone',
                         background_color: '#013F58',
                         theme_color: '#013F58',
