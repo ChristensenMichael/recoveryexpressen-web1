@@ -179,6 +179,36 @@
                 min-height: 1.95rem;
                 font-size: 0.72rem;
             }
+            .shared-banner {
+                background-color: rgba(16, 185, 129, 0.14);
+                border: 1px solid rgba(16, 185, 129, 0.45);
+                color: inherit;
+                padding: 10px 16px;
+                border-radius: 8px;
+                margin-bottom: 14px;
+                font-size: 0.92rem;
+                text-align: center;
+                }
+
+                .btn-share {
+                padding: 10px 16px;
+                border-radius: 8px;
+                border: 1px solid currentColor;
+                background: transparent;
+                color: inherit;
+                font-weight: 600;
+                cursor: pointer;
+                }
+
+                .btn-share:hover {
+                opacity: 0.85;
+                }
+
+                .share-feedback {
+                margin-left: 10px;
+                font-size: 0.88rem;
+                font-weight: 500;
+                }
         }
 
         /* Subtle 15-second pre-warning (Daylight) */
@@ -3092,6 +3122,81 @@
                 });
             }
         })();
+        document.addEventListener("DOMContentLoaded", () => {
+        // 1. Kortlæg dine inputfelters HTML-id'er til korte URL-parametre
+        const TIMER_FIELDS = {
+            ata: "pressureInput",       // Tryk (ATA)
+            entry: "entryTimeInput",    // Indstigningstid
+            press: "pressTimeInput",    // Tryksætningstid
+            oxy: "oxyTimeInput",        // Iltfase varighed
+            breaks: "breaksInput",      // Antal iltpauser
+            decomp: "decompTimeInput"   // Dekompressionstid
+        };
+
+        const isEnglish = document.documentElement.lang.toLowerCase().startsWith("en");
+        const params = new URLSearchParams(window.location.search);
+
+        // 2. Indlæs værdier fra URL'en, hvis linket indeholder en delt protokol
+        let isSharedProtocol = false;
+
+        Object.entries(TIMER_FIELDS).forEach(([paramKey, elementId]) => {
+            if (params.has(paramKey)) {
+            const el = document.getElementById(elementId);
+            if (el) {
+                el.value = params.get(paramKey);
+                // Udløs 'change' og 'input', så din SVG-trykkurve og OTU-beregning opdateres automatisk
+                el.dispatchEvent(new Event("input", { bubbles: true }));
+                el.dispatchEvent(new Event("change", { bubbles: true }));
+                isSharedProtocol = true;
+            }
+            }
+        });
+
+        // Vis banneret, hvis brugeren åbner et link med parametre (eller ?shared=1)
+        if (isSharedProtocol || params.get("shared") === "1") {
+            const banner = document.getElementById("sharedProtocolBanner");
+            if (banner) {
+            banner.style.display = "block";
+            }
+        }
+
+        // 3. Generér og kopiér linket, når der trykkes på "Share this HBOT setup"
+        const shareBtn = document.getElementById("shareSetupBtn");
+        const feedbackEl = document.getElementById("shareFeedback");
+
+        if (shareBtn) {
+            shareBtn.addEventListener("click", async () => {
+            const shareUrl = new URL(window.location.origin + window.location.pathname);
+
+            Object.entries(TIMER_FIELDS).forEach(([paramKey, elementId]) => {
+                const el = document.getElementById(elementId);
+                if (el && el.value !== "") {
+                shareUrl.searchParams.set(paramKey, el.value);
+                }
+            });
+
+            shareUrl.searchParams.set("shared", "1");
+            const finalLink = shareUrl.toString();
+
+            try {
+                await navigator.clipboard.writeText(finalLink);
+                feedbackEl.textContent = isEnglish
+                ? "Link copied – ready to paste in SMS or chat!"
+                : "Link kopieret – klar til at indsætte i SMS eller besked!";
+            } catch (err) {
+                // Fallback hvis udklipsholder blokeres i en ældre browser
+                window.prompt(
+                isEnglish ? "Copy this protocol link:" : "Kopiér dette protokol-link:",
+                finalLink
+                );
+            }
+
+            setTimeout(() => {
+                feedbackEl.textContent = "";
+            }, 4000);
+            });
+        }
+        });
     </script>
 </body>
 </html>
