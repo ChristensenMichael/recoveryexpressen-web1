@@ -193,52 +193,80 @@
 <body class="bg-[#FAF9F6] text-rl-black font-sans antialiased">
 
     <!-- ======= HEADER / NAVIGATION ======= -->
-    <header class="bg-rl-darkblue shadow-md sticky top-0 z-40 border-b border-white/10 min-h-20 flex items-center py-2">
-        <nav class="container mx-auto px-4 sm:px-6 max-w-6xl flex items-center justify-between w-full gap-3">
-            <!-- Venstre: Logo og navn -->
-            <a href="index.html" class="flex items-center gap-2.5 group py-1 shrink-0">
-                <img
-                    src="pictures/Recharge%20Life_Large_Transparent_Variant%201.png"
-                    alt="RechargeLife"
-                    class="h-10 sm:h-12 w-auto object-contain shrink-0 transition-transform duration-300 group-hover:scale-105"
-                />
-                <div class="border-l border-white/25 pl-2.5">
-                    <span class="font-serif text-base sm:text-xl text-white tracking-wide block leading-none whitespace-nowrap">RecoveryExpressen</span>
-                    <span class="text-[9px] uppercase tracking-[0.18em] text-rl-lightblue block mt-1 whitespace-nowrap">by RechargeLife</span>
-                </div>
-            </a>
+    <header class="bg-rl-darkblue shadow-md sticky top-0 z-50 border-b border-white/10 h-20 flex items-center">
+    <nav class="container mx-auto px-4 sm:px-6 max-w-6xl flex items-center justify-between w-full gap-3">
+        <!-- Brand / Logo -->
+        <a href="#top" class="flex items-center gap-2.5 sm:gap-3 group py-1 shrink-0">
+        <img
+            src="pictures/Recharge%20Life_Large_Transparent_Variant%201.png"
+            alt="RechargeLife"
+            class="h-11 sm:h-12 md:h-14 w-auto object-contain shrink-0 transition-transform duration-300 group-hover:scale-105"
+        />
+        <div class="border-l border-white/25 pl-2.5 sm:pl-3">
+            <span class="font-serif text-lg sm:text-xl md:text-2xl text-white tracking-wide block leading-none whitespace-nowrap">RecoveryExpressen</span>
+            <span class="text-[9px] sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.2em] text-rl-lightblue block mt-1 whitespace-nowrap">by RechargeLife</span>
+        </div>
+        </a>
 
-            <!-- Midten: Synlig fra md og op, wrapper pænt til næste linje uden at dække logoet -->
-            <div class="hidden md:flex items-center justify-center flex-wrap gap-x-3 lg:gap-x-5 gap-y-1 text-xs lg:text-sm font-medium text-white/90 min-w-0">
-                <a href="#hvem-er-det-til" class="hover:text-rl-lightblue transition whitespace-nowrap">Hvem er det til</a>
-                <a href="#saadan-virker-det" class="hover:text-rl-lightblue transition whitespace-nowrap">Sådan virker det</a>
-                <a href="#lejeforloeb" class="hover:text-rl-lightblue transition whitespace-nowrap">Lejeforløb</a>
-                <a href="#priser" class="hover:text-rl-lightblue transition whitespace-nowrap">Priser</a>
-                <a href="#krav-og-sikkerhed" class="hover:text-rl-lightblue transition whitespace-nowrap">Krav og sikkerhed</a>
-                <a href="#faq" class="hover:text-rl-lightblue transition whitespace-nowrap">FAQ</a>
-                <a href="timer.html" class="hover:text-rl-lightblue transition whitespace-nowrap">HBOT timer</a>
-            </div>
+        <!-- Desktop anchor navigation -->
+        <div class="hidden lg:flex items-center gap-5 xl:gap-7 font-medium text-sm text-white">
+        <a href="#maalgrupper" class="hover-underline-animation whitespace-nowrap">Hvem er det til</a>
+        <a href="#saadan-virker-det" class="hover-underline-animation whitespace-nowrap">Sådan virker det</a>
+        <a href="#forloeb" class="hover-underline-animation whitespace-nowrap">Lejeforløb</a>
+        <a href="#priser" class="hover-underline-animation whitespace-nowrap">Priser</a>
+        <a href="#krav-sikkerhed" class="hover-underline-animation whitespace-nowrap">Krav og sikkerhed</a>
+        <a href="#faq" class="hover-underline-animation whitespace-nowrap">FAQ</a>
+        <a href="timer.html" class="text-rl-lightblue font-semibold hover-underline-animation whitespace-nowrap">HBOT timer</a>
+        </div>
 
-            <!-- Højre: Primær knap, sprogskifter og burgermenu på små skærme -->
-            <div class="flex items-center gap-2 shrink-0">
-                <a href="#booking" class="hidden sm:inline-flex items-center bg-white hover:bg-rl-lightblue text-rl-darkblue font-bold text-[11px] uppercase tracking-wider px-3.5 py-2 rounded-full transition whitespace-nowrap">
-                    Book til hjemmet
-                </a>
-                <a href="en/index.html" class="text-xs font-semibold text-white/85 hover:text-white border border-white/25 hover:bg-white/10 px-2.5 py-1.5 rounded-full transition whitespace-nowrap" title="Switch to English">
-                    EN
-                </a>
-                <button
-                    type="button"
-                    id="mobileMenuBtn"
-                    class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 transition cursor-pointer"
-                    aria-label="Åbn menu"
-                >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-        </nav>
+        <!-- CTA + Sprogskifter + Burgermenu -->
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <button
+            type="button"
+            data-emne="Bookingforespørgsel: 30-dages mHBOT hjemmekammer (Header)"
+            class="js-open-contact hidden sm:inline-flex items-center bg-white hover:bg-rl-lightblue text-rl-darkblue font-semibold text-xs uppercase tracking-wider px-4 py-2.5 rounded-full transition cursor-pointer whitespace-nowrap"
+        >
+            Book til hjemmet
+        </button>
+        <a
+            href="en/index.html"
+            class="flex items-center gap-1 text-white font-semibold border border-white/30 rounded-full px-3 py-1.5 bg-transparent hover:bg-white/10 transition text-xs sm:text-sm whitespace-nowrap"
+            title="Switch to English"
+        >
+            <span>EN</span>
+        </a>
+        <button
+            id="mobile-menu-btn"
+            type="button"
+            class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 transition cursor-pointer"
+            aria-label="Åbn menu"
+        >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+        </div>
+    </nav>
+
+    <!-- Mobilmenu Drawer -->
+    <div id="mobile-menu" class="hidden absolute top-20 left-0 w-full bg-rl-darkblue border-t border-white/10 lg:hidden shadow-xl">
+        <div class="flex flex-col px-6 py-4 space-y-2 text-white text-base">
+        <a href="#maalgrupper" class="mobile-nav-link block py-2.5 border-b border-white/10">Hvem er det til</a>
+        <a href="#saadan-virker-det" class="mobile-nav-link block py-2.5 border-b border-white/10">Sådan virker det</a>
+        <a href="#forloeb" class="mobile-nav-link block py-2.5 border-b border-white/10">Lejeforløb</a>
+        <a href="#priser" class="mobile-nav-link block py-2.5 border-b border-white/10">Priser</a>
+        <a href="#krav-sikkerhed" class="mobile-nav-link block py-2.5 border-b border-white/10">Krav og sikkerhed</a>
+        <a href="#faq" class="mobile-nav-link block py-2.5 border-b border-white/10">FAQ</a>
+        <a href="timer.html" class="mobile-nav-link block py-2.5 border-b border-white/10 text-rl-lightblue font-semibold">HBOT timer</a>
+        <button
+            type="button"
+            data-emne="Bookingforespørgsel: 30-dages mHBOT hjemmekammer (Mobilmenu)"
+            class="js-open-contact mobile-nav-link mt-2 bg-white text-rl-darkblue font-semibold py-3 rounded-full text-center cursor-pointer"
+        >
+            Book til hjemmet
+        </button>
+        </div>
+    </div>
     </header>
 
     <main id="top">
